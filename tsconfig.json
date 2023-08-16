@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "CommonJS",
+    "lib": ["ES2017"],
+    "allowJs": true,
+    "jsx": "react-native",
+    "strict": false,
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": false,
+    "resolveJsonModule": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "extends": "@tsconfig/react-native/tsconfig.json",
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js"]
+}
