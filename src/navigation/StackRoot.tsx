@@ -1,8 +1,8 @@
 import AboutScreen from '@/screen/AboutScreen'
-import Home from '@/screen/HomeScreen'
 import SettingsScreen from '@/screen/SettingsScreen'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import TabNavigator from './TabNavigator'
+import SearchScreen from '@/screen/SearchScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -13,12 +13,15 @@ function StackRoot(): JSX.Element {
         <Stack.Screen
           name="TabNavigator"
           component={TabNavigator}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="search"
+          component={SearchScreen}
           options={{
             headerShown: false
           }}
         />
-
-        <Stack.Screen name="home" component={Home} />
         <Stack.Screen
           name="settings"
           component={SettingsScreen}

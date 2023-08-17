@@ -4,10 +4,11 @@
 import 'react-native-gesture-handler'
 import React from 'react'
 import { AppRegistry } from 'react-native'
+import TrackPlayer from 'react-native-track-player'
 import { DefaultTheme, PaperProvider } from 'react-native-paper'
-import { ThemeProp } from 'react-native-paper/src/types'
 import { NavigationContainer } from '@react-navigation/native'
 import { createDrawerNavigator } from '@react-navigation/drawer'
+import type { ThemeProp } from 'react-native-paper/src/types'
 import { name as appName } from './app.json'
 import StackRoot from '@/navigation/StackRoot'
 import DrawerMenu from '@/components/DrawerMenu'
@@ -44,3 +45,4 @@ function Music(): JSX.Element {
 }
 
 AppRegistry.registerComponent(appName, () => Music)
+TrackPlayer.registerPlaybackService(() => async () => {})

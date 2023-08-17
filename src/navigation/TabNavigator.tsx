@@ -5,16 +5,15 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import StackHome from './StackHome'
 import StackPlay from './StackPlay'
 import StackMine from './StackMine'
-import HeadDrawer from '@/components/HeadDrawer'
 
 const Tab = createBottomTabNavigator()
 
 function TabNavigator(): JSX.Element {
   const theme = useTheme()
 
-  const handleIcon: TabNavigator.HandleIcon = (name: string) => {
+  const handleIcon: TabNavigatorType.HandleIcon = iconName => {
     return ({ focused, color, size }) => {
-      return <Icon name={name} color={color} size={size} />
+      return <Icon name={iconName} color={color} size={size} />
     }
   }
 
@@ -52,8 +51,8 @@ function TabNavigator(): JSX.Element {
               name={'stack_' + item.name}
               component={item.component}
               options={{
-                header: () => <HeadDrawer />,
                 title: item.name,
+                headerShown: false,
                 tabBarIcon: item.icon,
                 tabBarActiveTintColor: '#dfcbce',
                 tabBarInactiveTintColor: '#4a1e23'

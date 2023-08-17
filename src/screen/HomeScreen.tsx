@@ -1,9 +1,9 @@
-import React from 'react'
+import { useState } from 'react'
 import { Text, View } from 'react-native'
 import { search } from '@/api/search'
 
 function Home() {
-  const [text, setText] = React.useState('213')
+  const [text, setText] = useState('213')
 
   async function handleSearch() {
     const time = new Date()
@@ -12,7 +12,11 @@ function Home() {
       keywords: '海阔天空'
     }
 
-    await search(params).then(res => console.log(res))
+    await search(params)
+      .then(res => console.log(res))
+      .catch(e => {
+        console.log(e)
+      })
   }
 
   return (
@@ -23,7 +27,9 @@ function Home() {
           justifyContent: 'center',
           alignItems: 'center'
         }}>
-        <Text style={{ fontSize: 48 }}>Home</Text>
+        <Text style={{ fontSize: 48 }} onPress={() => handleSearch()}>
+          Home
+        </Text>
       </View>
     </>
   )

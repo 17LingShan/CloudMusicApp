@@ -1,4 +1,4 @@
-declare namespace TabNavigator {
+declare namespace TabNavigatorType {
   interface RenderIconProps {
     focused: boolean
     color: string
@@ -6,6 +6,6 @@ declare namespace TabNavigator {
   }
 
   interface HandleIcon {
-    (name: string): (props: RenderIconProps) => React.ReactNode
+    (iconName: string): (props: RenderIconProps) => React.ReactNode
   }
 }

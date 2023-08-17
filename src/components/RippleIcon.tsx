@@ -1,16 +1,22 @@
-import { Text, View } from 'react-native'
+import { View } from 'react-native'
 import { TouchableRipple } from 'react-native-paper'
-import Icon from 'react-native-vector-icons/FontAwesome5'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import type { RippleIconType } from './types'
 
-function RippleIcon({ name, onPress }): JSX.Element {
+function RippleIcon({
+  iconName,
+  shown = true,
+  onPress
+}: RippleIconType.RippleIconProps): JSX.Element {
   return (
     <>
       <View
         style={{
+          display: shown ? 'flex' : 'none',
           width: 48,
           height: 48,
           borderRadius: 24,
-          margin: 8,
+          marginHorizontal: 8,
           overflow: 'hidden'
         }}>
         <TouchableRipple
@@ -22,7 +28,7 @@ function RippleIcon({ name, onPress }): JSX.Element {
             alignItems: 'center'
           }}
           rippleColor="rgba(0, 0, 0, .32)">
-          <Icon name={name} size={24}></Icon>
+          <Icon name={iconName} size={24}></Icon>
         </TouchableRipple>
       </View>
     </>

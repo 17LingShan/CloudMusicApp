@@ -1,16 +1,21 @@
-import { Text, View } from 'react-native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import CommonHeader from '@/components/CommonHeader'
+import HomeScreen from '@/screen/HomeScreen'
+
+const Stack = createNativeStackNavigator()
 
 function StackHome(): JSX.Element {
   return (
     <>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}>
-        <Text style={{ fontSize: 48 }}>Home</Text>
-      </View>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen
+          name="Home"
+          children={() => <HomeScreen />}
+          options={{
+            header: () => <CommonHeader />
+          }}
+        />
+      </Stack.Navigator>
     </>
   )
 }
