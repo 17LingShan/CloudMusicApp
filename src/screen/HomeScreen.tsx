@@ -8,7 +8,7 @@ function Home() {
   async function handleSearch() {
     const time = new Date()
     setText(time.getMinutes().toString())
-    const params: API.SearchParams = {
+    const params: APIParams.SearchParams = {
       keywords: '海阔天空'
     }
 

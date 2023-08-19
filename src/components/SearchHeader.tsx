@@ -10,7 +10,6 @@ import { SongType } from '@/jotai/types'
 
 function SearchHeader(): JSX.Element {
   const navigation = useNavigation()
-
   const [_, setSearchList] = useAtom(SearchListAtom)
   const [keywords, setKeywords] = useState<string>('')
 
@@ -20,14 +19,12 @@ function SearchHeader(): JSX.Element {
       .then(res => {
         const searchList: SongType.SongList = res.data.result.songs.map(
           (item, index) => ({
-            position: index + 1,
-            key: item.id,
-            MediaName: item.name,
+            id: item.id,
+            title: item.name,
             artist: item.ar[0].name,
             album: item.al.name
           })
         )
-
         setSearchList(prev => [...searchList])
       })
       .catch(e => {

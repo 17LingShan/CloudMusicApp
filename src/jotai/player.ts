@@ -1,92 +1,109 @@
-import { atom, useSetAtom } from 'jotai'
+import { atom, useAtom, useSetAtom } from 'jotai'
 import type { SongType } from './types'
-import TrackPlayer from 'react-native-track-player'
+import TrackPlayer, {
+  Capability,
+  RepeatMode,
+  State,
+  Event
+} from 'react-native-track-player'
+import { fetchUrlById } from '@/api/search'
 
-export const SearchListAtom = atom<SongType.SongProps[]>([])
+export const initializedAtom = atom<boolean>(false)
+export const SearchListAtom = atom<SongType.SongList>([])
+export const PlayListAtom = atom<SongType.SongList>([])
 
-// arrow function does no exist this
-// export class Player {
-//   private initialized = false
-//   private isPlaying = false
-//   playState = State.None
-//   currentPlay = null
-//   playList = <SongType.SongList>[]
-//   position = 0 // 当前播放的位置
+async function initTrack() {
+  console.log('trying')
+  // try {
+  //   console.log('getting State')
+  if (await TrackPlayer.isServiceRunning()) return
+  // console.log(state)
+  // } catch {
+  await TrackPlayer.setupPlayer()
+    .then(async res => {
+      await TrackPlayer.updateOptions({
+        capabilities: [
+          Capability.Pause,
+          Capability.Play,
+          Capability.Skip,
+          Capability.SkipToNext,
+          Capability.SkipToPrevious
+        ]
+      })
+    })
+    .catch(err => {
+      console.log('\n', err, '\n')
+    })
+  // }
+  console.log('inited')
+}
 
-//   constructor() {}
+async function fetchSongInfo({ id, level }: APIParams.FetchUrl) {
+  let url: string | null = await fetchUrlById({ id: id, level: level })
+    .then(res => {
+      console.log(res.data.code)
+      if (res.data.code !== 200) {
+        return url
+      } else {
+        return res.data.data[0].url
+      }
+    })
+    .catch(err => {
+      return url
+    })
 
-//   async init() {
-//     console.log('init', this.initialized)
-//     if (this.initialized) return
-//     this.initialized = true
-//     await TrackPlayer.setupPlayer()
-//     console.log('init', this.initialized)
+  return url ? Promise.resolve(url) : Promise.reject(url)
+}
 
-//     // await TrackPlayer.updateOptions({
-//     //   capabilities: [
-//     //     Capability.Pause,
-//     //     Capability.Play,
-//     //     Capability.Skip,
-//     //     Capability.SkipToNext,
-//     //     Capability.SkipToPrevious
-//     //   ]
-//     // })
-//   }
+export async function play(songInfo: SongType.SongProps) {
+  console.log('init')
+  await initTrack()
 
-//   async play(songInfo: SongType.SongProps) {
-//     await this.init()
-//     await TrackPlayer.reset()
-//     await TrackPlayer.setRepeatMode(RepeatMode.Queue)
+  await TrackPlayer.setRepeatMode(RepeatMode.Queue)
+  const playList = await TrackPlayer.getQueue()
+  if (playList.length > 0) {
+    console.log('state', await TrackPlayer.getState())
+    const _pos = playList.findIndex(item => item.id === songInfo.id)
+    if (_pos === -1) {
+      await fetchSongInfo({ id: songInfo.id }).then(async res => {
+        playList.unshift({
+          id: songInfo.id,
+          url: res,
+          artist: songInfo.artist,
+          title: songInfo.title,
+          album: songInfo.album
+        })
+      })
+      await TrackPlayer.reset()
+      await TrackPlayer.add(playList)
+      await TrackPlayer.play()
 
-//     if (this.playList.length > 0) {
-//       const newList = []
-//       if (!songInfo.url) {
-//         await fetchUrlById({ id: songInfo.key }).then(res => {
-//           console.log('fetch', res.data.data[0].url)
-//           songInfo = {
-//             ...songInfo,
-//             url: res.data.data[0].url
-//           }
-//         })
+      console.log(await TrackPlayer.getState())
+    } else {
+      const newPlayList = [...playList.splice(_pos), ...playList.slice(0, _pos)]
+      await TrackPlayer.reset()
+      await TrackPlayer.add(newPlayList)
+      await TrackPlayer.play()
+    }
+  } else {
+    await fetchSongInfo({ id: songInfo.id })
+      .then(async res => {
+        console.log('fetchSongInfo.res', res)
+        playList.unshift({
+          id: songInfo.id,
+          url: res,
+          artist: songInfo.artist,
+          title: songInfo.title,
+          album: songInfo.album
+        })
+        await TrackPlayer.add(playList)
+        await TrackPlayer.play()
 
-//         newList.push([songInfo, ...this.playList])
-//       } else {
-//         newList.push([
-//           songInfo,
-//           ...this.playList.filter(item => item.key !== songInfo.key)
-//         ])
-//       }
-
-//       //   const newList = [
-//       //     ...this.playList.slice(_pos),
-//       //     ...this.playList.slice(0, _pos)
-//       //   ].map((item, index) => ({
-//       //     url: item.url,
-//       //     key: item.key,
-//       //     position: item.position,
-//       //     MediaName: item.MediaName,
-//       //     artist: item.artist,
-//       //     album: item.album
-//       //   }))
-//       this.playList = newList
-//       TrackPlayer.add(newList)
-//       console.log('hasList', this.playList)
-//     } else {
-//       fetchUrlById({ id: songInfo.key }).then(res => {
-//         console.log('fetch', res.data.data[0].url)
-//         this.playList.push({
-//           key: songInfo.key,
-//           position: songInfo.position,
-//           MediaName: songInfo.MediaName,
-//           artist: songInfo.artist,
-//           album: songInfo.album,
-//           url: res.data.data.url
-//         })
-//       })
-//     }
-//     console.log('emptyList', this.playList)
-//     await TrackPlayer.play()
-//   }
-// }
-
-// export const PlayerContext = React.createContext<Player>(null)
+        console.log(await TrackPlayer.getState())
+      })
+      .catch(err => {
+        console.log('获取歌曲失败', err)
+      })
+  }
+  console.log('currentPlayList', playList)
+}

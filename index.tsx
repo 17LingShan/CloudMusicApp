@@ -2,7 +2,7 @@
  * @format
  */
 import 'react-native-gesture-handler'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { AppRegistry } from 'react-native'
 import TrackPlayer from 'react-native-track-player'
 import { DefaultTheme, PaperProvider } from 'react-native-paper'
@@ -23,6 +23,7 @@ function Music(): JSX.Element {
       primary: '#e92645'
     }
   }
+
   return (
     <>
       <PaperProvider theme={theme}>

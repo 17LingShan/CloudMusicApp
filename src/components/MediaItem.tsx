@@ -1,13 +1,11 @@
 import { Text, View } from 'react-native'
 import type { MediaItemType } from './types'
-import { useContext } from 'react'
-import { PlayerContext } from '@/jotai/player'
+import { play } from '@/jotai/player'
 
 function MediaItem({
   songInfo,
   onPress
 }: MediaItemType.MediaItemProps): JSX.Element {
-  const player = useContext(PlayerContext)
   return (
     <>
       <View
@@ -36,9 +34,11 @@ function MediaItem({
             <Text
               onPress={() => {
                 console.log('onPress')
-                player.play(songInfo)
+                console.log('mediaItem', songInfo)
+
+                play(songInfo)
               }}>
-              {songInfo.MediaName}
+              {songInfo.title}
             </Text>
           </View>
           <View style={{ height: '50%' }}>

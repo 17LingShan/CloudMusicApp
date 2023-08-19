@@ -1,9 +1,8 @@
 import { State } from 'react-native-track-player'
 declare namespace SongType {
   interface SongProps {
-    key: number
-    position: number
-    MediaName: string
+    id: number
+    title: string
     artist: string
     album: string
     url?: string
@@ -18,7 +17,6 @@ declare namespace PlayerType {
     playState: State
     currentPlay: SongType.SongProps | null
     playList: SongType.SongList | null
-    position: number
   }
 
   interface playerAction {
