@@ -9,7 +9,6 @@ import { RippleIconType } from './types'
 
 function CommonHeader(): JSX.Element {
   const navigation = useNavigation()
-  const StatusBarH = StatusBar.currentHeight
 
   const HeadOption: RippleIconType.RippleIconProps[] = [
     {
@@ -30,7 +29,7 @@ function CommonHeader(): JSX.Element {
     <>
       <View
         style={{
-          marginTop: StatusBarH,
+          marginTop: StatusBar.currentHeight + 10,
           height: 48,
           flexDirection: 'row',
           justifyContent: 'space-between'

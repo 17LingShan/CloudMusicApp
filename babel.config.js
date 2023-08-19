@@ -1,5 +1,5 @@
 module.exports = {
-  presets: ['module:metro-react-native-babel-preset'],
+  presets: ['module:metro-react-native-babel-preset', 'jotai/babel/preset'],
   env: {
     production: {
       plugins: ['react-native-paper/babel']
@@ -7,6 +7,7 @@ module.exports = {
   },
   plugins: [
     'react-native-reanimated/plugin',
+    'jotai/babel/plugin-react-refresh',
     [
       'module-resolver',
       {

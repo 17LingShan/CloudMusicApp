@@ -1,4 +1,9 @@
-import { GestureResponderEvent } from 'react-native'
+import { SongType } from '@/jotai/types'
+import {
+  GestureResponderEvent,
+  NativeSyntheticEvent,
+  TextInputSubmitEditingEventData
+} from 'react-native'
 
 declare namespace RippleIconType {
   interface RippleIconProps {
@@ -13,15 +18,17 @@ declare namespace IconInputType {
     iconName: string
     value: string
     change: React.Dispatch<React.SetStateAction<string>>
+    onSubmit?:
+      | ((e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void)
+      | undefined
     onIconPress?: (event: GestureResponderEvent) => void
   }
 }
 
 declare namespace MediaItemType {
   interface MediaItemProps {
-    position: number
-    key?: string
-    MediaName: string
-    description?: string
+    songInfo: SongType.SongProps
+    // onPress?: (props: SongType.SongProps | void) => Promise<void>
+    onPress?: any
   }
 }

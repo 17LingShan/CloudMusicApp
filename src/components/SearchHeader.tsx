@@ -1,19 +1,35 @@
-import { View, StatusBar, Text } from 'react-native'
-import RippleIcon from './RippleIcon'
 import { useState } from 'react'
-import IconInput from './IconInput'
+import { View, StatusBar, Text } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
+import { useAtom } from 'jotai'
+import RippleIcon from './RippleIcon'
+import IconInput from './IconInput'
 import { search } from '@/api/search'
+import { SearchListAtom } from '@/jotai/player'
+import { SongType } from '@/jotai/types'
 
 function SearchHeader(): JSX.Element {
   const navigation = useNavigation()
 
-  const StatusBarH = StatusBar.currentHeight
+  const [_, setSearchList] = useAtom(SearchListAtom)
   const [keywords, setKeywords] = useState<string>('')
 
   const handleSearch = async () => {
-    await search({ keywords: keywords })
-      .then(res => console.log(res))
+    console.log('keywords', keywords)
+    await search({ keywords: keywords, type: 1 })
+      .then(res => {
+        const searchList: SongType.SongList = res.data.result.songs.map(
+          (item, index) => ({
+            position: index + 1,
+            key: item.id,
+            MediaName: item.name,
+            artist: item.ar[0].name,
+            album: item.al.name
+          })
+        )
+
+        setSearchList(prev => [...searchList])
+      })
       .catch(e => {
         console.log(e)
       })
@@ -23,22 +39,25 @@ function SearchHeader(): JSX.Element {
     <>
       <View
         style={{
-          marginTop: StatusBarH + 10,
+          marginTop: StatusBar.currentHeight + 10,
           height: 60,
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'space-between'
         }}>
-        <RippleIcon
-          iconName="chevron-left"
-          onPress={() => {
-            navigation.goBack()
-          }}
-        />
+        <View>
+          <RippleIcon
+            iconName="chevron-left"
+            onPress={() => {
+              navigation.goBack()
+            }}
+          />
+        </View>
         <IconInput
           iconName="close"
           value={keywords}
           change={setKeywords}
+          onSubmit={() => handleSearch()}
           onIconPress={() => setKeywords('')}
         />
         <View

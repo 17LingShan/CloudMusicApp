@@ -7,6 +7,7 @@ function IconInput({
   iconName,
   value,
   change,
+  onSubmit,
   onIconPress
 }: IconInputType.IconInputProps): JSX.Element {
   const [backColor, setBackColor] = useState<string>('')
@@ -16,7 +17,6 @@ function IconInput({
   }, [value])
 
   const handleBlur = () => {
-    console.log(iconShown)
     iconShown ? setBackColor('#c6c6d0') : setBackColor('transparent')
   }
 
@@ -36,8 +36,9 @@ function IconInput({
       <TextInput
         value={value}
         placeholder="search"
-        style={{ maxWidth: '70%', overflow: 'hidden' }}
+        style={{ width: '70%', overflow: 'hidden' }}
         onChangeText={change}
+        onSubmitEditing={onSubmit}
         onFocus={() => setBackColor('#c6c6d0')}
         onBlur={() => handleBlur()}
       />
