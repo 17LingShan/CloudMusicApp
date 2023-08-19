@@ -16,6 +16,11 @@ import DrawerMenu from '@/components/DrawerMenu'
 const Drawer = createDrawerNavigator()
 
 function Music(): JSX.Element {
+  useEffect(() => {
+    return () => {
+      console.log('destroy')
+    }
+  }, [])
   const theme: ThemeProp = {
     ...DefaultTheme,
     colors: {

@@ -18,7 +18,7 @@ function SearchHeader(): JSX.Element {
     await search({ keywords: keywords, type: 1 })
       .then(res => {
         const searchList: SongType.SongList = res.data.result.songs.map(
-          (item, index) => ({
+          item => ({
             id: item.id,
             title: item.name,
             artist: item.ar[0].name,

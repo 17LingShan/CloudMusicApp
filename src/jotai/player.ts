@@ -1,24 +1,23 @@
+import { EmitterSubscription } from 'react-native'
 import { atom, useAtom, useSetAtom } from 'jotai'
-import type { SongType } from './types'
 import TrackPlayer, {
   Capability,
   RepeatMode,
   State,
-  Event
+  Event,
+  AppKilledPlaybackBehavior
 } from 'react-native-track-player'
 import { fetchUrlById } from '@/api/search'
+import type { SongType } from './types'
 
+const subscription: EmitterSubscription[] = []
 export const initializedAtom = atom<boolean>(false)
 export const SearchListAtom = atom<SongType.SongList>([])
 export const PlayListAtom = atom<SongType.SongList>([])
 
 async function initTrack() {
   console.log('trying')
-  // try {
-  //   console.log('getting State')
   if (await TrackPlayer.isServiceRunning()) return
-  // console.log(state)
-  // } catch {
   await TrackPlayer.setupPlayer()
     .then(async res => {
       await TrackPlayer.updateOptions({
@@ -28,13 +27,33 @@ async function initTrack() {
           Capability.Skip,
           Capability.SkipToNext,
           Capability.SkipToPrevious
-        ]
+        ],
+        android: {
+          appKilledPlaybackBehavior:
+            AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification
+        }
       })
+
+      subscription.push(
+        ...[
+          TrackPlayer.addEventListener(Event.RemotePlay, () => {
+            play()
+          }),
+          TrackPlayer.addEventListener(Event.RemotePause, () => {
+            pause()
+          }),
+          TrackPlayer.addEventListener(Event.RemoteNext, () => {
+            next()
+          }),
+          TrackPlayer.addEventListener(Event.RemotePrevious, () => {
+            prev()
+          })
+        ]
+      )
     })
     .catch(err => {
       console.log('\n', err, '\n')
     })
-  // }
   console.log('inited')
 }
 
@@ -55,7 +74,7 @@ async function fetchSongInfo({ id, level }: APIParams.FetchUrl) {
   return url ? Promise.resolve(url) : Promise.reject(url)
 }
 
-export async function play(songInfo: SongType.SongProps) {
+export async function playTracker(songInfo: SongType.SongProps) {
   console.log('init')
   await initTrack()
 
@@ -77,7 +96,6 @@ export async function play(songInfo: SongType.SongProps) {
       await TrackPlayer.reset()
       await TrackPlayer.add(playList)
       await TrackPlayer.play()
-
       console.log(await TrackPlayer.getState())
     } else {
       const newPlayList = [...playList.splice(_pos), ...playList.slice(0, _pos)]
@@ -107,3 +125,23 @@ export async function play(songInfo: SongType.SongProps) {
   }
   console.log('currentPlayList', playList)
 }
+
+async function pause() {
+  await TrackPlayer.pause()
+}
+
+async function play() {
+  await TrackPlayer.play()
+}
+
+async function next() {
+  await TrackPlayer.skipToNext()
+}
+
+async function prev() {
+  await TrackPlayer.skipToPrevious()
+}
+
+// export async function destroyTracker() {
+//   subscription.forEach(item => item.remove())
+// }

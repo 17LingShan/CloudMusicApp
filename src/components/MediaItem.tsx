@@ -1,8 +1,9 @@
 import { Text, View } from 'react-native'
 import type { MediaItemType } from './types'
-import { play } from '@/jotai/player'
+import { playTracker } from '@/jotai/player'
 
 function MediaItem({
+  position,
   songInfo,
   onPress
 }: MediaItemType.MediaItemProps): JSX.Element {
@@ -22,7 +23,7 @@ function MediaItem({
             justifyContent: 'center',
             alignItems: 'center'
           }}>
-          <Text>{songInfo.position}</Text>
+          <Text>{position}</Text>
         </View>
         <View
           style={{
@@ -36,7 +37,7 @@ function MediaItem({
                 console.log('onPress')
                 console.log('mediaItem', songInfo)
 
-                play(songInfo)
+                playTracker(songInfo)
               }}>
               {songInfo.title}
             </Text>

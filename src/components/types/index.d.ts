@@ -27,6 +27,7 @@ declare namespace IconInputType {
 
 declare namespace MediaItemType {
   interface MediaItemProps {
+    position: number
     songInfo: SongType.SongProps
     // onPress?: (props: SongType.SongProps | void) => Promise<void>
     onPress?: any

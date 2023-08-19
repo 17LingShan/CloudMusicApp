@@ -12,8 +12,10 @@ function SearchScreen(): JSX.Element {
       <SearchHeader />
       <FlatList
         data={searchList}
-        renderItem={({ item }) => <MediaItem songInfo={item} />}
-        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item, index }) => (
+          <MediaItem position={index} songInfo={item} />
+        )}
+        keyExtractor={(_, index) => index.toString()}
         ListFooterComponent={() => (
           <View>
             <Text>213213</Text>
