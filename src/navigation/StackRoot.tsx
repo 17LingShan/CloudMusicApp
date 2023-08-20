@@ -3,6 +3,7 @@ import SettingsScreen from '@/screen/SettingsScreen'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import TabNavigator from './TabNavigator'
 import SearchScreen from '@/screen/SearchScreen'
+import AlbumScreen from '@/screen/AlbumScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -18,9 +19,7 @@ function StackRoot(): JSX.Element {
         <Stack.Screen
           name="search"
           component={SearchScreen}
-          options={{
-            headerShown: false
-          }}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="settings"
@@ -31,6 +30,11 @@ function StackRoot(): JSX.Element {
           name="about"
           component={AboutScreen}
           options={{ title: 'about' }}
+        />
+        <Stack.Screen
+          name="album"
+          component={AlbumScreen}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </>

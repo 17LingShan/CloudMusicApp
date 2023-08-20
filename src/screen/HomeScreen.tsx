@@ -1,15 +1,79 @@
-import { useEffect, useState, useContext } from 'react'
-import { Text, View } from 'react-native'
-import { search } from '@/api/search'
-import PlayBottomBar from '@/components/PlayBottomBar'
-import { useIsFocused, useRoute } from '@react-navigation/core'
+import { fetchHotAlbumList, fetchBanner } from '@/api/hotInfo'
+import HomeCarousel from '@/components/HomeBanner'
+import HotAlbumList from '@/components/HotAlbumList'
+import { BannerAtom, HotAlbumListAtom } from '@/jotai/searcher'
+import { useIsFocused } from '@react-navigation/core'
+import { useAtom } from 'jotai'
+import { useState, useCallback, useEffect } from 'react'
+import { Dimensions, RefreshControl, ScrollView, View } from 'react-native'
 
-function Home() {
+function HomeSCreen() {
+  const width = Dimensions.get('screen').width
+
+  const isFocused = useIsFocused()
+  const [_, setBanner] = useAtom(BannerAtom)
+  const [, setAlbumList] = useAtom(HotAlbumListAtom)
+  const [refreshing, setRefreshing] = useState(false)
+
+  const handleBanner = async () => {
+    await fetchBanner({})
+      .then(res => {
+        setBanner([...res.data.banners.map(item => ({ pic: item.pic }))])
+      })
+      .catch(e => console.log('err of Banner'))
+  }
+
+  const handleAlbumList = async () => {
+    await fetchHotAlbumList({})
+      .then(res => {
+        setAlbumList([
+          ...res.data.playlists.map(item => ({
+            name: item.name,
+            id: item.id,
+            userId: item.userId,
+            coverImgUrl: item.coverImgUrl,
+            description: item.description
+          }))
+        ])
+      })
+      .catch(e => console.log('err of HotAlbumList'))
+  }
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true)
+    await handleBanner()
+    await handleAlbumList()
+    setRefreshing(false)
+  }, [])
+
+  useEffect(() => {
+    if (isFocused) {
+      onRefresh()
+    }
+    return () => {
+      setRefreshing(false)
+    }
+  }, [isFocused])
   return (
     <>
-      <View></View>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
+        <View style={{ marginTop: 20 }}>
+          <HomeCarousel />
+        </View>
+        <View
+          style={{
+            width: '100%',
+            height: width / 2,
+            marginTop: 42
+          }}>
+          <HotAlbumList />
+        </View>
+      </ScrollView>
     </>
   )
 }
 
-export default Home
+export default HomeSCreen

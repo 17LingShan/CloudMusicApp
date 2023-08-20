@@ -14,7 +14,7 @@ export function search(params: APIParams.SearchParams) {
   })
 }
 
-export function fetchUrlById(params: APIParams.FetchUrl) {
+export function fetchUrlById(params: APIParams.FetchUrlParam) {
   return request({
     url: api.songUrl,
     method: 'get',
@@ -24,3 +24,5 @@ export function fetchUrlById(params: APIParams.FetchUrl) {
     }
   })
 }
+
+export function fetchAlbumDetail(params) {}

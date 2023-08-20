@@ -15,7 +15,6 @@ export function request(config: AxiosRequestConfig) {
 
 function beforeReq(config: any) {
   console.log('beforeReq')
-  console.log(config)
   return config
 }
 

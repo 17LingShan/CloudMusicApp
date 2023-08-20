@@ -1,11 +1,10 @@
-import { PlayListAtom, next, pause, play, prev } from '@/jotai/player'
-import { useIsFocused, useRoute } from '@react-navigation/core'
+import { pause, play } from '@/jotai/player'
+import { useIsFocused } from '@react-navigation/core'
 import { useEffect, useMemo, useState } from 'react'
-import { Animated, Easing, Button, Image, View, Text } from 'react-native'
+import { Animated, Easing, Image, View } from 'react-native'
 import TrackPlayer, {
   Event,
   State,
-  Track,
   useTrackPlayerEvents
 } from 'react-native-track-player'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -17,13 +16,12 @@ function PlayBottomBar(): JSX.Element {
 
   const [currentTrack, setCurrentTrack] = useState<SongType.SongProps>()
   const [isPlaying, setPlaying] = useState<boolean>(false)
-  const bottomPos = useMemo(
-    () => new Animated.Value(currentTrack ? 32 : -72),
-    []
-  )
+
+  const bottom = useMemo(() => new Animated.Value(currentTrack ? 32 : -72), [])
+
   const handleTrackStateChange = async () => {
     const state = await TrackPlayer.getState()
-
+    console.log('state', state)
     switch (state) {
       case State.Playing:
         setPlaying(true)
@@ -34,7 +32,6 @@ function PlayBottomBar(): JSX.Element {
         handleChangeIntoPause()
         break
       default:
-        console.log('otherState')
         break
     }
   }
@@ -42,6 +39,7 @@ function PlayBottomBar(): JSX.Element {
   const handleChangeIntoPlay = async () => {
     if (await TrackPlayer.isServiceRunning()) {
       console.log('play')
+      setPlaying(true)
       setCurrentTrack(
         (await TrackPlayer.getTrack(
           await TrackPlayer.getCurrentTrack()
@@ -63,7 +61,7 @@ function PlayBottomBar(): JSX.Element {
     }
   )
 
-  Animated.timing(bottomPos, {
+  Animated.timing(bottom, {
     toValue: currentTrack ? 60 : -80,
     duration: 800,
     useNativeDriver: false,
@@ -86,7 +84,7 @@ function PlayBottomBar(): JSX.Element {
           width: '100%',
           position: 'absolute',
           paddingHorizontal: 16,
-          bottom: bottomPos
+          bottom: bottom
         }}>
         <View style={{ width: '100%' }}>
           <View
@@ -108,10 +106,8 @@ function PlayBottomBar(): JSX.Element {
                 borderRadius: 8,
                 marginRight: 16
               }}
-              source={currentTrack?.albumPicUrl ?? coverImg}></Image>
-            {/* <Button
-              title={isPlaying ? 'pause' : 'play'}
-              onPress={() => (isPlaying ? pause() : play())}></Button> */}
+              source={currentTrack?.albumPicUrl ?? coverImg}
+            />
             <Icon
               size={48}
               name={isPlaying ? 'pause' : 'play-arrow'}

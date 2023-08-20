@@ -16,8 +16,7 @@ declare namespace RippleIconType {
 declare namespace IconInputType {
   interface IconInputProps {
     iconName: string
-    value: string
-    change: React.Dispatch<React.SetStateAction<string>>
+    placeholder?: string
     onSubmit?:
       | ((e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void)
       | undefined

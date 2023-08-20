@@ -1,40 +1,13 @@
-import { useState } from 'react'
 import { View, StatusBar, Text } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
 import { useAtom } from 'jotai'
 import RippleIcon from './RippleIcon'
 import IconInput from './IconInput'
-import { search } from '@/api/search'
-import { SearchListAtom } from '@/jotai/player'
-import { SongType } from '@/jotai/types'
+import { SearchKeywordsAtom } from '@/jotai/searcher'
 
-function SearchHeader(): JSX.Element {
+function SearchHeader({ handleSearch }): JSX.Element {
   const navigation = useNavigation()
-  const [_, setSearchList] = useAtom(SearchListAtom)
-  const [keywords, setKeywords] = useState<string>('')
-
-  const handleSearch = async () => {
-    console.log('keywords', keywords)
-    await search({ keywords: keywords, type: 1 })
-      .then(res => {
-        console.log(res.data.result.songs[0].al.picUrl)
-        const searchList: SongType.SongList = res.data.result.songs.map(
-          item => ({
-            id: item.id,
-            title: item.name,
-            artist: item.ar[0].name,
-            album: item.al.name,
-            albumPicUrl: {
-              uri: item.al.picUrl + '?param=60y60'
-            }
-          })
-        )
-        setSearchList(prev => [...searchList])
-      })
-      .catch(e => {
-        console.log(e)
-      })
-  }
+  const [_, setKeywords] = useAtom(SearchKeywordsAtom)
 
   return (
     <>
@@ -49,15 +22,11 @@ function SearchHeader(): JSX.Element {
         <View>
           <RippleIcon
             iconName="chevron-left"
-            onPress={() => {
-              navigation.goBack()
-            }}
+            onPress={() => navigation.goBack()}
           />
         </View>
         <IconInput
           iconName="close"
-          value={keywords}
-          change={setKeywords}
           onSubmit={() => handleSearch()}
           onIconPress={() => setKeywords('')}
         />

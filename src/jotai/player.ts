@@ -25,7 +25,6 @@ const subscription: EmitterSubscription[] = []
 // })
 
 export const initializedAtom = atom<boolean>(false)
-export const SearchListAtom = atom<SongType.SongList>([])
 export const PlayListAtom = atom<SongType.SongList>([])
 
 async function initTrack() {
@@ -70,7 +69,7 @@ async function initTrack() {
   console.log('inited')
 }
 
-async function fetchSongInfo({ id, level }: APIParams.FetchUrl) {
+async function fetchSongInfo({ id, level }: APIParams.FetchUrlParam) {
   let url: string | null = await fetchUrlById({ id: id, level: level })
     .then(res => {
       if (res.data.code !== 200) {

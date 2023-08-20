@@ -6,7 +6,17 @@ declare namespace APIParams {
     type?: 1 | 10 | 100 | 1000 | 1002 | 1004 | 1006 | 1009 | 1014 | 1018 | 2000
   }
 
-  interface FetchUrl {
+  interface FetchBannerParam {
+    type?: 0 | 1 | 2 | 3
+  }
+
+  interface FetchHotAlbumListParam {
+    cat?: string
+    limit?: number
+    before?: number
+  }
+
+  interface FetchUrlParam {
     id: number
     level?:
       | 'standard'

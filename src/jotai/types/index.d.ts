@@ -14,6 +14,25 @@ declare namespace SongType {
   type SongList = SongProps[]
 }
 
+declare namespace BannerType {
+  interface BannerProps {
+    pic: string
+  }
+  type BannerList = BannerProps[]
+}
+
+declare namespace AlbumType {
+  interface AlbumProps {
+    name: string
+    id: number
+    userId: string
+    coverImgUrl: string
+    description: string
+  }
+
+  type AlbumList = AlbumProps[]
+}
+
 declare namespace PlayerType {
   interface PlayerProps {
     initialized: boolean
