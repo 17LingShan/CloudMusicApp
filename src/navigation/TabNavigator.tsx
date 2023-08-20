@@ -1,10 +1,11 @@
 import { useTheme } from 'react-native-paper'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Icon from 'react-native-vector-icons/FontAwesome'
-
 import StackHome from './StackHome'
 import StackPlay from './StackPlay'
 import StackMine from './StackMine'
+import PlayBottomBar from '@/components/PlayBottomBar'
+import React from 'react'
 
 const Tab = createBottomTabNavigator()
 
@@ -36,7 +37,7 @@ function TabNavigator(): JSX.Element {
   ]
 
   return (
-    <>
+    <React.Fragment>
       <Tab.Navigator
         backBehavior="none"
         screenOptions={{
@@ -61,7 +62,8 @@ function TabNavigator(): JSX.Element {
           )
         })}
       </Tab.Navigator>
-    </>
+      <PlayBottomBar />
+    </React.Fragment>
   )
 }
 

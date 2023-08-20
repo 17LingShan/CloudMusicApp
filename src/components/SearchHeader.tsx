@@ -17,12 +17,16 @@ function SearchHeader(): JSX.Element {
     console.log('keywords', keywords)
     await search({ keywords: keywords, type: 1 })
       .then(res => {
+        console.log(res.data.result.songs[0].al.picUrl)
         const searchList: SongType.SongList = res.data.result.songs.map(
           item => ({
             id: item.id,
             title: item.name,
             artist: item.ar[0].name,
-            album: item.al.name
+            album: item.al.name,
+            albumPicUrl: {
+              uri: item.al.picUrl + '?param=60y60'
+            }
           })
         )
         setSearchList(prev => [...searchList])

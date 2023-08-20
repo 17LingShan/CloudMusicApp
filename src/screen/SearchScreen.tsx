@@ -5,7 +5,7 @@ import MediaItem from '@/components/MediaItem'
 import SearchHeader from '@/components/SearchHeader'
 
 function SearchScreen(): JSX.Element {
-  const [searchList, setSearchList] = useAtom(SearchListAtom)
+  const [searchList, _] = useAtom(SearchListAtom)
 
   return (
     <>
@@ -13,7 +13,7 @@ function SearchScreen(): JSX.Element {
       <FlatList
         data={searchList}
         renderItem={({ item, index }) => (
-          <MediaItem position={index} songInfo={item} />
+          <MediaItem position={index + 1} songInfo={item} />
         )}
         keyExtractor={(_, index) => index.toString()}
         ListFooterComponent={() => (

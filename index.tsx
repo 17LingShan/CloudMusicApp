@@ -2,7 +2,7 @@
  * @format
  */
 import 'react-native-gesture-handler'
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { AppRegistry } from 'react-native'
 import TrackPlayer from 'react-native-track-player'
 import { DefaultTheme, PaperProvider } from 'react-native-paper'

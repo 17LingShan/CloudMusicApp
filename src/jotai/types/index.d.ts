@@ -6,6 +6,10 @@ declare namespace SongType {
     artist: string
     album: string
     url?: string
+    albumPicUrl: {
+      uri: string
+    }
+    [key: string]: any
   }
   type SongList = SongProps[]
 }

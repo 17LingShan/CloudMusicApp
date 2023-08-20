@@ -5,12 +5,25 @@ import TrackPlayer, {
   RepeatMode,
   State,
   Event,
-  AppKilledPlaybackBehavior
+  AppKilledPlaybackBehavior,
+  Track
 } from 'react-native-track-player'
-import { fetchUrlById } from '@/api/search'
+import { fetchUrlById, search } from '@/api/search'
 import type { SongType } from './types'
+import { createRef, createContext } from 'react'
 
 const subscription: EmitterSubscription[] = []
+// export const currentPlayAtom = atom(async get => {
+//   await TrackPlayer.isServiceRunning()
+//     .then(res => {
+//       console.log(res)
+//     })
+//     .catch(err => {
+//       console.log('err')
+//     })
+//   return false
+// })
+
 export const initializedAtom = atom<boolean>(false)
 export const SearchListAtom = atom<SongType.SongList>([])
 export const PlayListAtom = atom<SongType.SongList>([])
@@ -60,7 +73,6 @@ async function initTrack() {
 async function fetchSongInfo({ id, level }: APIParams.FetchUrl) {
   let url: string | null = await fetchUrlById({ id: id, level: level })
     .then(res => {
-      console.log(res.data.code)
       if (res.data.code !== 200) {
         return url
       } else {
@@ -81,7 +93,7 @@ export async function playTracker(songInfo: SongType.SongProps) {
   await TrackPlayer.setRepeatMode(RepeatMode.Queue)
   const playList = await TrackPlayer.getQueue()
   if (playList.length > 0) {
-    console.log('state', await TrackPlayer.getState())
+    // console.log('state', await TrackPlayer.getState())
     const _pos = playList.findIndex(item => item.id === songInfo.id)
     if (_pos === -1) {
       await fetchSongInfo({ id: songInfo.id }).then(async res => {
@@ -90,13 +102,13 @@ export async function playTracker(songInfo: SongType.SongProps) {
           url: res,
           artist: songInfo.artist,
           title: songInfo.title,
-          album: songInfo.album
+          album: songInfo.album,
+          albumPicUrl: songInfo.albumPicUrl
         })
       })
       await TrackPlayer.reset()
       await TrackPlayer.add(playList)
       await TrackPlayer.play()
-      console.log(await TrackPlayer.getState())
     } else {
       const newPlayList = [...playList.splice(_pos), ...playList.slice(0, _pos)]
       await TrackPlayer.reset()
@@ -112,7 +124,8 @@ export async function playTracker(songInfo: SongType.SongProps) {
           url: res,
           artist: songInfo.artist,
           title: songInfo.title,
-          album: songInfo.album
+          album: songInfo.album,
+          albumPicUrl: songInfo.albumPicUrl
         })
         await TrackPlayer.add(playList)
         await TrackPlayer.play()
@@ -123,25 +136,25 @@ export async function playTracker(songInfo: SongType.SongProps) {
         console.log('获取歌曲失败', err)
       })
   }
-  console.log('currentPlayList', playList)
+  console.log('currentPlayList', await TrackPlayer.getQueue())
 }
 
-async function pause() {
+export async function pause() {
   await TrackPlayer.pause()
 }
 
-async function play() {
+export async function play() {
   await TrackPlayer.play()
 }
 
-async function next() {
+export async function next() {
   await TrackPlayer.skipToNext()
 }
 
-async function prev() {
+export async function prev() {
   await TrackPlayer.skipToPrevious()
 }
 
-// export async function destroyTracker() {
-//   subscription.forEach(item => item.remove())
-// }
+export async function destroyTracker() {
+  // subscription.forEach(item => item.remove())
+}
