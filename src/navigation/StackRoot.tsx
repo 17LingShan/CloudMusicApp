@@ -1,11 +1,12 @@
 import AboutScreen from '@/screen/AboutScreen'
 import SettingsScreen from '@/screen/SettingsScreen'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { createStackNavigator } from '@react-navigation/stack'
 import TabNavigator from './TabNavigator'
 import SearchScreen from '@/screen/SearchScreen'
 import AlbumScreen from '@/screen/AlbumScreen'
+import PlayDetailScreen from '@/screen/PlayDetailScreen'
 
-const Stack = createNativeStackNavigator()
+const Stack = createStackNavigator()
 
 function StackRoot(): JSX.Element {
   return (
@@ -36,6 +37,13 @@ function StackRoot(): JSX.Element {
           component={AlbumScreen}
           options={{ headerShown: false }}
         />
+        <Stack.Group screenOptions={{ presentation: 'modal' }}>
+          <Stack.Screen
+            name="playDetail"
+            component={PlayDetailScreen}
+            options={{ headerShown: false }}
+          />
+        </Stack.Group>
       </Stack.Navigator>
     </>
   )

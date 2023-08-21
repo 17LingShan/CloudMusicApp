@@ -3,7 +3,8 @@ import { request } from '@/util/request'
 const api = {
   search: '/cloudsearch',
   hotKeywords: '/search/hot',
-  songUrl: '/song/url/v1'
+  songUrl: '/song/url/v1',
+  albumAllTrack: '/playlist/track/all'
 }
 
 export function search(params: APIParams.SearchParams) {
@@ -25,4 +26,10 @@ export function fetchUrlById(params: APIParams.FetchUrlParam) {
   })
 }
 
-export function fetchAlbumDetail(params) {}
+export function fetchAlbumAllTrack(params: APIParams.FetchAlbumAllTrackParam) {
+  return request({
+    url: api.albumAllTrack,
+    method: 'get',
+    params: params
+  })
+}

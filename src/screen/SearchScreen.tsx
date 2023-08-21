@@ -1,11 +1,12 @@
-import { Text, View, FlatList, ScrollView } from 'react-native'
-import { SearchKeywordsAtom, SearchListAtom } from '@/jotai/searcher'
+import { useEffect, useState } from 'react'
+import { Text, View, FlatList } from 'react-native'
 import { useAtom } from 'jotai'
+import { search } from '@/api/search'
+import { SearchKeywordsAtom, SearchListAtom } from '@/jotai/searcher'
 import MediaItem from '@/components/MediaItem'
 import SearchHeader from '@/components/SearchHeader'
 import { RefreshControl } from 'react-native-gesture-handler'
-import { search } from '@/api/search'
-import { useCallback, useState } from 'react'
+import { useIsFocused } from '@react-navigation/core'
 
 function SearchScreen(): JSX.Element {
   const [refreshing, setRefreshing] = useState(false)
@@ -13,9 +14,8 @@ function SearchScreen(): JSX.Element {
   const [searchList, setSearchList] = useAtom(SearchListAtom)
 
   const handleSearch = async () => {
-    setRefreshing(true)
     if (!keywords) return setRefreshing(false)
-
+    setRefreshing(true)
     await search({ keywords: keywords, type: 1 })
       .then(res => {
         setSearchList([
@@ -25,18 +25,21 @@ function SearchScreen(): JSX.Element {
             artist: item.ar[0].name,
             album: item.al.name,
             albumPicUrl: {
-              uri: item.al.picUrl + '?param=60y60'
+              uri: item.al.picUrl
             }
           }))
         ])
       })
-      .catch(e => {
-        console.log(e)
-      })
-      .finally(() => {
-        setRefreshing(false)
-      })
+      .catch(e => console.log(e))
+    setRefreshing(false)
   }
+
+  const handleRefreshing = async () => {
+    setRefreshing(true)
+    await handleSearch()
+    setRefreshing(false)
+  }
+
   return (
     <>
       <SearchHeader handleSearch={handleSearch} />
@@ -49,7 +52,7 @@ function SearchScreen(): JSX.Element {
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
-            onRefresh={() => handleSearch()}
+            onRefresh={() => handleRefreshing()}
           />
         }
         ListFooterComponent={() => (

@@ -1,30 +1,19 @@
 import { EmitterSubscription } from 'react-native'
-import { atom, useAtom, useSetAtom } from 'jotai'
+import { atom } from 'jotai'
 import TrackPlayer, {
   Capability,
   RepeatMode,
-  State,
   Event,
-  AppKilledPlaybackBehavior,
-  Track
+  State,
+  AppKilledPlaybackBehavior
 } from 'react-native-track-player'
-import { fetchUrlById, search } from '@/api/search'
+import { fetchUrlById } from '@/api/search'
 import type { SongType } from './types'
-import { createRef, createContext } from 'react'
 
 const subscription: EmitterSubscription[] = []
-// export const currentPlayAtom = atom(async get => {
-//   await TrackPlayer.isServiceRunning()
-//     .then(res => {
-//       console.log(res)
-//     })
-//     .catch(err => {
-//       console.log('err')
-//     })
-//   return false
-// })
 
-export const initializedAtom = atom<boolean>(false)
+// export const PlayStateAtom = atom<State>(State.None)
+export const isPlayingAtom = atom<boolean>(false)
 export const PlayListAtom = atom<SongType.SongList>([])
 
 async function initTrack() {

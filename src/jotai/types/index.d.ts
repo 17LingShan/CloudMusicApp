@@ -26,11 +26,24 @@ declare namespace AlbumType {
     name: string
     id: number
     userId: string
+    avatarUrl: string
+    nickname: string
     coverImgUrl: string
     description: string
+    shareCount: number
+    commentCount: number
+    subscribedCount: number
   }
 
   type AlbumList = AlbumProps[]
+}
+
+declare namespace UserType {
+  interface UserProps {
+    userId: number
+    nickname: string
+    avatarUrl: string
+  }
 }
 
 declare namespace PlayerType {

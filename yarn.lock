@@ -1842,6 +1842,15 @@
   dependencies:
     nanoid "^3.1.23"
 
+"@react-navigation/stack@^6.3.17":
+  version "6.3.17"
+  resolved "https://registry.npmjs.org/@react-navigation/stack/-/stack-6.3.17.tgz#dd3375916a2adaa130659c0113fe05939bc19470"
+  integrity sha512-8/8ZvJROK3fp6PRmQ9MrXd9epBowA8NkfCaWW/N9H5arqwNX9lTXAkmcjicRhjpX+UNlMBR9dTLkWvPRe2vY9A==
+  dependencies:
+    "@react-navigation/elements" "^1.3.18"
+    color "^4.2.3"
+    warn-once "^0.1.0"
+
 "@sideway/address@^4.1.3":
   version "4.1.4"
   resolved "https://registry.npmjs.org/@sideway/address/-/address-4.1.4.tgz#03dccebc6ea47fdc226f7d3d1ad512955d4783f0"
@@ -5978,6 +5987,11 @@ react-native-gesture-handler@^2.12.1:
     invariant "^2.2.4"
     lodash "^4.17.21"
     prop-types "^15.7.2"
+
+react-native-marquee-ab@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.npmjs.org/react-native-marquee-ab/-/react-native-marquee-ab-1.2.6.tgz#5bbbed6f48894d84926210b68453f815b7d38380"
+  integrity sha512-2/XJ3qCiyaY6n69mQ1hb7FLhEPz2ZsAr3W3JlL1Jxk+wwOnzfuZcSbnEUAzjuXon8srebgu9W+TgmPkLxan9uA==
 
 react-native-paper@^5.10.1:
   version "5.10.1"

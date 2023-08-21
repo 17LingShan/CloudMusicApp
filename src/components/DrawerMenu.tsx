@@ -31,10 +31,7 @@ function DrawerMenu(): JSX.Element {
     <>
       <Drawer.Section
         title="CloudMusic"
-        style={{
-          paddingTop: StatusBar.currentHeight,
-          borderWidth: 0
-        }}>
+        style={{ paddingTop: StatusBar.currentHeight + 10 }}>
         {DrawerMenuOption.map((item, index) => {
           return (
             <Drawer.Item

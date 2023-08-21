@@ -27,27 +27,28 @@ function CommonHeader(): JSX.Element {
 
   return (
     <>
-      <View
-        style={{
-          marginTop: StatusBar.currentHeight + 10,
-          height: 48,
-          flexDirection: 'row',
-          justifyContent: 'space-between'
-        }}>
+      <View style={{ paddingTop: StatusBar.currentHeight + 10 }}>
         <StatusBar
           translucent={true}
           backgroundColor="transparent"
           barStyle="dark-content"
         />
-        {HeadOption.map((item, index) => {
-          return (
-            <RippleIcon
-              key={index}
-              iconName={item.iconName}
-              onPress={item.onPress}
-            />
-          )
-        })}
+        <View
+          style={{
+            height: 48,
+            flexDirection: 'row',
+            justifyContent: 'space-between'
+          }}>
+          {HeadOption.map((item, index) => {
+            return (
+              <RippleIcon
+                key={index}
+                iconName={item.iconName}
+                onPress={item.onPress}
+              />
+            )
+          })}
+        </View>
       </View>
     </>
   )

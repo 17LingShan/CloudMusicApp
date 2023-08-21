@@ -3,15 +3,25 @@ import type { MediaItemType } from './types'
 import { playTracker } from '@/jotai/player'
 import { TouchableRipple } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { useNavigation, CommonActions } from '@react-navigation/core'
 
 function MediaItem({
   position,
   songInfo
 }: MediaItemType.MediaItemProps): JSX.Element {
+  const navigation = useNavigation()
+
+  const handlePressItem = () => {
+    playTracker(songInfo)
+    navigation.dispatch(
+      CommonActions.navigate({ name: 'playDetail', params: songInfo })
+    )
+  }
+
   return (
     <>
       <TouchableRipple
-        onPress={() => playTracker(songInfo)}
+        onPress={() => handlePressItem()}
         style={{ width: '100%' }}
         rippleColor="rgba(0, 0, 0, .32)">
         <View style={{ width: '100%', height: 60, flexDirection: 'row' }}>

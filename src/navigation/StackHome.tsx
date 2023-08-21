@@ -1,8 +1,8 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { createStackNavigator } from '@react-navigation/stack'
 import CommonHeader from '@/components/CommonHeader'
 import HomeScreen from '@/screen/HomeScreen'
 
-const Stack = createNativeStackNavigator()
+const Stack = createStackNavigator()
 
 function StackHome(): JSX.Element {
   return (

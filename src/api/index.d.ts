@@ -28,6 +28,11 @@ declare namespace APIParams {
       | 'sky'
       | 'jymaster'
   }
+  interface FetchAlbumAllTrackParam {
+    id: number
+    limit?: number
+    offset?: number
+  }
 }
 
 declare namespace APIResponse {}

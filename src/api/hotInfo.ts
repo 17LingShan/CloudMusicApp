@@ -21,7 +21,7 @@ export function fetchHotAlbumList(params: APIParams.FetchHotAlbumListParam) {
     method: 'get',
     params: {
       ...params,
-      limit: params.limit ?? 9
+      limit: params.limit ?? 10
     }
   })
 }

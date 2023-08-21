@@ -1,6 +1,6 @@
 import { fetchHotAlbumList, fetchBanner } from '@/api/hotInfo'
-import HomeCarousel from '@/components/HomeBanner'
-import HotAlbumList from '@/components/HotAlbumList'
+import HomeCarousel from '@/components/Home/HomeBanner'
+import HotAlbumList from '@/components/Home/HotAlbumList'
 import { BannerAtom, HotAlbumListAtom } from '@/jotai/searcher'
 import { useIsFocused } from '@react-navigation/core'
 import { useAtom } from 'jotai'
@@ -31,8 +31,13 @@ function HomeSCreen() {
             name: item.name,
             id: item.id,
             userId: item.userId,
+            nickname: item.creator.nickname,
+            avatarUrl: item.creator.avatarUrl,
             coverImgUrl: item.coverImgUrl,
-            description: item.description
+            description: item.description,
+            shareCount: item.shareCount,
+            commentCount: item.commentCount,
+            subscribedCount: item.subscribedCount
           }))
         ])
       })
@@ -47,9 +52,8 @@ function HomeSCreen() {
   }, [])
 
   useEffect(() => {
-    if (isFocused) {
-      onRefresh()
-    }
+    if (isFocused) onRefresh()
+
     return () => {
       setRefreshing(false)
     }

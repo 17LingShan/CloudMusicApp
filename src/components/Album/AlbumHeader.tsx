@@ -1,18 +1,17 @@
 import { View, StatusBar, Text } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
-import RippleIcon from './RippleIcon'
-import IconInput from './IconInput'
+import RippleIcon from '../RippleIcon'
+import IconInput from '../IconInput'
 
 function AlbumHeader(): JSX.Element {
   const navigation = useNavigation()
 
   return (
     <>
-      <View>
+      <View style={{ paddingTop: StatusBar.currentHeight + 10 }}>
         <View
           style={{
             height: 60,
-            marginTop: StatusBar.currentHeight + 10,
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between'
@@ -23,7 +22,6 @@ function AlbumHeader(): JSX.Element {
               onPress={() => navigation.goBack()}
             />
           </View>
-          <IconInput iconName="close" placeholder="搜索歌单内歌曲" />
           <View
             style={{
               width: 48,
