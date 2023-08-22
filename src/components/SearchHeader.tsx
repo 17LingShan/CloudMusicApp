@@ -1,13 +1,13 @@
 import { View, StatusBar, Text } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
-import { useAtom } from 'jotai'
+import { useSetAtom } from 'jotai'
 import RippleIcon from './RippleIcon'
 import IconInput from './IconInput'
 import { SearchKeywordsAtom } from '@/jotai/searcher'
 
 function SearchHeader({ handleSearch }): JSX.Element {
   const navigation = useNavigation()
-  const [_, setKeywords] = useAtom(SearchKeywordsAtom)
+  const setKeywords = useSetAtom(SearchKeywordsAtom)
 
   return (
     <>

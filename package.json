@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-community/slider": "^4.4.3",
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/core": "^6.4.9",
     "@react-navigation/drawer": "^6.6.3",

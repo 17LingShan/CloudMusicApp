@@ -1,26 +1,48 @@
+import { useEffect, useMemo, useRef } from 'react'
 import {
   Animated,
   Dimensions,
-  PanResponder,
+  Easing,
   StatusBar,
   Text,
   View
 } from 'react-native'
-import { RippleIconType } from '../types'
-import { useNavigation } from '@react-navigation/core'
-import RippleIcon from '../RippleIcon'
-import { SongType } from '@/jotai/types'
-import { MarqueeHorizontal } from 'react-native-marquee-ab'
 import { useTheme } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { useNavigation } from '@react-navigation/core'
+import { SongType } from '@/jotai/types'
+import RippleIcon from '@/components/RippleIcon'
+
 function PlayDetailHeader({
   trackInfo
 }: {
   trackInfo: SongType.SongProps
 }): JSX.Element {
+  const mWidth = Dimensions.get('window').width * 0.6
   const theme = useTheme()
   const navigation = useNavigation()
-  let mWidth = Dimensions.get('window').width * 0.6
+  const translateXAni = useRef(new Animated.Value(0)).current
+
+  const rollText = useMemo(
+    () => () => {
+      Animated.timing(translateXAni, {
+        toValue: -mWidth,
+        duration: 12000,
+        useNativeDriver: true,
+        easing: Easing.linear
+      }).start(({ finished }) => {
+        if (finished) {
+          translateXAni.setValue(mWidth)
+          rollText()
+        }
+      })
+    },
+    []
+  )
+
+  useEffect(() => {
+    rollText()
+  }, [])
 
   return (
     <>
@@ -36,7 +58,7 @@ function PlayDetailHeader({
         />
         <View
           style={{
-            height: 60,
+            height: 70,
             flexDirection: 'row',
             justifyContent: 'space-between'
           }}>
@@ -45,25 +67,18 @@ function PlayDetailHeader({
             onPress={() => navigation.goBack()}
           />
           <View
-            style={{
-              width: '60%'
-            }}>
-            <MarqueeHorizontal
-              height="60%"
-              speed={30}
-              textList={[{ value: trackInfo.title }]}
-              width={mWidth}
-              bgContainerStyle={{
-                borderRadius: 4,
-                backgroundColor: theme.colors.primary
-              }}
-              textStyle={{
-                fontSize: 18,
-                color: theme.colors.surface,
-                opacity: 0.8
-              }}
-              onTextClick={item => console.log(item)}
-            />
+            style={{ width: mWidth, alignItems: 'center', overflow: 'hidden' }}>
+            <View style={{ height: 40, width: '100%' }}>
+              <Animated.Text
+                style={{
+                  lineHeight: 40,
+                  fontSize: 22,
+                  color: theme.colors.surface,
+                  transform: [{ translateX: translateXAni }]
+                }}>
+                {trackInfo.title}
+              </Animated.Text>
+            </View>
             <View
               style={{
                 flexDirection: 'row',

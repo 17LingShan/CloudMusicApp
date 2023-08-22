@@ -1,12 +1,11 @@
 import { BannerAtom } from '@/jotai/searcher'
-import { useAtom } from 'jotai'
+import { useAtomValue } from 'jotai'
 import { Dimensions, Image, View } from 'react-native'
 import Carousel from 'react-native-reanimated-carousel'
 
 function HomeCarousel(): JSX.Element {
   const width = Dimensions.get('screen').width
-  const [banner, _] = useAtom(BannerAtom)
-
+  const banner = useAtomValue(BannerAtom)
   return (
     <>
       <View>

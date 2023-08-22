@@ -3,7 +3,7 @@ import HomeCarousel from '@/components/Home/HomeBanner'
 import HotAlbumList from '@/components/Home/HotAlbumList'
 import { BannerAtom, HotAlbumListAtom } from '@/jotai/searcher'
 import { useIsFocused } from '@react-navigation/core'
-import { useAtom } from 'jotai'
+import { useSetAtom } from 'jotai'
 import { useState, useCallback, useEffect } from 'react'
 import { Dimensions, RefreshControl, ScrollView, View } from 'react-native'
 
@@ -11,8 +11,8 @@ function HomeSCreen() {
   const width = Dimensions.get('screen').width
 
   const isFocused = useIsFocused()
-  const [_, setBanner] = useAtom(BannerAtom)
-  const [, setAlbumList] = useAtom(HotAlbumListAtom)
+  const setBanner = useSetAtom(BannerAtom)
+  const setAlbumList = useSetAtom(HotAlbumListAtom)
   const [refreshing, setRefreshing] = useState(false)
 
   const handleBanner = async () => {
@@ -46,8 +46,7 @@ function HomeSCreen() {
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true)
-    await handleBanner()
-    await handleAlbumList()
+    await Promise.all([handleBanner(), handleAlbumList()])
     setRefreshing(false)
   }, [])
 

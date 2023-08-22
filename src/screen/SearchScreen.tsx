@@ -1,17 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Text, View, FlatList } from 'react-native'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { search } from '@/api/search'
 import { SearchKeywordsAtom, SearchListAtom } from '@/jotai/searcher'
 import MediaItem from '@/components/MediaItem'
 import SearchHeader from '@/components/SearchHeader'
 import { RefreshControl } from 'react-native-gesture-handler'
-import { useIsFocused } from '@react-navigation/core'
 
 function SearchScreen(): JSX.Element {
-  const [refreshing, setRefreshing] = useState(false)
-  const [keywords, _] = useAtom(SearchKeywordsAtom)
+  const keywords = useAtomValue(SearchKeywordsAtom)
   const [searchList, setSearchList] = useAtom(SearchListAtom)
+  const [refreshing, setRefreshing] = useState(false)
 
   const handleSearch = async () => {
     if (!keywords) return setRefreshing(false)
