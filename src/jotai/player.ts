@@ -5,22 +5,21 @@ import TrackPlayer, {
   RepeatMode,
   Event,
   State,
-  AppKilledPlaybackBehavior
+  AppKilledPlaybackBehavior,
+  Track
 } from 'react-native-track-player'
 import { fetchUrlById } from '@/api/search'
 import type { SongType } from './types'
 
 const subscription: EmitterSubscription[] = []
 
-// export const PlayStateAtom = atom<State>(State.None)
 export const isPlayingAtom = atom<boolean>(false)
 export const PlayListAtom = atom<SongType.SongList>([])
 
 async function initTrack() {
-  console.log('trying')
   if (await TrackPlayer.isServiceRunning()) return
   await TrackPlayer.setupPlayer()
-    .then(async res => {
+    .then(async () => {
       await TrackPlayer.updateOptions({
         capabilities: [
           Capability.Pause,
@@ -33,7 +32,7 @@ async function initTrack() {
           appKilledPlaybackBehavior:
             AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification
         }
-      })
+      }).catch(() => console.log('false to update'))
 
       subscription.push(
         ...[
@@ -52,10 +51,7 @@ async function initTrack() {
         ]
       )
     })
-    .catch(err => {
-      console.log('\n', err, '\n')
-    })
-  console.log('inited')
+    .catch(() => console.log('setup False'))
 }
 
 async function fetchSongInfo({ id, level }: APIParams.FetchUrlParam) {
@@ -75,25 +71,25 @@ async function fetchSongInfo({ id, level }: APIParams.FetchUrlParam) {
 }
 
 export async function playTracker(songInfo: SongType.SongProps) {
-  console.log('init')
   await initTrack()
-
   await TrackPlayer.setRepeatMode(RepeatMode.Queue)
   const playList = await TrackPlayer.getQueue()
   if (playList.length > 0) {
     // console.log('state', await TrackPlayer.getState())
     const _pos = playList.findIndex(item => item.id === songInfo.id)
     if (_pos === -1) {
-      await fetchSongInfo({ id: songInfo.id }).then(async res => {
-        playList.unshift({
-          id: songInfo.id,
-          url: res,
-          artist: songInfo.artist,
-          title: songInfo.title,
-          album: songInfo.album,
-          albumPicUrl: songInfo.albumPicUrl
+      await fetchSongInfo({ id: songInfo.id })
+        .then(async res => {
+          playList.unshift({
+            id: songInfo.id,
+            url: res,
+            artist: songInfo.artist,
+            title: songInfo.title,
+            album: songInfo.album,
+            albumPicUrl: songInfo.albumPicUrl
+          })
         })
-      })
+        .catch(() => console.log('false to fetchSongInfo'))
       await TrackPlayer.reset()
       await TrackPlayer.add(playList)
       await TrackPlayer.play()
@@ -106,7 +102,6 @@ export async function playTracker(songInfo: SongType.SongProps) {
   } else {
     await fetchSongInfo({ id: songInfo.id })
       .then(async res => {
-        console.log('fetchSongInfo.res', res)
         playList.unshift({
           id: songInfo.id,
           url: res,
@@ -125,6 +120,10 @@ export async function playTracker(songInfo: SongType.SongProps) {
       })
   }
   console.log('currentPlayList', await TrackPlayer.getQueue())
+}
+
+export async function addToNextPlay(songInfo: SongType.SongProps) {
+  console.log('addTrackToNext')
 }
 
 export async function pause() {

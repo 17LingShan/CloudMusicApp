@@ -1,11 +1,11 @@
 import { useAtomValue } from 'jotai'
-import { Dimensions, Image, Text, View, Pressable } from 'react-native'
+import { Image, Text, View, Pressable, useWindowDimensions } from 'react-native'
 import { HotAlbumListAtom } from '@/jotai/searcher'
 import Carousel from 'react-native-reanimated-carousel'
 import { useNavigation, CommonActions } from '@react-navigation/core'
 
 function HotAlbumList(): JSX.Element {
-  const width = Dimensions.get('screen').width
+  const width = useWindowDimensions().width
 
   const navigation = useNavigation()
   const AlbumList = useAtomValue(HotAlbumListAtom)

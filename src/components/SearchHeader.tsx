@@ -1,11 +1,13 @@
-import { View, StatusBar, Text } from 'react-native'
+import { View, StatusBar, Text, Keyboard } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
 import { useSetAtom } from 'jotai'
 import RippleIcon from './RippleIcon'
 import IconInput from './IconInput'
 import { SearchKeywordsAtom } from '@/jotai/searcher'
+import { useTheme } from 'react-native-paper/src/core/theming'
 
 function SearchHeader({ handleSearch }): JSX.Element {
+  const theme = useTheme()
   const navigation = useNavigation()
   const setKeywords = useSetAtom(SearchKeywordsAtom)
 
@@ -22,7 +24,11 @@ function SearchHeader({ handleSearch }): JSX.Element {
           <View>
             <RippleIcon
               iconName="chevron-left"
-              onPress={() => navigation.goBack()}
+              color={theme.colors.shadow}
+              onPress={() => {
+                Keyboard.dismiss()
+                navigation.goBack()
+              }}
             />
           </View>
           <IconInput
@@ -36,7 +42,9 @@ function SearchHeader({ handleSearch }): JSX.Element {
               marginHorizontal: 12,
               alignItems: 'center'
             }}>
-            <Text style={{ fontSize: 16 }} onPress={() => handleSearch()}>
+            <Text
+              style={{ fontSize: 16, color: theme.colors.shadow }}
+              onPress={() => handleSearch()}>
               搜索
             </Text>
           </View>

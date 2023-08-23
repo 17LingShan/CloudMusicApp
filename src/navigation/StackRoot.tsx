@@ -5,6 +5,7 @@ import TabNavigator from './TabNavigator'
 import SearchScreen from '@/screen/SearchScreen'
 import AlbumScreen from '@/screen/AlbumScreen'
 import PlayDetailScreen from '@/screen/PlayDetailScreen'
+import MediaItemMOdal from '@/components/MediaItemModal'
 
 const Stack = createStackNavigator()
 
@@ -37,6 +38,17 @@ function StackRoot(): JSX.Element {
           component={AlbumScreen}
           options={{ headerShown: false }}
         />
+        <Stack.Group
+          screenOptions={{
+            headerShown: false,
+            presentation: 'transparentModal'
+          }}>
+          <Stack.Screen
+            name="MediaItemModal"
+            component={MediaItemMOdal}
+            options={{}}
+          />
+        </Stack.Group>
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
           <Stack.Screen
             name="playDetail"

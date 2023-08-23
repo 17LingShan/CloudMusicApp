@@ -4,6 +4,7 @@ import type { IconInputType } from './types'
 import { useState, useEffect } from 'react'
 import { useAtom } from 'jotai'
 import { SearchKeywordsAtom } from '@/jotai/searcher'
+import { useTheme } from 'react-native-paper/src/core/theming'
 
 function IconInput({
   iconName,
@@ -11,6 +12,7 @@ function IconInput({
   placeholder,
   onIconPress
 }: IconInputType.IconInputProps): JSX.Element {
+  const theme = useTheme()
   const [keywords, setKeywords] = useAtom(SearchKeywordsAtom)
   const [backColor, setBackColor] = useState<string>('')
   const [iconShown, setIconShown] = useState<boolean>(true)
@@ -44,7 +46,12 @@ function IconInput({
         onFocus={() => setBackColor('#c6c6d0')}
         onBlur={() => handleBlur()}
       />
-      <RippleIcon iconName={iconName} shown={iconShown} onPress={onIconPress} />
+      <RippleIcon
+        iconName={iconName}
+        color={theme.colors.shadow}
+        shown={iconShown}
+        onPress={onIconPress}
+      />
     </View>
   )
 }

@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useRef } from 'react'
 import {
   Animated,
-  Dimensions,
   Easing,
+  Keyboard,
   StatusBar,
   Text,
-  View
+  View,
+  useWindowDimensions
 } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -18,7 +19,7 @@ function PlayDetailHeader({
 }: {
   trackInfo: SongType.SongProps
 }): JSX.Element {
-  const mWidth = Dimensions.get('window').width * 0.6
+  const mWidth = useWindowDimensions().width * 0.6
   const theme = useTheme()
   const navigation = useNavigation()
   const translateXAni = useRef(new Animated.Value(0)).current
@@ -49,7 +50,7 @@ function PlayDetailHeader({
       <View
         style={{
           paddingTop: StatusBar.currentHeight + 10,
-          backgroundColor: theme.colors.primary
+          backgroundColor: theme.colors.background
         }}>
         <StatusBar
           translucent={true}
@@ -64,11 +65,15 @@ function PlayDetailHeader({
           }}>
           <RippleIcon
             iconName="keyboard-arrow-down"
-            onPress={() => navigation.goBack()}
+            color={theme.colors.surface}
+            onPress={() => {
+              Keyboard.dismiss()
+              navigation.goBack()
+            }}
           />
           <View
             style={{ width: mWidth, alignItems: 'center', overflow: 'hidden' }}>
-            <View style={{ height: 40, width: '100%' }}>
+            <View style={{ height: 40 }}>
               <Animated.Text
                 style={{
                   lineHeight: 40,
@@ -95,7 +100,14 @@ function PlayDetailHeader({
               />
             </View>
           </View>
-          <RippleIcon iconName="share" onPress={() => navigation.goBack()} />
+          <RippleIcon
+            iconName="share"
+            color={theme.colors.surface}
+            onPress={() => {
+              Keyboard.dismiss()
+              navigation.goBack()
+            }}
+          />
         </View>
       </View>
     </>

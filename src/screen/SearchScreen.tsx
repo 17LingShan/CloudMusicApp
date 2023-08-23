@@ -29,7 +29,7 @@ function SearchScreen(): JSX.Element {
           }))
         ])
       })
-      .catch(e => console.log(e))
+      .catch(e => console.log('error of search in searchScreen'))
     setRefreshing(false)
   }
 

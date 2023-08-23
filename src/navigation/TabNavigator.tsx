@@ -37,7 +37,7 @@ function TabNavigator(): JSX.Element {
   ]
 
   return (
-    <React.Fragment>
+    <>
       <Tab.Navigator
         backBehavior="none"
         screenOptions={{
@@ -55,6 +55,7 @@ function TabNavigator(): JSX.Element {
                 title: item.name,
                 headerShown: false,
                 tabBarIcon: item.icon,
+                tabBarHideOnKeyboard: true,
                 tabBarActiveTintColor: '#dfcbce',
                 tabBarInactiveTintColor: '#4a1e23'
               }}
@@ -63,7 +64,7 @@ function TabNavigator(): JSX.Element {
         })}
       </Tab.Navigator>
       <PlayBottomBar />
-    </React.Fragment>
+    </>
   )
 }
 

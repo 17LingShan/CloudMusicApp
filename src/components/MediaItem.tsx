@@ -1,27 +1,35 @@
 import { StyleSheet, Text, View } from 'react-native'
 import type { MediaItemType } from './types'
 import { playTracker } from '@/jotai/player'
-import { TouchableRipple } from 'react-native-paper'
+import { TouchableRipple, useTheme } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { useNavigation, CommonActions } from '@react-navigation/core'
+import RippleIcon from './RippleIcon'
 
 function MediaItem({
   position,
   songInfo
 }: MediaItemType.MediaItemProps): JSX.Element {
+  const theme = useTheme()
   const navigation = useNavigation()
 
-  const handlePressItem = () => {
-    playTracker(songInfo)
+  const handlePressItem = async () => {
     navigation.dispatch(
       CommonActions.navigate({ name: 'playDetail', params: songInfo })
+    )
+    await playTracker(songInfo)
+  }
+
+  const handlePressModalIcon = async () => {
+    navigation.dispatch(
+      CommonActions.navigate({ name: 'MediaItemModal', params: songInfo })
     )
   }
 
   return (
     <>
       <TouchableRipple
-        onPress={() => handlePressItem()}
+        onPress={async () => await handlePressItem()}
         style={{ width: '100%' }}
         rippleColor="rgba(0, 0, 0, .32)">
         <View style={{ width: '100%', height: 60, flexDirection: 'row' }}>
@@ -52,7 +60,12 @@ function MediaItem({
               <Icon name="movie-filter" size={24} />
             </View>
             <View style={styles.iconContainer}>
-              <Icon name="list" size={24} />
+              {/* <Icon name="list" size={24} /> */}
+              <RippleIcon
+                iconName="list"
+                color={theme.colors.shadow}
+                onPress={() => handlePressModalIcon()}
+              />
             </View>
           </View>
         </View>

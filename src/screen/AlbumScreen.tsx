@@ -10,11 +10,11 @@ import { AlbumType, SongType } from '@/jotai/types'
 function AlbumScreen(): JSX.Element {
   const { params } = useRoute() as { params: AlbumType.AlbumProps }
   const [refreshing, setRefreshing] = useState(false)
-  const isFocused = useIsFocused()
 
   const [trackList, setTrackList] = useState<SongType.SongList>([])
 
   const handleFetchAllTrack = async () => {
+    setRefreshing(true)
     await fetchAlbumAllTrack({ id: params.id })
       .then(res => {
         setTrackList([
@@ -29,20 +29,14 @@ function AlbumScreen(): JSX.Element {
           }))
         ])
       })
-      .catch(e => console.log(e))
-  }
-
-  const handleRefreshing = async () => {
-    setRefreshing(true)
-    await handleFetchAllTrack()
+      .catch(e => console.log('error of fetchAlbumAllTrack'))
     setRefreshing(false)
   }
 
   useEffect(() => {
-    if (isFocused) handleRefreshing()
-  }, [isFocused])
+    handleFetchAllTrack()
+  }, [])
 
-  console.log(params)
   return (
     <>
       <View style={{ flex: 1 }}>
@@ -54,12 +48,7 @@ function AlbumScreen(): JSX.Element {
             <MediaItem position={index + 1} songInfo={item} />
           )}
           keyExtractor={(_, index) => index.toString()}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={() => handleRefreshing()}
-            />
-          }
+          refreshControl={<RefreshControl refreshing={refreshing} />}
           ListFooterComponent={() => (
             <View>
               <Text>213213</Text>

@@ -12,23 +12,24 @@ import TrackPlayer, {
   State,
   useTrackPlayerEvents
 } from 'react-native-track-player'
+import { useMMKVStorage } from 'react-native-mmkv-storage'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { storage } from '@/storage'
 import coverImg from '@/assets/cover.jpg'
 import { SongType } from '@/jotai/types'
 import { useAtom } from 'jotai'
-import { chownSync } from 'fs'
 
 function PlayBottomBar(): JSX.Element {
   const isFocused = useIsFocused()
   const navigation = useNavigation()
+
   const [isPlaying, setPlaying] = useAtom(isPlayingAtom)
   const [currentTrack, setCurrentTrack] = useState<SongType.SongProps>()
-  // const [isPlaying, setPlaying] = useState<boolean>(false)
   const bottom = useMemo(() => new Animated.Value(currentTrack ? 60 : -80), [])
 
   const handleTrackStateChange = async () => {
     const state = await TrackPlayer.getState()
-    console.log('state', state)
+    console.log('playBottomBar state', state)
     switch (state) {
       case State.Playing:
         setPlaying(true)
@@ -36,7 +37,6 @@ function PlayBottomBar(): JSX.Element {
         break
       case State.Paused:
         setPlaying(false)
-        await handleChangeIntoPause()
         break
       case State.None:
         setPlaying(false)
@@ -53,9 +53,9 @@ function PlayBottomBar(): JSX.Element {
       const playList = await TrackPlayer.getQueue()
       console.log('idle Track List', playList)
       await TrackPlayer.reset()
-      await TrackPlayer.setRepeatMode(RepeatMode.Queue)
+      // await TrackPlayer.setRepeatMode(RepeatMode.Queue)
       await TrackPlayer.add(playList)
-      await TrackPlayer.play()
+      // await TrackPlayer.play()
     } else {
       console.log('unknown Error')
     }
@@ -70,11 +70,9 @@ function PlayBottomBar(): JSX.Element {
         )) as SongType.SongProps
       )
     }
+    console.log('currentTrack in handleChangeIntoPlay', currentTrack)
   }
-  const handleChangeIntoPause = async () => {
-    setPlaying(false)
-    console.log('pause')
-  }
+  const handleChangeIntoPause = async () => {}
   const handleChangeIntoNext = async () => {}
   const handleChangeIntoPrev = async () => {}
 
@@ -82,7 +80,6 @@ function PlayBottomBar(): JSX.Element {
     [Event.PlaybackState, Event.PlaybackTrackChanged],
     async () => await handleTrackStateChange()
   )
-
   const bottomAni = Animated.timing(bottom, {
     toValue: currentTrack ? 60 : -80,
     duration: 400,
@@ -91,14 +88,13 @@ function PlayBottomBar(): JSX.Element {
   })
   bottomAni.start()
   useEffect(() => {
-    isFocused ? handleChangeIntoPlay() : setCurrentTrack(null)
-    console.log('isFocused', isFocused)
-    console.log('currentTrack', currentTrack)
+    console.log('render ')
+
     return () => {
       bottomAni.reset()
       console.log('destroy')
     }
-  }, [isFocused])
+  }, [])
 
   return (
     <>

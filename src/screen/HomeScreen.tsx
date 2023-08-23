@@ -5,10 +5,15 @@ import { BannerAtom, HotAlbumListAtom } from '@/jotai/searcher'
 import { useIsFocused } from '@react-navigation/core'
 import { useSetAtom } from 'jotai'
 import { useState, useCallback, useEffect } from 'react'
-import { Dimensions, RefreshControl, ScrollView, View } from 'react-native'
+import {
+  RefreshControl,
+  ScrollView,
+  View,
+  useWindowDimensions
+} from 'react-native'
 
 function HomeSCreen() {
-  const width = Dimensions.get('screen').width
+  const width = useWindowDimensions().width
 
   const isFocused = useIsFocused()
   const setBanner = useSetAtom(BannerAtom)

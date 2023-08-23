@@ -27,7 +27,9 @@ function Music(): JSX.Element {
       ...DefaultTheme.colors,
       primary: '#e92645',
       surface: '#f2f2f2',
-      onPrimary: '#c6c6d0'
+      onPrimary: '#c70c0c',
+      background: '#3e3b3c',
+      shadow: '#202020'
     }
   }
 

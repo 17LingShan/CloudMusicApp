@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react'
-import { Animated, Dimensions, Easing, View } from 'react-native'
+import { Animated, Easing, View, useWindowDimensions } from 'react-native'
 import { useAtomValue } from 'jotai'
 import coverImg from '@/assets/cover.jpg'
 import { SongType } from '@/jotai/types'
@@ -8,7 +8,7 @@ import { isPlayingAtom } from '@/jotai/player'
 function PlayDetailRotation({
   albumPicUrl
 }: Pick<SongType.SongProps, 'albumPicUrl'>): JSX.Element {
-  const screenWidth = Dimensions.get('window').width * 0.618
+  const screenWidth = useWindowDimensions().width * 0.618
   const isPlaying = useAtomValue(isPlayingAtom)
   const rotate = useRef(new Animated.Value(0)).current
 

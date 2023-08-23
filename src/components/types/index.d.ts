@@ -8,6 +8,7 @@ import {
 declare namespace RippleIconType {
   interface RippleIconProps {
     iconName: string
+    color?: string
     shown?: boolean
     onPress?: (event: GestureResponderEvent) => void
   }
