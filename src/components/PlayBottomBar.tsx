@@ -1,4 +1,4 @@
-import { isPlayingAtom, pause, play } from '@/jotai/player'
+import { isPlayingAtom, pause, play, useTrackPlayer } from '@/jotai/player'
 import {
   CommonActions,
   useIsFocused,
@@ -12,9 +12,7 @@ import TrackPlayer, {
   State,
   useTrackPlayerEvents
 } from 'react-native-track-player'
-import { useMMKVStorage } from 'react-native-mmkv-storage'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { storage } from '@/storage'
 import coverImg from '@/assets/cover.jpg'
 import { SongType } from '@/jotai/types'
 import { useAtom } from 'jotai'
@@ -23,65 +21,69 @@ function PlayBottomBar(): JSX.Element {
   const isFocused = useIsFocused()
   const navigation = useNavigation()
 
-  const [isPlaying, setPlaying] = useAtom(isPlayingAtom)
-  const [currentTrack, setCurrentTrack] = useState<SongType.SongProps>()
-  const bottom = useMemo(() => new Animated.Value(currentTrack ? 60 : -80), [])
+  // const [isPlaying, setPlaying] = useAtom(isPlayingAtom)
+  // const [currentTrack, setCurrentTrack] = useState<SongType.SongProps>()
+  const { isPlaying, currentTrack } = useTrackPlayer()
+  const bottom = useMemo(
+    () => new Animated.Value(currentTrack.id ? 60 : -80),
+    []
+  )
 
-  const handleTrackStateChange = async () => {
-    const state = await TrackPlayer.getState()
-    console.log('playBottomBar state', state)
-    switch (state) {
-      case State.Playing:
-        setPlaying(true)
-        await handleChangeIntoPlay()
-        break
-      case State.Paused:
-        setPlaying(false)
-        break
-      case State.None:
-        setPlaying(false)
-        await handleIdleState()
-        break
-      default:
-        setPlaying(false)
-        break
-    }
-  }
+  // const handleTrackStateChange = async () => {
+  //   const state = await TrackPlayer.getState()
+  //   console.log('playBottomBar state', state)
+  //   switch (state) {
+  //     case State.Playing:
+  //       setPlaying(true)
+  //       await handleChangeIntoPlay()
+  //       break
+  //     case State.Paused:
+  //       setPlaying(false)
+  //       break
+  //     case State.None:
+  //       setPlaying(false)
+  //       await handleIdleState()
+  //       break
+  //     default:
+  //       setPlaying(false)
+  //       break
+  //   }
+  // }
 
-  const handleIdleState = async () => {
-    if (await TrackPlayer.isServiceRunning()) {
-      const playList = await TrackPlayer.getQueue()
-      console.log('idle Track List', playList)
-      await TrackPlayer.reset()
-      // await TrackPlayer.setRepeatMode(RepeatMode.Queue)
-      await TrackPlayer.add(playList)
-      // await TrackPlayer.play()
-    } else {
-      console.log('unknown Error')
-    }
-  }
+  // const handleIdleState = async () => {
+  //   if (await TrackPlayer.isServiceRunning()) {
+  //     const playList = await TrackPlayer.getQueue()
+  //     console.log('idle Track List', playList)
+  //     await TrackPlayer.reset()
+  //     // await TrackPlayer.setRepeatMode(RepeatMode.Queue)
+  //     await TrackPlayer.add(playList)
+  //     // await TrackPlayer.play()
+  //   } else {
+  //     console.log('unknown Error')
+  //   }
+  // }
 
-  const handleChangeIntoPlay = async () => {
-    if (await TrackPlayer.isServiceRunning()) {
-      console.log('running')
-      setCurrentTrack(
-        (await TrackPlayer.getTrack(
-          await TrackPlayer.getCurrentTrack()
-        )) as SongType.SongProps
-      )
-    }
-    console.log('currentTrack in handleChangeIntoPlay', currentTrack)
-  }
+  // const handleChangeIntoPlay = async () => {
+  //   if (await TrackPlayer.isServiceRunning()) {
+  //     console.log('running')
+  //     setCurrentTrack(
+  //       (await TrackPlayer.getTrack(
+  //         await TrackPlayer.getCurrentTrack()
+  //       )) as SongType.SongProps
+  //     )
+  //   }
+  //   console.log('currentTrack in handleChangeIntoPlay', currentTrack)
+  // }
   const handleChangeIntoPause = async () => {}
   const handleChangeIntoNext = async () => {}
   const handleChangeIntoPrev = async () => {}
 
-  useTrackPlayerEvents(
-    [Event.PlaybackState, Event.PlaybackTrackChanged],
-    async () => await handleTrackStateChange()
-  )
+  // useTrackPlayerEvents(
+  //   [Event.PlaybackState, Event.PlaybackTrackChanged],
+  //   async () => await handleTrackStateChange()
+  // )
   const bottomAni = Animated.timing(bottom, {
-    toValue: currentTrack ? 60 : -80,
+    toValue: currentTrack.id ? 60 : -80,
     duration: 400,
     useNativeDriver: false,
     easing: Easing.quad

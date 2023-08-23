@@ -6,7 +6,7 @@ declare namespace SongType {
     artist: string
     album: string
     url?: string
-    albumPicUrl: {
+    albumPicUrl?: {
       uri: string
     }
     [key: string]: any

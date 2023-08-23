@@ -1,7 +1,14 @@
 import { View } from 'react-native'
 import { useAtomValue } from 'jotai'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { isPlayingAtom, next, pause, play, prev } from '@/jotai/player'
+import {
+  isPlayingAtom,
+  next,
+  pause,
+  play,
+  prev,
+  useTrackPlayer
+} from '@/jotai/player'
 import { useTheme } from 'react-native-paper/src/core/theming'
 import { useMemo, useState } from 'react'
 
@@ -9,7 +16,8 @@ function PlayDetailBottom(): JSX.Element {
   const playModal = useMemo(() => ['autorenew', 'replay'], [])
   const theme = useTheme()
   const [modalSelect, setModalSelect] = useState(0)
-  const isPlaying = useAtomValue(isPlayingAtom)
+  // const isPlaying = useAtomValue(isPlayingAtom)
+  const { isPlaying } = useTrackPlayer()
 
   return (
     <>

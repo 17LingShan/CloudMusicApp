@@ -29,6 +29,6 @@ declare namespace MediaItemType {
   interface MediaItemProps {
     position: number
     songInfo: SongType.SongProps
-    onPress?: any
+    onPress?: Function
   }
 }

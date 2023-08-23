@@ -1,32 +1,26 @@
-import type { MediaItemType } from './types'
-import { playTracker, useTrackPlayer } from '@/jotai/player'
-import { useTheme } from 'react-native-paper'
-import { useNavigation, CommonActions } from '@react-navigation/core'
-import CommonListItem from './CommonListItem'
+import { SongType } from '@/jotai/types'
+import { GestureResponderEvent, StyleSheet, Text, View } from 'react-native'
+import { TouchableRipple } from 'react-native-paper'
+import RippleIcon from './RippleIcon'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
-function MediaItem({
+function CommonListItem({
   position,
-  songInfo
-}: MediaItemType.MediaItemProps): JSX.Element {
-  const theme = useTheme()
-  const navigation = useNavigation()
-  const handlePressItem = async () => {
-    navigation.dispatch(
-      CommonActions.navigate({ name: 'playDetail', params: songInfo })
-    )
-    await playTracker(songInfo)
-  }
-
-  const handlePressModalIcon = () => {
-    navigation.dispatch(
-      CommonActions.navigate({ name: 'MediaItemModal', params: songInfo })
-    )
-  }
-
+  songInfo,
+  iconColor,
+  onPress,
+  onPressIcon
+}: {
+  position: number
+  songInfo: SongType.SongProps
+  iconColor: string
+  onPress: () => Promise<void>
+  onPressIcon: (event: GestureResponderEvent) => void
+}): JSX.Element {
   return (
     <>
-      {/* <TouchableRipple
-        onPress={async () => await handlePressItem()}
+      <TouchableRipple
+        onPress={onPress}
         style={{ width: '100%' }}
         rippleColor="rgba(0, 0, 0, .32)">
         <View style={{ width: '100%', height: 60, flexDirection: 'row' }}>
@@ -57,24 +51,31 @@ function MediaItem({
               <Icon name="movie-filter" size={24} />
             </View>
             <View style={styles.iconContainer}>
+              {/* <Icon name="list" size={24} /> */}
               <RippleIcon
                 iconName="list"
-                color={theme.colors.shadow}
-                onPress={() => handlePressModalIcon()}
+                color={iconColor}
+                onPress={onPressIcon}
               />
             </View>
           </View>
         </View>
-      </TouchableRipple> */}
-      <CommonListItem
-        position={position}
-        songInfo={songInfo}
-        iconColor={theme.colors.shadow}
-        onPress={handlePressItem}
-        onPressIcon={() => handlePressModalIcon()}
-      />
+      </TouchableRipple>
     </>
   )
 }
-
-export default MediaItem
+const styles = StyleSheet.create({
+  textContainer: {
+    width: '100%',
+    justifyContent: 'center',
+    paddingHorizontal: 8,
+    overflow: 'hidden'
+  },
+  iconContainer: {
+    height: '100%',
+    width: '50%',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+})
+export default CommonListItem

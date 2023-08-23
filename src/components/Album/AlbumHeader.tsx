@@ -1,7 +1,6 @@
 import { View, StatusBar, Text, Keyboard } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
 import RippleIcon from '../RippleIcon'
-import IconInput from '../IconInput'
 
 function AlbumHeader(): JSX.Element {
   const navigation = useNavigation()

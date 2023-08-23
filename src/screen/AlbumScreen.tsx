@@ -6,11 +6,11 @@ import AlbumHeader from '@/components/Album/AlbumHeader'
 import AlbumTitle from '@/components/Album/AlbumTitle'
 import MediaItem from '@/components/MediaItem'
 import { AlbumType, SongType } from '@/jotai/types'
+import { useTheme } from 'react-native-paper/src/core/theming'
 
 function AlbumScreen(): JSX.Element {
   const { params } = useRoute() as { params: AlbumType.AlbumProps }
   const [refreshing, setRefreshing] = useState(false)
-
   const [trackList, setTrackList] = useState<SongType.SongList>([])
 
   const handleFetchAllTrack = async () => {
