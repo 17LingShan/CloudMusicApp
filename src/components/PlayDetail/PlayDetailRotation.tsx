@@ -9,7 +9,6 @@ function PlayDetailRotation({
   albumPicUrl
 }: Pick<SongType.SongProps, 'albumPicUrl'>): JSX.Element {
   const screenWidth = useWindowDimensions().width * 0.618
-  // const isPlaying = useAtomValue(isPlayingAtom)
   const { isPlaying } = useTrackPlayer()
   const rotate = useRef(new Animated.Value(0)).current
 
@@ -53,7 +52,7 @@ function PlayDetailRotation({
             borderRadius: 99999,
             transform: [{ rotate: rotateInterpolation }]
           }}
-          source={albumPicUrl ?? coverImg}
+          source={albumPicUrl.uri === '' ? coverImg : albumPicUrl}
         />
       </View>
     </>

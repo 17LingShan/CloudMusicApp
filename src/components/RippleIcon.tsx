@@ -32,7 +32,7 @@ function RippleIcon({
           rippleColor="rgba(0, 0, 0, .32)">
           <Icon
             name={iconName}
-            color={color ?? theme.colors.surface}
+            color={color || theme.colors.surface}
             size={24}></Icon>
         </TouchableRipple>
       </View>

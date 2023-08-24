@@ -1,22 +1,13 @@
-import { View } from 'react-native'
-import { useAtomValue } from 'jotai'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import {
-  isPlayingAtom,
-  next,
-  pause,
-  play,
-  prev,
-  useTrackPlayer
-} from '@/jotai/player'
-import { useTheme } from 'react-native-paper/src/core/theming'
 import { useMemo, useState } from 'react'
+import { View } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import { next, pause, play, prev, useTrackPlayer } from '@/jotai/player'
+import { useTheme } from 'react-native-paper/src/core/theming'
 
 function PlayDetailBottom(): JSX.Element {
-  const playModal = useMemo(() => ['autorenew', 'replay'], [])
+  const playMode = useMemo(() => ['autorenew', 'replay'], [])
   const theme = useTheme()
-  const [modalSelect, setModalSelect] = useState(0)
-  // const isPlaying = useAtomValue(isPlayingAtom)
+  const [ModeSelect, setModeSelect] = useState(0)
   const { isPlaying } = useTrackPlayer()
 
   return (
@@ -30,10 +21,10 @@ function PlayDetailBottom(): JSX.Element {
           alignItems: 'center'
         }}>
         <Icon
-          name={playModal[modalSelect]}
+          name={playMode[ModeSelect]}
           color={theme.colors.surface}
           size={30}
-          onPress={() => setModalSelect(prev => (prev + 1) % playModal.length)}
+          onPress={() => setModeSelect(prev => (prev + 1) % playMode.length)}
         />
         <Icon
           name="keyboard-double-arrow-left"

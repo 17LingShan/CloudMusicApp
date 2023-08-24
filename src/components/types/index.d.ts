@@ -29,6 +29,8 @@ declare namespace MediaItemType {
   interface MediaItemProps {
     position: number
     songInfo: SongType.SongProps
-    onPress?: Function
+    iconColor?: string
+    onPressItem?: (event?: GestureResponderEvent) => void
+    onPressIcon?: (event?: GestureResponderEvent) => void
   }
 }

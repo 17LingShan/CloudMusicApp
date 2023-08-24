@@ -16,6 +16,8 @@ import PlayDetailHeader from '@/components/PlayDetail/PlayDetailHeader'
 import PlayDetailBottom from '@/components/PlayDetail/PlayDetailBottom'
 import { storage } from '@/storage'
 import { useMMKVStorage } from 'react-native-mmkv-storage'
+import { uniqBy } from 'lodash'
+import { formatMinute } from '@/util/common'
 
 function PlayDetailScreen(): JSX.Element {
   const theme = useTheme()
@@ -38,7 +40,7 @@ function PlayDetailScreen(): JSX.Element {
           )) as SongType.SongProps
         )
         setTimeout(async () => {
-          setStoragePlayList(await TrackPlayer.getQueue())
+          setStoragePlayList(uniqBy(await TrackPlayer.getQueue(), 'id'))
         }, 500)
         break
     }
@@ -66,8 +68,8 @@ function PlayDetailScreen(): JSX.Element {
                 alignItems: 'center'
               }}>
               <View>
-                <Text style={{ color: theme.colors.surface }}>
-                  {Math.floor(position / 60)}:{Math.floor(position % 60)}
+                <Text style={{ color: theme.colors.onSurface }}>
+                  {formatMinute(position)}
                 </Text>
               </View>
               <Slider
@@ -87,8 +89,8 @@ function PlayDetailScreen(): JSX.Element {
                 thumbTintColor={theme.colors.primary}
               />
               <View>
-                <Text style={{ color: theme.colors.surface }}>
-                  {Math.floor(duration / 60)}:{Math.floor(duration % 60)}
+                <Text style={{ color: theme.colors.onSurface }}>
+                  {formatMinute(duration)}
                 </Text>
               </View>
             </View>

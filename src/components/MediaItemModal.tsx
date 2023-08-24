@@ -1,16 +1,17 @@
-import { addToNextPlay } from '@/jotai/player'
+import { useTrackPlayer } from '@/jotai/player'
 import { SongType } from '@/jotai/types'
 import { useNavigation, useRoute } from '@react-navigation/core'
 import { useCardAnimation } from '@react-navigation/stack'
 import { Animated, Button, Pressable } from 'react-native'
 import { StyleSheet, View, useWindowDimensions } from 'react-native'
 import { useTheme } from 'react-native-paper/src/core/theming'
+import TrackPlayer, { Track } from 'react-native-track-player'
 
 function MediaItemMOdal(): JSX.Element {
   const theme = useTheme()
   const navigation = useNavigation()
+  const { setNextTrack } = useTrackPlayer()
   const { params } = useRoute() as { params: SongType.SongProps }
-
   const height = useWindowDimensions().height
   const current = useCardAnimation().current
 
@@ -50,7 +51,11 @@ function MediaItemMOdal(): JSX.Element {
           }}>
           <Button
             title="add to next play"
-            onPress={() => addToNextPlay(params)}></Button>
+            onPress={async () => {
+              console.log('next Track', params)
+              setNextTrack(params)
+              navigation.goBack()
+            }}></Button>
         </View>
       </Animated.View>
     </View>

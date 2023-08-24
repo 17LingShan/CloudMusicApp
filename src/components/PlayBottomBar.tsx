@@ -135,7 +135,7 @@ function PlayBottomBar(): JSX.Element {
                   height: 48,
                   borderRadius: 6
                 }}
-                source={currentTrack?.albumPicUrl ?? coverImg}
+                source={currentTrack.id ? currentTrack.albumPicUrl : coverImg}
               />
             </Pressable>
             <Icon

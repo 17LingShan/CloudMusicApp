@@ -1,32 +1,19 @@
 import type { MediaItemType } from './types'
-import { playTracker, useTrackPlayer } from '@/jotai/player'
-import { useTheme } from 'react-native-paper'
-import { useNavigation, CommonActions } from '@react-navigation/core'
-import CommonListItem from './CommonListItem'
+import { TouchableRipple } from 'react-native-paper'
+import { StyleSheet, Text, View } from 'react-native'
+import RippleIcon from './RippleIcon'
 
 function MediaItem({
   position,
-  songInfo
+  songInfo,
+  iconColor,
+  onPressItem,
+  onPressIcon
 }: MediaItemType.MediaItemProps): JSX.Element {
-  const theme = useTheme()
-  const navigation = useNavigation()
-  const handlePressItem = async () => {
-    navigation.dispatch(
-      CommonActions.navigate({ name: 'playDetail', params: songInfo })
-    )
-    await playTracker(songInfo)
-  }
-
-  const handlePressModalIcon = () => {
-    navigation.dispatch(
-      CommonActions.navigate({ name: 'MediaItemModal', params: songInfo })
-    )
-  }
-
   return (
     <>
-      {/* <TouchableRipple
-        onPress={async () => await handlePressItem()}
+      <TouchableRipple
+        onPress={onPressItem}
         style={{ width: '100%' }}
         rippleColor="rgba(0, 0, 0, .32)">
         <View style={{ width: '100%', height: 60, flexDirection: 'row' }}>
@@ -46,35 +33,51 @@ function MediaItem({
                 {songInfo.title}
               </Text>
             </View>
-            <View style={{ ...styles.textContainer, height: '40%' }}>
+            <View
+              style={{
+                ...styles.textContainer,
+                height: '40%',
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'center'
+              }}>
+              {songInfo.fee === 1 ? (
+                <Text style={{ marginRight: 8, color: '#e92645' }}>VIP</Text>
+              ) : null}
               <Text numberOfLines={1}>
-                {`${songInfo.artist} - ${songInfo.album}`}
+                {`${songInfo.fee} - ${songInfo.artist} - ${songInfo.album}`}
               </Text>
             </View>
           </View>
           <View style={{ width: '25%', flexDirection: 'row' }}>
             <View style={styles.iconContainer}>
-              <Icon name="movie-filter" size={24} />
+              <RippleIcon iconName="movie-filter" color={iconColor} />
             </View>
             <View style={styles.iconContainer}>
               <RippleIcon
                 iconName="list"
-                color={theme.colors.shadow}
-                onPress={() => handlePressModalIcon()}
+                color={iconColor}
+                onPress={onPressIcon}
               />
             </View>
           </View>
         </View>
-      </TouchableRipple> */}
-      <CommonListItem
-        position={position}
-        songInfo={songInfo}
-        iconColor={theme.colors.shadow}
-        onPress={handlePressItem}
-        onPressIcon={() => handlePressModalIcon()}
-      />
+      </TouchableRipple>
     </>
   )
 }
-
+const styles = StyleSheet.create({
+  textContainer: {
+    width: '100%',
+    justifyContent: 'center',
+    paddingHorizontal: 8,
+    overflow: 'hidden'
+  },
+  iconContainer: {
+    height: '100%',
+    width: '50%',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+})
 export default MediaItem

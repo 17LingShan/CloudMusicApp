@@ -1,152 +1,92 @@
 import { EmitterSubscription } from 'react-native'
-import { atom, useAtom } from 'jotai'
+import { SetStateAction, atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import TrackPlayer, {
   Capability,
   RepeatMode,
   Event,
   State,
   AppKilledPlaybackBehavior,
-  Track,
-  useTrackPlayerEvents
+  useTrackPlayerEvents,
+  Track
 } from 'react-native-track-player'
 import { fetchUrlById } from '@/api/search'
 import type { SongType } from './types'
+import { uniqBy } from 'lodash'
 
 const subscription: EmitterSubscription[] = []
-
-export const isPlayingAtom = atom<boolean>(false)
-export const PlayListAtom = atom<SongType.SongList>([])
-
-export const initedTrackAtom = atom<boolean>(false)
-
-export const currentTrackAtom = atom<SongType.SongProps>({
+const initTrackInfo: SongType.SongProps = {
   id: 0,
   title: '',
   artist: '',
-  album: ''
-})
-
-export function throttled(fn, delay) {
-  let timer = null
-  let starttime = Date.now()
-  return function () {
-    let curTime = Date.now() // 当前时间
-    let remaining = delay - (curTime - starttime) // 从上一次到现在，还剩下多少多余时间
-    let context = this
-    let args = arguments
-    clearTimeout(timer)
-    if (remaining <= 0) {
-      fn.apply(context, args)
-      starttime = Date.now()
-    } else {
-      timer = setTimeout(fn, remaining)
-    }
+  album: '',
+  fee: 0,
+  albumPicUrl: {
+    uri: ''
   }
 }
+export const isPlayingAtom = atom<boolean>(false)
+export const isIdleStateAtom = atom<boolean>(false)
+export const currentTrackAtom = atom<SongType.SongProps>(initTrackInfo)
+export const nextTrackAtom = atom<SongType.SongProps>(initTrackInfo)
 
 export function useTrackPlayer() {
   const [isPlaying, setIsPlaying] = useAtom(isPlayingAtom)
+  const [isIdleState, setIsIdleState] = useAtom(isIdleStateAtom)
   const [currentTrack, setCurrentTrack] = useAtom(currentTrackAtom)
+  const [nextTrack, setNextTrack] = useAtom(nextTrackAtom)
 
-  useTrackPlayerEvents(
-    [Event.PlaybackState, Event.PlaybackTrackChanged],
-    async event => {
-      // await handleTrackStateChange()
+  useTrackPlayerEvents([Event.PlaybackState], async event => {
+    const { state } = event
+    console.log('state', state)
+    switch (state) {
+      case State.Playing:
+        setIsPlaying(true)
+        setCurrentTrack(
+          (await TrackPlayer.getTrack(
+            await TrackPlayer.getCurrentTrack()
+          )) as SongType.SongProps
+        )
+        break
+      case State.Paused:
+        setIsPlaying(false)
+        break
+      case State.Connecting:
+      case State.Buffering:
+        break
+      case State.None:
+        if (isIdleState) return
+        setIsPlaying(false)
+        setIsIdleState(true)
+        const idleTrack = await TrackPlayer.getTrack(
+          await TrackPlayer.getCurrentTrack()
+        )
+        setIsIdleState(false)
 
-      const state = await TrackPlayer.getState()
-
-      console.log('playBottomBar state', state)
-      switch (state) {
-        case State.Playing:
-          setIsPlaying(true)
-          // await handleChangeIntoPlay()
-          if (await TrackPlayer.isServiceRunning()) {
-            console.log('running')
-            setCurrentTrack(
-              (await TrackPlayer.getTrack(
-                await TrackPlayer.getCurrentTrack()
-              )) as SongType.SongProps
-            )
-          }
-          console.log('currentTrack in handleChangeIntoPlay', currentTrack)
-          break
-        case State.Paused:
-          setIsPlaying(false)
-          break
-        case State.None:
-          setIsPlaying(false)
-          // await handleIdleState()
-          if (await TrackPlayer.isServiceRunning()) {
-            const playList = await TrackPlayer.getQueue()
-            console.log('idle Track List', playList)
-            await TrackPlayer.reset()
-            // await TrackPlayer.setRepeatMode(RepeatMode.Queue)
-            await TrackPlayer.add(playList)
-            // await TrackPlayer.play()
-          } else {
-            console.log('unknown Error')
-          }
-          break
-        default:
-          setIsPlaying(false)
-          break
-      }
+        // await playTracker(idleTrack as SongType.SongProps)
+        break
+      default:
+        setIsPlaying(false)
+        break
     }
-  )
+  })
+  useTrackPlayerEvents([Event.PlaybackTrackChanged], async event => {
+    console.log('changed event', event)
+    if (!nextTrack.id) return
+    await pause()
+    await playTracker(nextTrack)
+    setNextTrack(initTrackInfo)
+  })
 
+  useTrackPlayerEvents([Event.RemoteNext], event => {
+    console.log('eeeeeeeeeeeeee')
+  })
   return {
     isPlaying,
-    currentTrack
+    currentTrack,
+    setNextTrack
   }
 }
 
-const handleChangeIntoPlay = async () => {
-  const [currentTrack, setCurrentTrack] = useAtom(currentTrackAtom)
-  if (await TrackPlayer.isServiceRunning()) {
-    console.log('running')
-    setCurrentTrack(
-      (await TrackPlayer.getTrack(
-        await TrackPlayer.getCurrentTrack()
-      )) as SongType.SongProps
-    )
-  }
-  console.log('currentTrack in handleChangeIntoPlay', currentTrack)
-}
-
-const handleTrackStateChange = async () => {
-  const state = await TrackPlayer.getState()
-  const [isPlaying, setIsPlaying] = useAtom(isPlayingAtom)
-
-  console.log('playBottomBar state', state)
-  switch (state) {
-    case State.Playing:
-      setIsPlaying(true)
-      await handleChangeIntoPlay()
-      break
-    case State.Paused:
-      setIsPlaying(false)
-      break
-    case State.None:
-      setIsPlaying(false)
-      await handleIdleState()
-      break
-    default:
-      setIsPlaying(false)
-      break
-  }
-}
-const handleIdleState = async () => {
-  if (await TrackPlayer.isServiceRunning()) {
-    const playList = await TrackPlayer.getQueue()
-    console.log('idle Track List', playList)
-    await TrackPlayer.reset()
-    // await TrackPlayer.setRepeatMode(RepeatMode.Queue)
-    await TrackPlayer.add(playList)
-    // await TrackPlayer.play()
-  } else {
-    console.log('unknown Error')
-  }
-}
 async function initTrack() {
   if (await TrackPlayer.isServiceRunning()) return
   await TrackPlayer.setupPlayer()
@@ -203,44 +143,46 @@ async function fetchSongInfo({ id, level }: APIParams.FetchUrlParam) {
 
 export async function playTracker(songInfo: SongType.SongProps) {
   await initTrack()
+
   await TrackPlayer.setRepeatMode(RepeatMode.Queue)
   const playList = await TrackPlayer.getQueue()
   if (playList.length > 0) {
     const _pos = playList.findIndex(item => item.id === songInfo.id)
     if (_pos === -1) {
       await fetchSongInfo({ id: songInfo.id })
-        .then(async res => {
+        .then(res => {
           playList.unshift({
-            id: songInfo.id,
-            url: res,
-            artist: songInfo.artist,
-            title: songInfo.title,
-            album: songInfo.album,
-            albumPicUrl: songInfo.albumPicUrl
+            ...songInfo,
+            url: res
           })
         })
         .catch(() => console.log('false to fetchSongInfo'))
       await TrackPlayer.reset()
-      await TrackPlayer.add(playList)
+      console.log('newPlayList', uniqBy(playList, 'id'))
+
+      await TrackPlayer.add(uniqBy(playList, 'id'))
       await TrackPlayer.play()
     } else {
       const newPlayList = [...playList.splice(_pos), ...playList.slice(0, _pos)]
+
+      await fetchSongInfo({ id: newPlayList[0].id })
+        .then(res => {
+          newPlayList[0].url = res
+        })
+        .catch(() => console.log('false to fetchSongInfo'))
+
       await TrackPlayer.reset()
-      await TrackPlayer.add(newPlayList)
+      await TrackPlayer.add(uniqBy(newPlayList, 'id'))
       await TrackPlayer.play()
     }
   } else {
     await fetchSongInfo({ id: songInfo.id })
       .then(async res => {
         playList.unshift({
-          id: songInfo.id,
-          url: res,
-          artist: songInfo.artist,
-          title: songInfo.title,
-          album: songInfo.album,
-          albumPicUrl: songInfo.albumPicUrl
+          ...songInfo,
+          url: res
         })
-        await TrackPlayer.add(playList)
+        await TrackPlayer.add(uniqBy(playList, 'id'))
         await TrackPlayer.play()
 
         console.log(await TrackPlayer.getState())
@@ -249,11 +191,7 @@ export async function playTracker(songInfo: SongType.SongProps) {
         console.log('获取歌曲失败', err)
       })
   }
-  console.log('currentPlayList', await TrackPlayer.getQueue())
-}
-
-export async function addToNextPlay(songInfo: SongType.SongProps) {
-  console.log('addTrackToNext')
+  // console.log('currentPlayList', await TrackPlayer.getQueue())
 }
 
 export async function pause() {
@@ -270,8 +208,4 @@ export async function next() {
 
 export async function prev() {
   await TrackPlayer.skipToPrevious()
-}
-
-export async function destroyTracker() {
-  // subscription.forEach(item => item.remove())
 }
