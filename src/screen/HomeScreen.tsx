@@ -1,9 +1,3 @@
-import { fetchHotAlbumList, fetchBanner } from '@/api/hotInfo'
-import HomeCarousel from '@/components/Home/HomeBanner'
-import HotAlbumList from '@/components/Home/HotAlbumList'
-import { BannerAtom, HotAlbumListAtom } from '@/jotai/searcher'
-import { useIsFocused } from '@react-navigation/core'
-import { useSetAtom } from 'jotai'
 import { useState, useCallback, useEffect } from 'react'
 import {
   RefreshControl,
@@ -11,13 +5,15 @@ import {
   View,
   useWindowDimensions
 } from 'react-native'
+import { fetchHotAlbumList, fetchBanner } from '@/api/hotInfo'
+import HomeCarousel from '@/components/Home/BannerCarousel'
+import HotAlbumList from '@/components/Home/HotAlbumList'
+import { AlbumType, BannerType } from '@/jotai/types'
 
 function HomeSCreen() {
   const width = useWindowDimensions().width
-
-  const isFocused = useIsFocused()
-  const setBanner = useSetAtom(BannerAtom)
-  const setAlbumList = useSetAtom(HotAlbumListAtom)
+  const [banner, setBanner] = useState<BannerType.BannerList>()
+  const [albumList, setAlbumList] = useState<AlbumType.AlbumList>()
   const [refreshing, setRefreshing] = useState(false)
 
   const handleBanner = async () => {
@@ -54,14 +50,9 @@ function HomeSCreen() {
     await Promise.all([handleBanner(), handleAlbumList()])
     setRefreshing(false)
   }, [])
-
   useEffect(() => {
-    if (isFocused) onRefresh()
-
-    return () => {
-      setRefreshing(false)
-    }
-  }, [isFocused])
+    onRefresh()
+  }, [])
   return (
     <>
       <ScrollView
@@ -69,7 +60,7 @@ function HomeSCreen() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
         <View style={{ marginTop: 20 }}>
-          <HomeCarousel />
+          <HomeCarousel bannerList={banner} />
         </View>
         <View
           style={{
@@ -77,7 +68,7 @@ function HomeSCreen() {
             height: width / 2,
             marginTop: 42
           }}>
-          <HotAlbumList />
+          <HotAlbumList albumList={albumList} />
         </View>
       </ScrollView>
     </>

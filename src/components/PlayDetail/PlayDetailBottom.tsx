@@ -1,14 +1,13 @@
 import { useMemo, useState } from 'react'
 import { View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { next, pause, play, prev, useTrackPlayer } from '@/jotai/player'
+import { next, pause, play, prev } from '@/jotai/player'
 import { useTheme } from 'react-native-paper/src/core/theming'
 
-function PlayDetailBottom(): JSX.Element {
+function PlayDetailBottom({isPlaying}:{isPlaying:boolean}): JSX.Element {
   const playMode = useMemo(() => ['autorenew', 'replay'], [])
   const theme = useTheme()
-  const [ModeSelect, setModeSelect] = useState(0)
-  const { isPlaying } = useTrackPlayer()
+  const [ModeSelect, setModeSelect] = useState<number>(0)
 
   return (
     <>

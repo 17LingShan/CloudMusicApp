@@ -5,14 +5,13 @@ import StackHome from './StackHome'
 import StackPlay from './StackPlay'
 import StackMine from './StackMine'
 import PlayBottomBar from '@/components/PlayBottomBar'
-import React from 'react'
 
 const Tab = createBottomTabNavigator()
 
 function TabNavigator(): JSX.Element {
   const theme = useTheme()
 
-  const handleIcon: TabNavigatorType.HandleIcon = iconName => {
+  const handleTabIcon: TabNavigatorType.HandleIcon = iconName => {
     return ({ focused, color, size }) => {
       return <Icon name={iconName} color={color} size={size} />
     }
@@ -21,17 +20,17 @@ function TabNavigator(): JSX.Element {
   const CommonRoutes = [
     {
       name: 'Home',
-      icon: handleIcon('home'),
+      icon: handleTabIcon('home'),
       component: StackHome
     },
     {
       name: 'play',
-      icon: handleIcon('play'),
+      icon: handleTabIcon('play'),
       component: StackPlay
     },
     {
       name: 'user',
-      icon: handleIcon('user'),
+      icon: handleTabIcon('user'),
       component: StackMine
     }
   ]

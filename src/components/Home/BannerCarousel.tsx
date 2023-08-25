@@ -1,9 +1,14 @@
 import { BannerAtom } from '@/jotai/searcher'
+import { BannerType } from '@/jotai/types'
 import { useAtomValue } from 'jotai'
 import { Image, View, useWindowDimensions } from 'react-native'
 import Carousel from 'react-native-reanimated-carousel'
 
-function HomeCarousel(): JSX.Element {
+function BannerCarousel({
+  bannerList
+}: {
+  bannerList: BannerType.BannerList
+}): JSX.Element {
   const width = useWindowDimensions().width
   const banner = useAtomValue(BannerAtom)
   return (
@@ -14,7 +19,7 @@ function HomeCarousel(): JSX.Element {
           width={width}
           height={width / 2.57}
           autoPlay={true}
-          data={banner}
+          data={bannerList}
           scrollAnimationDuration={4000}
           renderItem={({ item, index }) => (
             <View style={{ paddingHorizontal: 10 }}>
@@ -30,4 +35,4 @@ function HomeCarousel(): JSX.Element {
   )
 }
 
-export default HomeCarousel
+export default BannerCarousel

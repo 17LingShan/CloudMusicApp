@@ -1,6 +1,6 @@
+import { CommonActions, NavigationProp } from '@react-navigation/core'
 import { playTracker } from '@/jotai/player'
 import { SongType } from '@/jotai/types'
-import { CommonActions, NavigationProp } from '@react-navigation/core'
 
 export function formatCount(originNum: number) {
   return originNum > 10000
@@ -21,10 +21,8 @@ export async function handlePressItem(
   navigation: NavigationProp<ReactNavigation.RootParamList>,
   songInfo: SongType.SongProps
 ) {
-  navigation.dispatch(
-    CommonActions.navigate({ name: 'playDetail', params: songInfo })
-  )
   await playTracker(songInfo)
+  navigation.dispatch(CommonActions.navigate('playDetail'))
 }
 
 export function formatMinute(second: number): string {

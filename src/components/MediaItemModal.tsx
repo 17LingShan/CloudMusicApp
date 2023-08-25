@@ -7,7 +7,7 @@ import { StyleSheet, View, useWindowDimensions } from 'react-native'
 import { useTheme } from 'react-native-paper/src/core/theming'
 import TrackPlayer, { Track } from 'react-native-track-player'
 
-function MediaItemMOdal(): JSX.Element {
+function MediaItemModal(): JSX.Element {
   const theme = useTheme()
   const navigation = useNavigation()
   const { setNextTrack } = useTrackPlayer()
@@ -53,7 +53,11 @@ function MediaItemMOdal(): JSX.Element {
             title="add to next play"
             onPress={async () => {
               console.log('next Track', params)
-              setNextTrack(params)
+              // setNextTrack(params)
+              await TrackPlayer.add(
+                params as Track,
+                await TrackPlayer.getCurrentTrack()
+              )
               navigation.goBack()
             }}></Button>
         </View>
@@ -62,4 +66,4 @@ function MediaItemMOdal(): JSX.Element {
   )
 }
 
-export default MediaItemMOdal
+export default MediaItemModal

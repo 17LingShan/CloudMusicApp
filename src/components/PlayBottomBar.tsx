@@ -1,97 +1,32 @@
-import { isPlayingAtom, pause, play, useTrackPlayer } from '@/jotai/player'
+import { useEffect, useMemo, useRef } from 'react'
+import { pause, play, useTrackPlayer } from '@/jotai/player'
 import {
   CommonActions,
   useIsFocused,
   useNavigation
 } from '@react-navigation/core'
-import { useEffect, useMemo, useState } from 'react'
 import { Animated, Easing, Image, Pressable, View } from 'react-native'
-import TrackPlayer, {
-  Event,
-  RepeatMode,
-  State,
-  useTrackPlayerEvents
-} from 'react-native-track-player'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import coverImg from '@/assets/cover.jpg'
-import { SongType } from '@/jotai/types'
-import { useAtom } from 'jotai'
 
 function PlayBottomBar(): JSX.Element {
   const isFocused = useIsFocused()
   const navigation = useNavigation()
-
-  // const [isPlaying, setPlaying] = useAtom(isPlayingAtom)
-  // const [currentTrack, setCurrentTrack] = useState<SongType.SongProps>()
   const { isPlaying, currentTrack } = useTrackPlayer()
-  const bottom = useMemo(
-    () => new Animated.Value(currentTrack.id ? 60 : -80),
-    []
-  )
 
-  // const handleTrackStateChange = async () => {
-  //   const state = await TrackPlayer.getState()
-  //   console.log('playBottomBar state', state)
-  //   switch (state) {
-  //     case State.Playing:
-  //       setPlaying(true)
-  //       await handleChangeIntoPlay()
-  //       break
-  //     case State.Paused:
-  //       setPlaying(false)
-  //       break
-  //     case State.None:
-  //       setPlaying(false)
-  //       await handleIdleState()
-  //       break
-  //     default:
-  //       setPlaying(false)
-  //       break
-  //   }
-  // }
+  const bottom = useRef(
+    new Animated.Value(currentTrack.id ?? 0 ? 60 : -80)
+  ).current
 
-  // const handleIdleState = async () => {
-  //   if (await TrackPlayer.isServiceRunning()) {
-  //     const playList = await TrackPlayer.getQueue()
-  //     console.log('idle Track List', playList)
-  //     await TrackPlayer.reset()
-  //     // await TrackPlayer.setRepeatMode(RepeatMode.Queue)
-  //     await TrackPlayer.add(playList)
-  //     // await TrackPlayer.play()
-  //   } else {
-  //     console.log('unknown Error')
-  //   }
-  // }
-
-  // const handleChangeIntoPlay = async () => {
-  //   if (await TrackPlayer.isServiceRunning()) {
-  //     console.log('running')
-  //     setCurrentTrack(
-  //       (await TrackPlayer.getTrack(
-  //         await TrackPlayer.getCurrentTrack()
-  //       )) as SongType.SongProps
-  //     )
-  //   }
-  //   console.log('currentTrack in handleChangeIntoPlay', currentTrack)
-  // }
-  const handleChangeIntoPause = async () => {}
-  const handleChangeIntoNext = async () => {}
-  const handleChangeIntoPrev = async () => {}
-
-  // useTrackPlayerEvents(
-  //   [Event.PlaybackState, Event.PlaybackTrackChanged],
-  //   async () => await handleTrackStateChange()
-  // )
   const bottomAni = Animated.timing(bottom, {
-    toValue: currentTrack.id ? 60 : -80,
+    toValue: currentTrack.id ?? 0 ? 60 : -80,
     duration: 400,
     useNativeDriver: false,
     easing: Easing.quad
   })
   bottomAni.start()
-  useEffect(() => {
-    console.log('render ')
 
+  useEffect(() => {
     return () => {
       bottomAni.reset()
       console.log('destroy')
@@ -122,12 +57,7 @@ function PlayBottomBar(): JSX.Element {
             }}>
             <Pressable
               onPress={() => {
-                navigation.dispatch(
-                  CommonActions.navigate({
-                    name: 'playDetail',
-                    params: currentTrack
-                  })
-                )
+                navigation.dispatch(CommonActions.navigate('playDetail'))
               }}>
               <Image
                 style={{
@@ -135,7 +65,9 @@ function PlayBottomBar(): JSX.Element {
                   height: 48,
                   borderRadius: 6
                 }}
-                source={currentTrack.id ? currentTrack.albumPicUrl : coverImg}
+                source={
+                  currentTrack.id ?? 0 ? currentTrack.albumPicUrl : coverImg
+                }
               />
             </Pressable>
             <Icon

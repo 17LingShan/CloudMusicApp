@@ -1,14 +1,16 @@
-import { useAtomValue } from 'jotai'
 import { Image, Text, View, Pressable, useWindowDimensions } from 'react-native'
-import { HotAlbumListAtom } from '@/jotai/searcher'
 import Carousel from 'react-native-reanimated-carousel'
 import { useNavigation, CommonActions } from '@react-navigation/core'
+import { AlbumType } from '@/jotai/types'
 
-function HotAlbumList(): JSX.Element {
+function HotAlbumList({
+  albumList
+}: {
+  albumList: AlbumType.AlbumList
+}): JSX.Element {
   const width = useWindowDimensions().width
 
   const navigation = useNavigation()
-  const AlbumList = useAtomValue(HotAlbumListAtom)
 
   return (
     <>
@@ -19,7 +21,7 @@ function HotAlbumList(): JSX.Element {
           height={width / 2.5}
           width={width / 2.5}
           style={{ width: width, overflow: 'visible' }}
-          data={AlbumList}
+          data={albumList}
           overscrollEnabled={false}
           renderItem={({ item }) => (
             <Pressable
