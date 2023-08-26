@@ -1,19 +1,19 @@
 import { EmitterSubscription } from 'react-native'
-import { atom, useAtom } from 'jotai'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import TrackPlayer, {
   Capability,
   RepeatMode,
   Event,
   State,
   AppKilledPlaybackBehavior,
-  useTrackPlayerEvents
+  useTrackPlayerEvents,
+  Track
 } from 'react-native-track-player'
 import { useMMKVStorage } from 'react-native-mmkv-storage'
 import { uniqBy } from 'lodash'
 import { fetchUrlById } from '@/api/search'
 import { storage } from '@/storage'
 import type { SongType } from './types'
-import { useState } from 'react'
 
 const subscription: EmitterSubscription[] = []
 const initTrackInfo: SongType.SongProps = {
@@ -26,101 +26,112 @@ const initTrackInfo: SongType.SongProps = {
     uri: ''
   }
 }
+
+export const isHandlingEventAtom = atom<boolean>(false)
 export const isPlayingAtom = atom<boolean>(false)
-export const isIdleStateAtom = atom<boolean>(false)
+export const playListAtom = atom<SongType.SongList>([])
 export const currentTrackAtom = atom<SongType.SongProps>(initTrackInfo)
 export const nextTrackAtom = atom<SongType.SongProps>(initTrackInfo)
 
 export function useTrackPlayer() {
-  const [isPlaying, setIsPlaying] = useAtom(isPlayingAtom)
-  const [isIdleState, setIsIdleState] = useAtom(isIdleStateAtom)
-  const [currentTrack, setCurrentTrack] = useAtom(currentTrackAtom)
-  const [nextTrack, setNextTrack] = useAtom(nextTrackAtom)
-
+  const isPlaying = useAtomValue(isPlayingAtom)
+  const currentTrack = useAtomValue(currentTrackAtom)
+  const playList = useAtomValue(playListAtom)
+  const setNextTrack = useSetAtom(nextTrackAtom)
   return {
     isPlaying,
     currentTrack,
+    playList,
     setNextTrack
   }
 }
 
-export function useTrackPlayerController() {
+export async function handleNext(
+  currentTrack: SongType.SongProps,
+  playList: SongType.SongList,
+  direction: number
+) {
+  return async () => {
+    const currentIndex = playList.findIndex(item => item.id === currentTrack.id)
+    const nextIndex =
+      (currentIndex + direction + playList.length) % playList.length
+    const nextPlayTrack = playList[nextIndex]
+    console.log('nextPlayTrack', nextPlayTrack)
+    await playTrack(nextPlayTrack)
+  }
+}
+
+export function useTrackPlayerMiddleware() {
   const [isPlaying, setIsPlaying] = useAtom(isPlayingAtom)
-  // const [isIdleState, setIsIdleState] = useAtom(isIdleStateAtom)
-  // const [isIdleState, setIsIdleState] = useState<boolean>(false)
-
+  const [playList, setPlayList] = useAtom(playListAtom)
   const [currentTrack, setCurrentTrack] = useAtom(currentTrackAtom)
-  const [nextTrack, setNextTrack] = useAtom(nextTrackAtom)
-
+  const [isHandlingEvent, setIsHandlingEvent] = useAtom(isHandlingEventAtom)
   const [storagePlayList, setStoragePlayList] = useMMKVStorage(
     'play-list',
     storage,
     []
   )
-  const [isHandlingEvent, setIsHandlingEvent] = useState<boolean>(false)
-  useTrackPlayerEvents([Event.PlaybackState], async event => {
-    if (isHandlingEvent) return // 如果正在处理事件，则直接返回
 
-    setIsHandlingEvent(true) // 设置标志变量为 true，表示正在处理事件
-
-    const { state } = event
-
-    switch (state) {
+  useTrackPlayerEvents([Event.PlaybackState], event => {
+    switch (event.state) {
       case State.Playing:
         setIsPlaying(true)
-        const playingTrack = (await TrackPlayer.getTrack(
-          await TrackPlayer.getCurrentTrack()
-        )) as SongType.SongProps
-        if (playingTrack) setCurrentTrack(playingTrack)
-
-        // setIsIdleState(false)
-
-        setStoragePlayList(
-          uniqBy([...(await TrackPlayer.getQueue()), ...storagePlayList], 'id')
-        )
-        break
-      case State.Paused:
-        setIsPlaying(false)
-        break
-      case State.Connecting:
-      case State.Buffering:
-        break
-      case State.None:
-        if (!currentTrack.id) break
-
-        // if (isIdleState) break
-        await pause()
-        // setIsIdleState(true)
-        setIsPlaying(false)
-        const idleTrack = (await TrackPlayer.getTrack(
-          await TrackPlayer.getCurrentTrack()
-        )) as SongType.SongProps
-        console.log('idleTrack', idleTrack)
-        if (idleTrack) await playTracker(idleTrack)
-        // setIsIdleState(false)
-
         break
       default:
         setIsPlaying(false)
         break
     }
-    setIsHandlingEvent(false) // 处理完事件后，将标志变量设置为 false
   })
-  useTrackPlayerEvents([Event.PlaybackTrackChanged], async event => {
-    console.log('changed event', event)
 
-    if (nextTrack.id) {
-      await pause()
-      await playTracker(nextTrack)
-      setNextTrack(initTrackInfo)
-      setCurrentTrack(nextTrack)
+  // 如果当前歌曲播放结束后到下一首，有nextTrack和track，如果是直接点某一首歌的话，track没有
+  useTrackPlayerEvents([Event.PlaybackTrackChanged], async event => {
+    console.log('change event', event)
+
+    await pause()
+
+    if (event.track === 0) {
+      // 正常下一首播放
+      console.log(1)
+      const prevTrack = (await TrackPlayer.getTrack(0)) as SongType.SongProps
+      const currentIndex = playList.findIndex(item => item.id === prevTrack.id)
+      const nextPlayTrack = playList[(currentIndex + 1) % playList.length]
+      console.log('nextPlayTrack', nextPlayTrack)
+      await playTrack(nextPlayTrack)
     } else {
-      const changeTrack = (await TrackPlayer.getTrack(
-        await TrackPlayer.getCurrentTrack()
-      )) as SongType.SongProps
-      if (changeTrack) setCurrentTrack(changeTrack)
+      // 选择某一首播放
+      console.log(2)
+      const playingTrack = (await TrackPlayer.getTrack(0)) as SongType.SongProps
+      if (playingTrack.id === currentTrack.id) return
+      setPlayList(prev =>
+        uniqBy([...storagePlayList, playingTrack, ...prev], 'id')
+      )
+      setCurrentTrack(playingTrack)
     }
+
+    setStoragePlayList(uniqBy([...storagePlayList, ...playList], 'id'))
+    await play()
   })
+}
+
+export function useTrackPlayerRemoteListener() {
+  const { currentTrack, playList } = useTrackPlayer()
+  const next = handleNext(currentTrack, playList, 1)
+  const prev = handleNext(currentTrack, playList, -1)
+  useTrackPlayerEvents(
+    [Event.RemoteNext, Event.RemotePrevious],
+    async event => {
+      console.log('remote event', event)
+      switch (event.type) {
+        case 'remote-next':
+          console.log('111')
+          ;(await next)()
+          break
+        case Event.RemotePrevious:
+          await handleNext(currentTrack, playList, -1)
+          break
+      }
+    }
+  )
 }
 
 async function initTrack() {
@@ -148,12 +159,6 @@ async function initTrack() {
           }),
           TrackPlayer.addEventListener(Event.RemotePause, () => {
             pause()
-          }),
-          TrackPlayer.addEventListener(Event.RemoteNext, () => {
-            next()
-          }),
-          TrackPlayer.addEventListener(Event.RemotePrevious, () => {
-            prev()
           })
         ]
       )
@@ -167,6 +172,23 @@ async function fetchSongInfo({ id, level }: APIParams.FetchUrlParam) {
     .catch(err => url)
 
   return url ? Promise.resolve(url) : Promise.reject(url)
+}
+
+export async function playTrack(songInfo: SongType.SongProps) {
+  await initTrack()
+  console.log('songInfo', songInfo)
+
+  const hasUrlTrackInfo = await fetchSongInfo({ id: songInfo.id })
+    .then(res => ({
+      ...songInfo,
+      url: res
+    }))
+    .catch(() => console.log('false to fetchSongInfo'))
+  await TrackPlayer.reset()
+  await TrackPlayer.setRepeatMode(RepeatMode.Queue)
+  await TrackPlayer.add(hasUrlTrackInfo as Track)
+  // await TrackPlayer.play()
+  console.log('currentTrack', await TrackPlayer.getQueue())
 }
 
 export async function playTracker(songInfo: SongType.SongProps) {
@@ -212,12 +234,4 @@ export async function pause() {
 
 export async function play() {
   await TrackPlayer.play()
-}
-
-export async function next() {
-  await TrackPlayer.skipToNext()
-}
-
-export async function prev() {
-  await TrackPlayer.skipToPrevious()
 }
