@@ -16,13 +16,10 @@ import {
   useTrackPlayerMiddleware,
   useTrackPlayerRemoteListener
 } from '@/jotai/player'
-// import { useTrackPlayerController } from '@/jotai/player'
 
 const Drawer = createDrawerNavigator()
 
 function Music(): JSX.Element {
-  // useTrackPlayerController()
-  useTrackPlayerRemoteListener()
   useTrackPlayerMiddleware()
   useEffect(() => {
     return () => {

@@ -65,7 +65,6 @@ export function useTrackPlayerMiddleware() {
   const [isPlaying, setIsPlaying] = useAtom(isPlayingAtom)
   const [playList, setPlayList] = useAtom(playListAtom)
   const [currentTrack, setCurrentTrack] = useAtom(currentTrackAtom)
-  const [isHandlingEvent, setIsHandlingEvent] = useAtom(isHandlingEventAtom)
   const [storagePlayList, setStoragePlayList] = useMMKVStorage(
     'play-list',
     storage,
@@ -95,20 +94,21 @@ export function useTrackPlayerMiddleware() {
       const prevTrack = (await TrackPlayer.getTrack(0)) as SongType.SongProps
       const currentIndex = playList.findIndex(item => item.id === prevTrack.id)
       const nextPlayTrack = playList[(currentIndex + 1) % playList.length]
-      console.log('nextPlayTrack', nextPlayTrack)
       await playTrack(nextPlayTrack)
     } else {
       // 选择某一首播放
       console.log(2)
       const playingTrack = (await TrackPlayer.getTrack(0)) as SongType.SongProps
       if (playingTrack.id === currentTrack.id) return
+      setStoragePlayList(
+        uniqBy([playingTrack, ...storagePlayList, ...playList], 'id')
+      )
       setPlayList(prev =>
         uniqBy([...storagePlayList, playingTrack, ...prev], 'id')
       )
       setCurrentTrack(playingTrack)
     }
 
-    setStoragePlayList(uniqBy([...storagePlayList, ...playList], 'id'))
     await play()
   })
 }
@@ -127,7 +127,8 @@ export function useTrackPlayerRemoteListener() {
           ;(await next)()
           break
         case Event.RemotePrevious:
-          await handleNext(currentTrack, playList, -1)
+          console.log('222')
+          ;(await prev)()
           break
       }
     }
@@ -168,8 +169,14 @@ async function initTrack() {
 
 async function fetchSongInfo({ id, level }: APIParams.FetchUrlParam) {
   let url: string | undefined = await fetchUrlById({ id: id, level: level })
-    .then(res => (res.data.code !== 200 ? url : res.data.data[0].url))
-    .catch(err => url)
+    .then(res => {
+      console.log('fetchSongInfo res', res.data)
+      return res.data.code !== 200 ? url : res.data.data[0].url
+    })
+    .catch(err => {
+      console.log('fetchSongInfoErr', err)
+      return url
+    })
 
   return url ? Promise.resolve(url) : Promise.reject(url)
 }
@@ -189,43 +196,6 @@ export async function playTrack(songInfo: SongType.SongProps) {
   await TrackPlayer.add(hasUrlTrackInfo as Track)
   // await TrackPlayer.play()
   console.log('currentTrack', await TrackPlayer.getQueue())
-}
-
-export async function playTracker(songInfo: SongType.SongProps) {
-  await initTrack()
-
-  await TrackPlayer.setRepeatMode(RepeatMode.Queue)
-  const playList = await TrackPlayer.getQueue()
-
-  const _pos = playList.findIndex(item => item.id === songInfo.id)
-  if (_pos === -1) {
-    await fetchSongInfo({ id: songInfo.id })
-      .then(res => {
-        playList.unshift({
-          ...songInfo,
-          url: res
-        })
-      })
-      .catch(() => console.log('false to fetchSongInfo'))
-    await TrackPlayer.reset()
-    await TrackPlayer.setRepeatMode(RepeatMode.Queue)
-
-    await TrackPlayer.add(uniqBy(playList, 'id'))
-    await TrackPlayer.play()
-  } else {
-    const newPlayList = [...playList.splice(_pos), ...playList.slice(0, _pos)]
-
-    await fetchSongInfo({ id: newPlayList[0].id })
-      .then(res => {
-        newPlayList[0].url = res
-      })
-      .catch(() => console.log('false to fetchSongInfo'))
-
-    await TrackPlayer.reset()
-    await TrackPlayer.setRepeatMode(RepeatMode.Queue)
-    await TrackPlayer.add(uniqBy(newPlayList, 'id'))
-    await TrackPlayer.play()
-  }
 }
 
 export async function pause() {
