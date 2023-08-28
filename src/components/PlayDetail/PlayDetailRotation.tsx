@@ -1,15 +1,14 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { Animated, Easing, View, useWindowDimensions } from 'react-native'
-import { useAtomValue } from 'jotai'
 import coverImg from '@/assets/cover.jpg'
-import { SongType } from '@/jotai/types'
-import { isPlayingAtom, useTrackPlayer } from '@/jotai/player'
+import { SongType } from '@/mobx/types'
+import playerStore from '@/mobx/player'
+import { toJS } from 'mobx'
 
 function PlayDetailRotation({
   albumPicUrl
 }: Pick<SongType.SongProps, 'albumPicUrl'>): JSX.Element {
   const screenWidth = useWindowDimensions().width * 0.618
-  const { isPlaying } = useTrackPlayer()
   const rotate = useRef(new Animated.Value(0)).current
 
   const rotateAni = useMemo(
@@ -30,8 +29,8 @@ function PlayDetailRotation({
   )
 
   useEffect(() => {
-    isPlaying ? rotateAni() : rotate.stopAnimation()
-  }, [isPlaying])
+    toJS(playerStore.isPlaying) ? rotateAni() : rotate.stopAnimation()
+  }, [toJS(playerStore.isPlaying)])
 
   const rotateInterpolation = rotate.interpolate({
     inputRange: [0, 1],

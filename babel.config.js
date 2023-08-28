@@ -26,6 +26,8 @@ module.exports = {
           '.native.js'
         ]
       }
-    ]
+    ],
+    '@babel/plugin-transform-flow-strip-types',
+    ['@babel/plugin-proposal-class-properties', { loose: false }]
   ]
 }

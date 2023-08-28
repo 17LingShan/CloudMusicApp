@@ -1,29 +1,28 @@
 import { useState } from 'react'
 import { Text, View, FlatList } from 'react-native'
-import { useAtom, useAtomValue } from 'jotai'
-import { search } from '@/api/search'
-import { SearchKeywordsAtom, SearchListAtom } from '@/jotai/searcher'
-import MediaItem from '@/components/MediaItem'
-import SearchHeader from '@/components/SearchHeader'
-import { RefreshControl } from 'react-native-gesture-handler'
-import { handlePressItem, handlePressModalIcon } from '@/util/common'
-import { useNavigation } from '@react-navigation/core'
-import { SongType } from '@/jotai/types'
+import { toJS } from 'mobx'
+import { observer } from 'mobx-react'
 import { useTheme } from 'react-native-paper'
+import { RefreshControl } from 'react-native-gesture-handler'
+import { useNavigation } from '@react-navigation/core'
+import { handlePressItem, handlePressModalIcon } from '@/util/common'
+import SearchHeader from '@/components/SearchHeader'
+import MediaItem from '@/components/MediaItem'
+import { search } from '@/api/search'
+import searchStore from '@/mobx/searcher'
+import { SongType } from '@/mobx/types'
 
 function SearchScreen(): JSX.Element {
   const theme = useTheme()
   const navigation = useNavigation()
-  const keywords = useAtomValue(SearchKeywordsAtom)
-  const [searchList, setSearchList] = useAtom(SearchListAtom)
   const [refreshing, setRefreshing] = useState(false)
 
   const handleSearch = async () => {
-    if (!keywords) return setRefreshing(false)
+    if (!searchStore.keywords) return setRefreshing(false)
     setRefreshing(true)
-    await search({ keywords: keywords, type: 1 })
+    await search({ keywords: toJS(searchStore.keywords), type: 1 })
       .then(res => {
-        setSearchList([
+        searchStore.setSearchList([
           ...res.data.result.songs.map(
             item =>
               ({
@@ -51,9 +50,12 @@ function SearchScreen(): JSX.Element {
 
   return (
     <>
-      <SearchHeader handleSearch={handleSearch} />
+      <SearchHeader
+        handleSearch={handleSearch}
+        onIconPress={() => searchStore.setKeywords('')}
+      />
       <FlatList
-        data={searchList}
+        data={toJS(searchStore.searchList)}
         renderItem={({ item, index }) => (
           <MediaItem
             position={index + 1}
@@ -80,4 +82,4 @@ function SearchScreen(): JSX.Element {
   )
 }
 
-export default SearchScreen
+export default observer(SearchScreen)

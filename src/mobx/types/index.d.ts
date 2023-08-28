@@ -1,11 +1,17 @@
 import { State } from 'react-native-track-player'
 declare namespace SongType {
+  interface LyricItem {
+    time: string
+    text: string
+  }
+
   interface SongProps {
     id: number
     title: string
     artist: string
     album: string
     fee: 0 | 1 | 4 | 8
+    lyric?: LyricItem[]
     url?: string
     albumPicUrl: {
       uri: string

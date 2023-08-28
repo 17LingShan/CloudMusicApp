@@ -1,5 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
-import { pause, play, useTrackPlayer } from '@/jotai/player'
+import { useEffect, useRef } from 'react'
 import {
   CommonActions,
   useIsFocused,
@@ -8,18 +7,21 @@ import {
 import { Animated, Easing, Image, Pressable, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import coverImg from '@/assets/cover.jpg'
+import playerStore from '@/mobx/player'
+import { toJS } from 'mobx'
+import { observer } from 'mobx-react'
+import { pause, play } from '@/util/playTool'
 
 function PlayBottomBar(): JSX.Element {
   const isFocused = useIsFocused()
   const navigation = useNavigation()
-  const { isPlaying, currentTrack } = useTrackPlayer()
 
   const bottom = useRef(
-    new Animated.Value(currentTrack.id ?? 0 ? 60 : -80)
+    new Animated.Value(playerStore.currentTrack.id ?? 0 ? 60 : -80)
   ).current
 
   const bottomAni = Animated.timing(bottom, {
-    toValue: currentTrack.id ?? 0 ? 60 : -80,
+    toValue: playerStore.currentTrack.id ?? 0 ? 60 : -80,
     duration: 400,
     useNativeDriver: false,
     easing: Easing.quad
@@ -66,14 +68,16 @@ function PlayBottomBar(): JSX.Element {
                   borderRadius: 6
                 }}
                 source={
-                  currentTrack.id ?? 0 ? currentTrack.albumPicUrl : coverImg
+                  toJS(playerStore.currentTrack.id) ?? 0
+                    ? toJS(playerStore.currentTrack.albumPicUrl)
+                    : coverImg
                 }
               />
             </Pressable>
             <Icon
               size={48}
-              name={isPlaying ? 'pause' : 'play-arrow'}
-              onPress={() => (isPlaying ? pause() : play())}
+              name={playerStore.isPlaying ? 'pause' : 'play-arrow'}
+              onPress={() => (playerStore.isPlaying ? pause() : play())}
             />
           </View>
         </View>
@@ -82,4 +86,4 @@ function PlayBottomBar(): JSX.Element {
   )
 }
 
-export default PlayBottomBar
+export default observer(PlayBottomBar)

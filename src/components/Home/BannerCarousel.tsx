@@ -1,6 +1,4 @@
-import { BannerAtom } from '@/jotai/searcher'
-import { BannerType } from '@/jotai/types'
-import { useAtomValue } from 'jotai'
+import { BannerType } from '@/mobx/types'
 import { Image, View, useWindowDimensions } from 'react-native'
 import Carousel from 'react-native-reanimated-carousel'
 
@@ -10,7 +8,6 @@ function BannerCarousel({
   bannerList: BannerType.BannerList
 }): JSX.Element {
   const width = useWindowDimensions().width
-  const banner = useAtomValue(BannerAtom)
   return (
     <>
       <View>

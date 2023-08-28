@@ -1,7 +1,7 @@
 import { Image, Text, View, Pressable, useWindowDimensions } from 'react-native'
 import Carousel from 'react-native-reanimated-carousel'
 import { useNavigation, CommonActions } from '@react-navigation/core'
-import { AlbumType } from '@/jotai/types'
+import { AlbumType } from '@/mobx/types'
 
 function HotAlbumList({
   albumList

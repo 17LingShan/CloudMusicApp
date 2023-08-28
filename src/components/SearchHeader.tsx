@@ -1,15 +1,13 @@
 import { View, StatusBar, Text, Keyboard } from 'react-native'
+import { observer } from 'mobx-react'
 import { useNavigation } from '@react-navigation/core'
-import { useSetAtom } from 'jotai'
+import { useTheme } from 'react-native-paper'
 import RippleIcon from './RippleIcon'
 import IconInput from './IconInput'
-import { SearchKeywordsAtom } from '@/jotai/searcher'
-import { useTheme } from 'react-native-paper/src/core/theming'
 
-function SearchHeader({ handleSearch }): JSX.Element {
+function SearchHeader({ handleSearch, onIconPress }): JSX.Element {
   const theme = useTheme()
   const navigation = useNavigation()
-  const setKeywords = useSetAtom(SearchKeywordsAtom)
 
   return (
     <>
@@ -34,7 +32,7 @@ function SearchHeader({ handleSearch }): JSX.Element {
           <IconInput
             iconName="close"
             onSubmit={() => handleSearch()}
-            onIconPress={() => setKeywords('')}
+            onIconPress={onIconPress}
           />
           <View
             style={{

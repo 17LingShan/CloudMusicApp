@@ -1,4 +1,4 @@
-import { SongType } from '@/jotai/types'
+import { SongType } from '@/mobx/types'
 import {
   GestureResponderEvent,
   NativeSyntheticEvent,

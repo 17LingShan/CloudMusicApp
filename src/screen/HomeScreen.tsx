@@ -8,7 +8,7 @@ import {
 import { fetchHotAlbumList, fetchBanner } from '@/api/hotInfo'
 import HomeCarousel from '@/components/Home/BannerCarousel'
 import HotAlbumList from '@/components/Home/HotAlbumList'
-import { AlbumType, BannerType } from '@/jotai/types'
+import { AlbumType, BannerType } from '@/mobx/types'
 
 function HomeSCreen() {
   const width = useWindowDimensions().width
@@ -53,6 +53,7 @@ function HomeSCreen() {
   useEffect(() => {
     onRefresh()
   }, [])
+
   return (
     <>
       <ScrollView

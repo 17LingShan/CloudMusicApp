@@ -1,10 +1,10 @@
+import { useState } from 'react'
 import { TextInput, View } from 'react-native'
+import { useTheme } from 'react-native-paper'
+import { observer } from 'mobx-react'
+import searchStore from '@/mobx/searcher'
 import RippleIcon from './RippleIcon'
 import type { IconInputType } from './types'
-import { useState, useEffect } from 'react'
-import { useAtom } from 'jotai'
-import { SearchKeywordsAtom } from '@/jotai/searcher'
-import { useTheme } from 'react-native-paper/src/core/theming'
 
 function IconInput({
   iconName,
@@ -13,15 +13,12 @@ function IconInput({
   onIconPress
 }: IconInputType.IconInputProps): JSX.Element {
   const theme = useTheme()
-  const [keywords, setKeywords] = useAtom(SearchKeywordsAtom)
   const [backColor, setBackColor] = useState<string>('')
-  const [iconShown, setIconShown] = useState<boolean>(true)
-  useEffect(() => {
-    keywords.length > 0 ? setIconShown(true) : setIconShown(false)
-  }, [keywords])
 
   const handleBlur = () => {
-    iconShown ? setBackColor('#c6c6d0') : setBackColor('transparent')
+    searchStore.keywords.length > 0
+      ? setBackColor('#c6c6d0')
+      : setBackColor('transparent')
   }
 
   return (
@@ -38,10 +35,10 @@ function IconInput({
         overflow: 'hidden'
       }}>
       <TextInput
-        value={keywords}
+        value={searchStore.keywords}
         placeholder={placeholder ?? 'search'}
         style={{ width: '70%', overflow: 'hidden' }}
-        onChangeText={text => setKeywords(text)}
+        onChangeText={text => searchStore.setKeywords(text)}
         onSubmitEditing={onSubmit}
         onFocus={() => setBackColor('#c6c6d0')}
         onBlur={() => handleBlur()}
@@ -49,11 +46,11 @@ function IconInput({
       <RippleIcon
         iconName={iconName}
         color={theme.colors.shadow}
-        shown={iconShown}
+        shown={searchStore.keywords.length > 0}
         onPress={onIconPress}
       />
     </View>
   )
 }
 
-export default IconInput
+export default observer(IconInput)

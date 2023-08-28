@@ -12,15 +12,10 @@ import type { ThemeProp } from 'react-native-paper/src/types'
 import { name as appName } from './app.json'
 import StackRoot from '@/navigation/StackRoot'
 import DrawerMenu from '@/components/DrawerMenu'
-import {
-  useTrackPlayerMiddleware,
-  useTrackPlayerRemoteListener
-} from '@/jotai/player'
 
 const Drawer = createDrawerNavigator()
 
 function Music(): JSX.Element {
-  useTrackPlayerMiddleware()
   useEffect(() => {
     return () => {
       console.log('destroy')

@@ -6,7 +6,7 @@ import { fetchAlbumAllTrack } from '@/api/search'
 import AlbumHeader from '@/components/Album/AlbumHeader'
 import AlbumTitle from '@/components/Album/AlbumTitle'
 import MediaItem from '@/components/MediaItem'
-import { AlbumType, SongType } from '@/jotai/types'
+import { AlbumType, SongType } from '@/mobx/types'
 import { handlePressItem, handlePressModalIcon } from '@/util/common'
 
 function AlbumScreen(): JSX.Element {

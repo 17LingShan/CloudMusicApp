@@ -1,4 +1,4 @@
-import { SongType } from '@/jotai/types'
+import { SongType } from '@/mobx/types'
 import { GestureResponderEvent, StyleSheet, Text, View } from 'react-native'
 import { TouchableRipple } from 'react-native-paper'
 import RippleIcon from './RippleIcon'

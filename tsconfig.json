@@ -13,7 +13,8 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "useDefineForClassFields": true
   },
   "extends": "@tsconfig/react-native/tsconfig.json",
   "exclude": ["node_modules", "babel.config.js", "metro.config.js"]

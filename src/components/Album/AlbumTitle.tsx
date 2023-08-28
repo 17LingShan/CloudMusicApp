@@ -1,4 +1,4 @@
-import { AlbumType } from '@/jotai/types'
+import { AlbumType } from '@/mobx/types'
 import { Image, Text, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import AlbumTitleButton from './AlbumTItleButton'

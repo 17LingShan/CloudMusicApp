@@ -11,7 +11,7 @@ import {
 import { useTheme } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { useNavigation } from '@react-navigation/core'
-import { SongType } from '@/jotai/types'
+import { SongType } from '@/mobx/types'
 import RippleIcon from '@/components/RippleIcon'
 
 function PlayDetailHeader({

@@ -4,7 +4,8 @@ const api = {
   search: '/cloudsearch',
   hotKeywords: '/search/hot',
   songUrl: '/song/url/v1',
-  albumAllTrack: '/playlist/track/all'
+  albumAllTrack: '/playlist/track/all',
+  lyric: '/lyric'
 }
 
 export function search(params: APIParams.SearchParams) {
@@ -23,6 +24,14 @@ export function fetchUrlById(params: APIParams.FetchUrlParam) {
       id: params.id,
       level: params.level ?? 'standard'
     }
+  })
+}
+
+export function fetchLyric(params: APIParams.FetchLyricParam) {
+  return request({
+    url: api.lyric,
+    method: 'get',
+    params: params
   })
 }
 

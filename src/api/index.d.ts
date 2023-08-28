@@ -28,6 +28,10 @@ declare namespace APIParams {
       | 'sky'
       | 'jymaster'
   }
+
+  interface FetchLyricParam {
+    id: number
+  }
   interface FetchAlbumAllTrackParam {
     id: number
     limit?: number

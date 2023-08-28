@@ -7,21 +7,26 @@ import PlayDetailRotation from '@/components/PlayDetail/PlayDetailRotation'
 import PlayDetailHeader from '@/components/PlayDetail/PlayDetailHeader'
 import PlayDetailBottom from '@/components/PlayDetail/PlayDetailBottom'
 import { formatMinute } from '@/util/common'
-import { useTrackPlayer } from '@/jotai/player'
+import playerStore from '@/mobx/player'
+import { observer } from 'mobx-react'
+import { toJS } from 'mobx'
 
 function PlayDetailScreen(): JSX.Element {
   const theme = useTheme()
 
   const { position, buffered, duration } = useProgress()
-  const { isPlaying, currentTrack } = useTrackPlayer()
 
   return (
     <>
       <View style={{ flex: 1 }}>
-        <PlayDetailHeader trackInfo={currentTrack} />
+        <PlayDetailHeader trackInfo={toJS(playerStore.currentTrack)} />
         <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
           <PlayDetailRotation
-            albumPicUrl={currentTrack.id ? currentTrack.albumPicUrl : coverImg}
+            albumPicUrl={
+              toJS(playerStore.currentTrack.id)
+                ? toJS(playerStore.currentTrack.albumPicUrl)
+                : coverImg
+            }
           />
           <View style={{ flex: 1 }}>
             <View
@@ -54,7 +59,7 @@ function PlayDetailScreen(): JSX.Element {
               </View>
             </View>
             <View style={{ height: '60%' }}>
-              <PlayDetailBottom isPlaying={isPlaying} />
+              <PlayDetailBottom isPlaying={toJS(playerStore.isPlaying)} />
             </View>
           </View>
         </View>
@@ -63,4 +68,4 @@ function PlayDetailScreen(): JSX.Element {
   )
 }
 
-export default PlayDetailScreen
+export default observer(PlayDetailScreen)
