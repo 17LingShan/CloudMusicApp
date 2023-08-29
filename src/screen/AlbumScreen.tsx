@@ -7,7 +7,7 @@ import AlbumHeader from '@/components/Album/AlbumHeader'
 import AlbumTitle from '@/components/Album/AlbumTitle'
 import MediaItem from '@/components/MediaItem'
 import { AlbumType, SongType } from '@/mobx/types'
-import { handlePressItem, handlePressModalIcon } from '@/util/common'
+import { handlePressItem, handlePressModalIcon } from '@/util/mobxTool'
 
 function AlbumScreen(): JSX.Element {
   const { params } = useRoute() as { params: AlbumType.AlbumProps }

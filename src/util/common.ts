@@ -1,7 +1,9 @@
-import { CommonActions, NavigationProp } from '@react-navigation/core'
 import { SongType } from '@/mobx/types'
-import { fetchUrlById } from '@/api/search'
-import { playTrack } from './playTool'
+import { fetchLyric, fetchUrlById } from '@/api/search'
+import { Dimensions, ToastAndroid } from 'react-native'
+
+export const screenWidth = Dimensions.get('screen').width
+export const screenHeight = Dimensions.get('screen').height
 
 export function formatCount(originNum: number) {
   return originNum > 10000
@@ -9,43 +11,55 @@ export function formatCount(originNum: number) {
     : originNum
 }
 
-export function handlePressModalIcon(
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
-  songInfo: SongType.SongProps
-) {
-  navigation.dispatch(
-    CommonActions.navigate({ name: 'MediaItemModal', params: songInfo })
-  )
-}
-
-export async function handlePressItem(
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
-  songInfo: SongType.SongProps
-) {
-  await playTrack(songInfo)
-  navigation.dispatch(CommonActions.navigate('playDetail'))
-}
-
 export function formatMinute(second: number): string {
-  return `${Math.floor(second / 60)
+  return `${Math.round(second / 60)
     .toString()
     .padStart(2, '0')}:${Math.floor(second % 60)
     .toString()
     .padStart(2, '0')}`
 }
-
-export async function fetchSongInfo({ id, level }: APIParams.FetchUrlParam) {
-  let url: string | undefined = await fetchUrlById({ id: id, level: level })
+async function handleFetchLyric(params: APIParams.FetchLyricParam) {
+  return await fetchLyric(params)
     .then(res => {
-      console.log('fetchSongInfo res', res.data.code)
-      return res.data.code !== 200 ? url : res.data.data[0].url
+      return res.data.code !== 200
+        ? Promise.reject('')
+        : Promise.resolve(formatLyric(res.data.lrc.lyric))
     })
     .catch(err => {
-      console.log('fetchSongInfoErr', err)
-      return url
+      console.log('fetchSongLyricErr', err)
+      return Promise.reject('')
     })
+}
 
-  return url ? Promise.resolve(url) : Promise.reject(url)
+async function handleFetchUrl(params: APIParams.FetchUrlParam) {
+  return await fetchUrlById(params)
+    .then(res => {
+      return res.data.code !== 200
+        ? Promise.reject('')
+        : Promise.resolve(res.data.data[0].url as string)
+    })
+    .catch(err => {
+      console.log('fetchSongUrlErr', err)
+      return Promise.reject('')
+    })
+}
+
+export async function fetchSongInfo({ id, level }: APIParams.FetchUrlParam) {
+  const [lyric, url] = await Promise.all([
+    handleFetchLyric({ id: id }),
+    handleFetchUrl({ id: id, level: level })
+  ])
+  return url
+    ? Promise.resolve({ lyric: lyric, url: url })
+    : Promise.reject({ lyric: lyric, url: url })
+}
+
+export function showToastErr({ code, message }: ToastCustom.ToastParams) {
+  ToastAndroid.showWithGravity(
+    `${code}:${message}`,
+    ToastAndroid.SHORT,
+    ToastAndroid.CENTER
+  )
 }
 
 /**
@@ -58,14 +72,17 @@ export async function fetchSongInfo({ id, level }: APIParams.FetchUrlParam) {
  * ]
  */
 export function formatLyric(lyric: string): SongType.LyricItem[] {
-  const reg = /\[(\d{2}:\d{2}.\d{3})\]\s(.+)/g
-  const formattedLyric = lyric.split('\n').map(item => {
-    const formattedString = item.match(reg)
+  const reg = /(\[\d+:\d+\.\d+\])(.*)/g
+  const formattedLyric = [...lyric.matchAll(reg)].map(item => {
+    const timeReg = /^\[(\d{2}):(\d{2})\.(\d{2,3})\]$/
+    console.log(item[1])
+    const timeMatchArr = item[1].match(timeReg)
+    const timeFormatted =
+      +timeMatchArr[1] * 60 + +timeMatchArr[2] + +timeMatchArr[3] * 0.001
     return {
-      time: formattedString[1],
-      text: formattedString[2]
+      time: timeFormatted,
+      text: item[2]
     }
   })
-
   return formattedLyric
 }

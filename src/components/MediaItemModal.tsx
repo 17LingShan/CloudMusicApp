@@ -1,17 +1,17 @@
-import { SongType } from '@/mobx/types'
-import playerStore from '@/mobx/player'
+import React from 'react'
+import { StyleSheet, View, Animated, Button, Pressable } from 'react-native'
+import { useTheme } from 'react-native-paper/src/core/theming'
 import { useNavigation, useRoute } from '@react-navigation/core'
 import { useCardAnimation } from '@react-navigation/stack'
-import { Animated, Button, Pressable } from 'react-native'
-import { StyleSheet, View, useWindowDimensions } from 'react-native'
-import { useTheme } from 'react-native-paper/src/core/theming'
-import TrackPlayer, { Track } from 'react-native-track-player'
+import { screenHeight } from '@/util/common'
+import { SongType } from '@/mobx/types'
+import playerStore from '@/mobx/player'
 
 function MediaItemModal(): JSX.Element {
   const theme = useTheme()
   const navigation = useNavigation()
   const { params } = useRoute() as { params: SongType.SongProps }
-  const height = useWindowDimensions().height
+  const height = screenHeight
   const current = useCardAnimation().current
 
   return (
@@ -51,7 +51,6 @@ function MediaItemModal(): JSX.Element {
           <Button
             title="add to next play"
             onPress={async () => {
-              console.log('next Track', params)
               playerStore.setNextTrack(params)
               navigation.goBack()
             }}

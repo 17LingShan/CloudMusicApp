@@ -1,9 +1,5 @@
 import { useEffect, useRef } from 'react'
-import {
-  CommonActions,
-  useIsFocused,
-  useNavigation
-} from '@react-navigation/core'
+import { CommonActions, useNavigation } from '@react-navigation/core'
 import { Animated, Easing, Image, Pressable, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import coverImg from '@/assets/cover.jpg'
@@ -13,7 +9,6 @@ import { observer } from 'mobx-react'
 import { pause, play } from '@/util/playTool'
 
 function PlayBottomBar(): JSX.Element {
-  const isFocused = useIsFocused()
   const navigation = useNavigation()
 
   const bottom = useRef(
@@ -31,7 +26,6 @@ function PlayBottomBar(): JSX.Element {
   useEffect(() => {
     return () => {
       bottomAni.reset()
-      console.log('destroy')
     }
   }, [])
 

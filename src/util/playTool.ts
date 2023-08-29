@@ -11,7 +11,7 @@ import TrackPlayer, {
 } from 'react-native-track-player'
 import { uniqBy } from 'lodash'
 import { toJS } from 'mobx'
-import { fetchSongInfo } from './common'
+import { fetchSongInfo, showToastErr } from './common'
 import { SongType } from '@/mobx/types'
 import playerStore, { initTrackInfo } from '@/mobx/player'
 const subscription: EmitterSubscription[] = []
@@ -129,9 +129,16 @@ export async function playTrack(songInfo: SongType.SongProps) {
   const hasUrlTrackInfo = await fetchSongInfo({ id: songInfo.id })
     .then(res => ({
       ...songInfo,
-      url: res
+      url: res.url,
+      lyric: res.lyric
     }))
-    .catch(err => console.log('false to fetchSongInfo', err))
+    .catch(err => {
+      console.log('false to fetchSongInfo', err)
+      showToastErr({ code: -460 })
+      return songInfo
+    })
+  console.log(hasUrlTrackInfo.id)
+  if (hasUrlTrackInfo.url === songInfo.url) return
   await TrackPlayer.reset()
   await TrackPlayer.setRepeatMode(RepeatMode.Queue)
   await TrackPlayer.add(hasUrlTrackInfo as Track)
@@ -146,9 +153,7 @@ export async function play() {
 
 // 处理指定好了的下一首
 async function handleSkipToAssignNextTrack(direction?: number) {
-  console.log('direction', direction)
   if (!playerStore.nextTrack.id || direction <= 0) return Promise.reject()
-  console.log('handling skip to next track')
   playerStore.setPlayList(changePlayListOrder(toJS(playerStore.nextTrack)))
   await playTrack(toJS(playerStore.nextTrack))
   await play()

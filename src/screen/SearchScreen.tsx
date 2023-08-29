@@ -5,12 +5,13 @@ import { observer } from 'mobx-react'
 import { useTheme } from 'react-native-paper'
 import { RefreshControl } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/core'
-import { handlePressItem, handlePressModalIcon } from '@/util/common'
+import { showToastErr } from '@/util/common'
 import SearchHeader from '@/components/SearchHeader'
 import MediaItem from '@/components/MediaItem'
 import { search } from '@/api/search'
 import searchStore from '@/mobx/searcher'
 import { SongType } from '@/mobx/types'
+import { handlePressItem, handlePressModalIcon } from '@/util/mobxTool'
 
 function SearchScreen(): JSX.Element {
   const theme = useTheme()
@@ -22,6 +23,10 @@ function SearchScreen(): JSX.Element {
     setRefreshing(true)
     await search({ keywords: toJS(searchStore.keywords), type: 1 })
       .then(res => {
+        if (res.data.code !== 200) {
+          showToastErr({ code: res.data.code, message: res.data.message })
+          return
+        }
         searchStore.setSearchList([
           ...res.data.result.songs.map(
             item =>
@@ -38,7 +43,9 @@ function SearchScreen(): JSX.Element {
           )
         ])
       })
-      .catch(e => console.log('error of search in searchScreen'))
+      .catch(err => {
+        console.log('error of search in searchScreen', err)
+      })
     setRefreshing(false)
   }
 

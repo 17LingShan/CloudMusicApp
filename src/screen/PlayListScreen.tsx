@@ -4,9 +4,9 @@ import { useMMKVStorage } from 'react-native-mmkv-storage'
 import { storage } from '@/storage'
 import MediaItem from '@/components/MediaItem'
 import { useTheme } from 'react-native-paper/src/core/theming'
-import { handlePressItem, handlePressModalIcon } from '@/util/common'
 import { useNavigation } from '@react-navigation/core'
 import { observer } from 'mobx-react'
+import { handlePressItem, handlePressModalIcon } from '@/util/mobxTool'
 
 function PlayListScreen(): JSX.Element {
   const theme = useTheme()

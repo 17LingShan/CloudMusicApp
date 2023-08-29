@@ -1,17 +1,13 @@
 import { useState, useCallback, useEffect } from 'react'
-import {
-  RefreshControl,
-  ScrollView,
-  View,
-  useWindowDimensions
-} from 'react-native'
+import { RefreshControl, ScrollView, View } from 'react-native'
 import { fetchHotAlbumList, fetchBanner } from '@/api/hotInfo'
 import HomeCarousel from '@/components/Home/BannerCarousel'
 import HotAlbumList from '@/components/Home/HotAlbumList'
 import { AlbumType, BannerType } from '@/mobx/types'
+import { screenWidth } from '@/util/common'
 
 function HomeSCreen() {
-  const width = useWindowDimensions().width
+  const width = screenWidth
   const [banner, setBanner] = useState<BannerType.BannerList>()
   const [albumList, setAlbumList] = useState<AlbumType.AlbumList>()
   const [refreshing, setRefreshing] = useState(false)

@@ -1,7 +1,7 @@
 import { State } from 'react-native-track-player'
 declare namespace SongType {
   interface LyricItem {
-    time: string
+    time: number
     text: string
   }
 

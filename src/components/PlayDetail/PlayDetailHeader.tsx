@@ -1,39 +1,32 @@
 import { useEffect, useMemo, useRef } from 'react'
-import {
-  Animated,
-  Easing,
-  Keyboard,
-  StatusBar,
-  Text,
-  View,
-  useWindowDimensions
-} from 'react-native'
+import { Animated, Easing, Keyboard, StatusBar, Text, View } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { useNavigation } from '@react-navigation/core'
 import { SongType } from '@/mobx/types'
 import RippleIcon from '@/components/RippleIcon'
+import { screenWidth } from '@/util/common'
 
 function PlayDetailHeader({
   trackInfo
 }: {
   trackInfo: SongType.SongProps
 }): JSX.Element {
-  const mWidth = useWindowDimensions().width * 0.6
+  const mWidth = screenWidth * 0.6
   const theme = useTheme()
   const navigation = useNavigation()
-  const translateXAni = useRef(new Animated.Value(0)).current
+  const translateX = useRef(new Animated.Value(0)).current
 
   const rollText = useMemo(
     () => () => {
-      Animated.timing(translateXAni, {
+      Animated.timing(translateX, {
         toValue: -mWidth,
         duration: 12000,
         useNativeDriver: true,
         easing: Easing.linear
       }).start(({ finished }) => {
         if (finished) {
-          translateXAni.setValue(mWidth)
+          translateX.setValue(mWidth)
           rollText()
         }
       })
@@ -79,7 +72,7 @@ function PlayDetailHeader({
                   lineHeight: 40,
                   fontSize: 22,
                   color: theme.colors.surface,
-                  transform: [{ translateX: translateXAni }]
+                  transform: [{ translateX: translateX }]
                 }}>
                 {trackInfo.title}
               </Animated.Text>

@@ -1,13 +1,14 @@
-import { BannerType } from '@/mobx/types'
-import { Image, View, useWindowDimensions } from 'react-native'
+import { Image, View } from 'react-native'
 import Carousel from 'react-native-reanimated-carousel'
+import { BannerType } from '@/mobx/types'
+import { screenWidth } from '@/util/common'
 
 function BannerCarousel({
   bannerList
 }: {
   bannerList: BannerType.BannerList
 }): JSX.Element {
-  const width = useWindowDimensions().width
+  const width = screenWidth
   return (
     <>
       <View>

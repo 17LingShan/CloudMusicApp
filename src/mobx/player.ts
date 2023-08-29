@@ -9,6 +9,7 @@ export const initTrackInfo: SongType.SongProps = {
   artist: '',
   album: '',
   fee: 0,
+  lyric: [],
   albumPicUrl: {
     uri: ''
   }

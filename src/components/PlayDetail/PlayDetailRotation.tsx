@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useRef } from 'react'
-import { Animated, Easing, View, useWindowDimensions } from 'react-native'
+import { Animated, Easing, View } from 'react-native'
 import coverImg from '@/assets/cover.jpg'
 import { SongType } from '@/mobx/types'
 import playerStore from '@/mobx/player'
-import { toJS } from 'mobx'
+import { screenWidth } from '@/util/common'
 
 function PlayDetailRotation({
   albumPicUrl
 }: Pick<SongType.SongProps, 'albumPicUrl'>): JSX.Element {
-  const screenWidth = useWindowDimensions().width * 0.618
+  const imageWidth = screenWidth * 0.618
   const rotate = useRef(new Animated.Value(0)).current
 
   const rotateAni = useMemo(
@@ -29,8 +29,8 @@ function PlayDetailRotation({
   )
 
   useEffect(() => {
-    toJS(playerStore.isPlaying) ? rotateAni() : rotate.stopAnimation()
-  }, [toJS(playerStore.isPlaying)])
+    playerStore.isPlaying ? rotateAni() : rotate.stopAnimation()
+  }, [playerStore.isPlaying])
 
   const rotateInterpolation = rotate.interpolate({
     inputRange: [0, 1],
@@ -38,16 +38,11 @@ function PlayDetailRotation({
   })
   return (
     <>
-      <View
-        style={{
-          height: '70%',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}>
+      <View>
         <Animated.Image
           style={{
-            width: screenWidth,
-            height: screenWidth,
+            width: imageWidth,
+            height: imageWidth,
             borderRadius: 99999,
             transform: [{ rotate: rotateInterpolation }]
           }}

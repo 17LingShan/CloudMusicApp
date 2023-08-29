@@ -1,14 +1,15 @@
-import { Image, Text, View, Pressable, useWindowDimensions } from 'react-native'
+import { Image, Text, View, Pressable } from 'react-native'
 import Carousel from 'react-native-reanimated-carousel'
 import { useNavigation, CommonActions } from '@react-navigation/core'
 import { AlbumType } from '@/mobx/types'
+import { screenWidth } from '@/util/common'
 
 function HotAlbumList({
   albumList
 }: {
   albumList: AlbumType.AlbumList
 }): JSX.Element {
-  const width = useWindowDimensions().width
+  const width = screenWidth
 
   const navigation = useNavigation()
 
