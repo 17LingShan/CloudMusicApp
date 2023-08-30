@@ -137,8 +137,6 @@ export async function playTrack(songInfo: SongType.SongProps) {
       showToastErr({ code: -460 })
       return songInfo
     })
-  console.log(hasUrlTrackInfo.id)
-  if (hasUrlTrackInfo.url === songInfo.url) return
   await TrackPlayer.reset()
   await TrackPlayer.setRepeatMode(RepeatMode.Queue)
   await TrackPlayer.add(hasUrlTrackInfo as Track)

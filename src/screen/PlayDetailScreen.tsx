@@ -24,14 +24,14 @@ function PlayDetailScreen(): JSX.Element {
 
   const fadeAni = Animated.timing(AlbumFade, {
     toValue: isAlbumPic ? 1 : 0,
-    duration: 500,
+    duration: 200,
     useNativeDriver: true,
     easing: Easing.linear
   })
 
   const lyricAni = Animated.timing(lyricFade, {
     toValue: isAlbumPic ? 0 : 1,
-    duration: 500,
+    duration: 200,
     useNativeDriver: true,
     easing: Easing.linear
   })

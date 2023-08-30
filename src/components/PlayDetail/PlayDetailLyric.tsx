@@ -11,25 +11,43 @@ function PlayDetailLyric({
 }: Pick<SongType.SongProps, 'lyric'>): JSX.Element {
   const theme = useTheme()
   const { position } = useProgress()
-  const [idx, setIdx] = useState(1)
   const carouselRef = useRef<ICarouselInstance>(null)
+  const [lrcIdx, setLrcIdx] = useState(0)
 
-  const scrollToItem = (index: number) => {
-    console.log(index)
-    carouselRef.current?.scrollTo({ index: index })
+  const scrollToItem = (index: number): void => {
+    console.log('scrollToItem', index)
+    setLrcIdx(index)
+    carouselRef.current?.scrollTo({ index: index, animated: true })
   }
+
   useEffect(() => {
-    // console.log(position)
+    if (!lyric.length) return
+
+    if (lrcIdx - 1 < lyric.length) {
+      for (let reachIdx = lrcIdx; reachIdx - 1 < lyric.length; reachIdx++) {
+        if (
+          lyric[reachIdx]?.time < position &&
+          lyric[reachIdx + 1]?.time > position
+        ) {
+          scrollToItem(reachIdx)
+          break
+        } else if (lyric[reachIdx + 1]?.time > position) {
+          scrollToItem(0)
+          break
+        }
+      }
+    } else {
+      scrollToItem(lyric.length - 1)
+    }
   }, [position])
+
+  useEffect(() => {
+    setLrcIdx(0)
+  }, [lyric])
+
   return (
     <>
       <View style={{ height: '100%', width: '100%' }}>
-        <Button
-          title="scrollToItem + 1"
-          onPress={() => {
-            scrollToItem(idx)
-            setIdx(prev => prev + 1)
-          }}></Button>
         <Carousel
           ref={carouselRef}
           loop={false}
@@ -42,14 +60,23 @@ function PlayDetailLyric({
           onProgressChange={() => {}}
           vertical={true}
           data={lyric}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <View
               style={{
                 height: 30,
                 justifyContent: 'center'
               }}>
               <Text
-                style={{ color: theme.colors.surface, textAlign: 'center' }}>
+                style={{
+                  color:
+                    lrcIdx === index
+                      ? theme.colors.surface
+                      : theme.colors.onSurface,
+                  textAlign: 'center',
+                  alignItems: 'center',
+                  fontSize: lrcIdx === index ? 20 : 12,
+                  maxWidth: screenWidth
+                }}>
                 {item.text}
               </Text>
             </View>

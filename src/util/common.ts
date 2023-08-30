@@ -1,6 +1,7 @@
 import { SongType } from '@/mobx/types'
 import { fetchLyric, fetchUrlById } from '@/api/search'
 import { Dimensions, ToastAndroid } from 'react-native'
+import { text } from 'stream/consumers'
 
 export const screenWidth = Dimensions.get('screen').width
 export const screenHeight = Dimensions.get('screen').height
@@ -75,14 +76,15 @@ export function formatLyric(lyric: string): SongType.LyricItem[] {
   const reg = /(\[\d+:\d+\.\d+\])(.*)/g
   const formattedLyric = [...lyric.matchAll(reg)].map(item => {
     const timeReg = /^\[(\d{2}):(\d{2})\.(\d{2,3})\]$/
-    console.log(item[1])
     const timeMatchArr = item[1].match(timeReg)
     const timeFormatted =
       +timeMatchArr[1] * 60 + +timeMatchArr[2] + +timeMatchArr[3] * 0.001
+
     return {
       time: timeFormatted,
-      text: item[2]
+      text: item[2].replace(/\[\d+:\d+\.\d+\]/g, '').trim()
     }
   })
-  return formattedLyric
+  console.log('formatted Lyric\n', formattedLyric)
+  return formattedLyric.filter(item => item.text.length)
 }
