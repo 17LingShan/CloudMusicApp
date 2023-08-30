@@ -1,6 +1,13 @@
 declare namespace ToastCustom {
-  interface ToastParams {
+  interface ToastBaseParams {
+    message: string
+  }
+  interface ToastErrParams extends ToastBaseParams {
     code?: number
-    message?: string
+  }
+
+  interface ToastCommonParams extends ToastBaseParams {
+    duration?: 'short' | 'long'
+    gravity?: 'top' | 'bottom' | 'center'
   }
 }

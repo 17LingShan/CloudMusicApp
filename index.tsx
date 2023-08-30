@@ -30,6 +30,7 @@ function Music(): JSX.Element {
       onSurface: '#b3aa8c',
       onPrimary: '#c70c0c',
       background: '#3e3b3c',
+      onBackground: '#ed9db2',
       shadow: '#202020'
     }
   }

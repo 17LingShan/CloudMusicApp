@@ -46,7 +46,7 @@ function PlayDetailRotation({
             borderRadius: 99999,
             transform: [{ rotate: rotateInterpolation }]
           }}
-          source={albumPicUrl.uri === '' ? coverImg : albumPicUrl}
+          source={albumPicUrl.uri ? albumPicUrl : coverImg}
         />
       </View>
     </>

@@ -6,7 +6,7 @@ import MediaItem from '@/components/MediaItem'
 import { useTheme } from 'react-native-paper/src/core/theming'
 import { useNavigation } from '@react-navigation/core'
 import { observer } from 'mobx-react'
-import { handlePressItem, handlePressModalIcon } from '@/util/mobxTool'
+import { handlePressItem, handlePressModalIcon } from '@/util/navigateTool'
 
 function PlayListScreen(): JSX.Element {
   const theme = useTheme()
@@ -31,7 +31,7 @@ function PlayListScreen(): JSX.Element {
         renderItem={({ item, index }) => (
           <MediaItem
             position={index + 1}
-            songInfo={item}
+            trackInfo={item}
             iconColor={theme.colors.shadow}
             onPressItem={async () => await handlePressItem(navigation, item)}
             onPressIcon={() => handlePressModalIcon(navigation, item)}

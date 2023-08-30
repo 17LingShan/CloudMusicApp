@@ -6,8 +6,9 @@ import { useCardAnimation } from '@react-navigation/stack'
 import { screenHeight } from '@/util/common'
 import { SongType } from '@/mobx/types'
 import playerStore from '@/mobx/player'
+import ModalItem from '@/components/ModalItem'
 
-function MediaItemModal(): JSX.Element {
+function MediaModal(): JSX.Element {
   const theme = useTheme()
   const navigation = useNavigation()
   const { params } = useRoute() as { params: SongType.SongProps }
@@ -22,7 +23,10 @@ function MediaItemModal(): JSX.Element {
         justifyContent: 'center'
       }}>
       <Pressable
-        style={[StyleSheet.absoluteFill, { opacity: 0.5 }]}
+        style={[
+          StyleSheet.absoluteFill,
+          { opacity: 0.5, backgroundColor: '#000' }
+        ]}
         onPress={() => navigation.goBack()}
       />
       <Animated.View
@@ -34,31 +38,17 @@ function MediaItemModal(): JSX.Element {
               {
                 translateY: current.progress.interpolate({
                   inputRange: [0, 1],
-                  outputRange: [height, height * 0.5],
+                  outputRange: [height, height * 0.8],
                   extrapolate: 'clamp'
                 })
               }
             ]
           }
         ]}>
-        <View
-          style={{
-            flex: 1,
-            padding: 10,
-            backgroundColor: theme.colors.background,
-            borderRadius: 20
-          }}>
-          <Button
-            title="add to next play"
-            onPress={async () => {
-              playerStore.setNextTrack(params)
-              navigation.goBack()
-            }}
-          />
-        </View>
+        <ModalItem trackInfo={params} />
       </Animated.View>
     </View>
   )
 }
 
-export default MediaItemModal
+export default MediaModal

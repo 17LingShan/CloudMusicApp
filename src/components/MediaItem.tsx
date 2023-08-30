@@ -5,7 +5,7 @@ import RippleIcon from './RippleIcon'
 
 function MediaItem({
   position,
-  songInfo,
+  trackInfo,
   iconColor,
   onPressItem,
   onPressIcon
@@ -23,14 +23,14 @@ function MediaItem({
               height: '100%',
               justifyContent: 'center',
               alignItems: 'center',
-              opacity: 0.7
+              opacity: 0.5
             }}>
             <Text>{position}</Text>
           </View>
           <View style={{ width: '65%', justifyContent: 'space-between' }}>
             <View style={{ ...styles.textContainer, height: '60%' }}>
               <Text numberOfLines={1} style={{ fontSize: 20 }}>
-                {songInfo.title}
+                {trackInfo.title}
               </Text>
             </View>
             <View
@@ -41,11 +41,11 @@ function MediaItem({
                 justifyContent: 'flex-start',
                 alignItems: 'center'
               }}>
-              {songInfo.fee === 1 ? (
+              {trackInfo.fee === 1 ? (
                 <Text style={{ marginRight: 8, color: '#e92645' }}>VIP</Text>
               ) : null}
               <Text numberOfLines={1}>
-                {`${songInfo.fee} - ${songInfo.artist} - ${songInfo.album}`}
+                {`${trackInfo.fee} - ${trackInfo.artist} - ${trackInfo.album}`}
               </Text>
             </View>
           </View>

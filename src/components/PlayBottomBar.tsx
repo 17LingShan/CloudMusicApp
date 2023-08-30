@@ -62,7 +62,7 @@ function PlayBottomBar(): JSX.Element {
                   borderRadius: 6
                 }}
                 source={
-                  toJS(playerStore.currentTrack.id) ?? 0
+                  toJS(playerStore.currentTrack.id)
                     ? toJS(playerStore.currentTrack.albumPicUrl)
                     : coverImg
                 }

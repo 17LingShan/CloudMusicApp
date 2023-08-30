@@ -4,17 +4,17 @@ import { SongType } from '@/mobx/types'
 
 export function handlePressModalIcon(
   navigation: NavigationProp<ReactNavigation.RootParamList>,
-  songInfo: SongType.SongProps
+  trackInfo: SongType.SongProps
 ) {
   navigation.dispatch(
-    CommonActions.navigate({ name: 'MediaItemModal', params: songInfo })
+    CommonActions.navigate({ name: 'MediaItemModal', params: trackInfo })
   )
 }
 
 export async function handlePressItem(
   navigation: NavigationProp<ReactNavigation.RootParamList>,
-  songInfo: SongType.SongProps
+  trackInfo: SongType.SongProps
 ) {
   navigation.dispatch(CommonActions.navigate('playDetail'))
-  await playTrack(songInfo)
+  await playTrack(trackInfo)
 }

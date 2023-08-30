@@ -11,7 +11,7 @@ import TrackPlayer, {
 } from 'react-native-track-player'
 import { uniqBy } from 'lodash'
 import { toJS } from 'mobx'
-import { fetchSongInfo, showToastErr } from './common'
+import { fetchTrackInfo, showToastErr } from './common'
 import { SongType } from '@/mobx/types'
 import playerStore, { initTrackInfo } from '@/mobx/player'
 const subscription: EmitterSubscription[] = []
@@ -124,23 +124,30 @@ async function initTrack() {
   )
 }
 
-export async function playTrack(songInfo: SongType.SongProps) {
+export async function playTrack(trackInfo: SongType.SongProps) {
   await initTrack()
-  const hasUrlTrackInfo = await fetchSongInfo({ id: songInfo.id })
+
+  // 加上尺寸
+  if (!trackInfo.albumPicUrl.uri.includes('?param=200y200')) {
+    trackInfo.albumPicUrl.uri += '?param=600y600'
+  }
+
+  const hasUrlTrackInfo = await fetchTrackInfo({ id: trackInfo.id })
     .then(res => ({
-      ...songInfo,
+      ...trackInfo,
       url: res.url,
       lyric: res.lyric
     }))
     .catch(err => {
-      console.log('false to fetchSongInfo', err)
-      showToastErr({ code: -460 })
-      return songInfo
+      console.log('false to fetchTrackInfo', err)
+      showToastErr({ message: '网络拥挤, 请稍后再试！' })
+      return trackInfo
     })
   await TrackPlayer.reset()
   await TrackPlayer.setRepeatMode(RepeatMode.Queue)
   await TrackPlayer.add(hasUrlTrackInfo as Track)
 }
+
 export async function pause() {
   await TrackPlayer.pause()
 }
@@ -149,7 +156,7 @@ export async function play() {
   await TrackPlayer.play()
 }
 
-// 处理指定好了的下一首
+// 处理指定已经指定的下一首
 async function handleSkipToAssignNextTrack(direction?: number) {
   if (!playerStore.nextTrack.id || direction <= 0) return Promise.reject()
   playerStore.setPlayList(changePlayListOrder(toJS(playerStore.nextTrack)))
@@ -160,6 +167,7 @@ async function handleSkipToAssignNextTrack(direction?: number) {
   return Promise.resolve()
 }
 
+// 跳转指定方向
 export async function skipToDirection(direction: number) {
   await handleSkipToAssignNextTrack(direction)
     .then()

@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { Animated, Easing, Keyboard, StatusBar, Text, View } from 'react-native'
+import Clipboard from '@react-native-clipboard/clipboard'
 import { useTheme } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { useNavigation } from '@react-navigation/core'
 import { SongType } from '@/mobx/types'
 import RippleIcon from '@/components/RippleIcon'
-import { screenWidth } from '@/util/common'
+import { screenWidth, showToastCommon } from '@/util/common'
+import { shareOuterBaseURL } from '@/config/share'
 
 function PlayDetailHeader({
   trackInfo
@@ -33,6 +35,11 @@ function PlayDetailHeader({
     },
     []
   )
+
+  const writeInClipboard = (id: number) => {
+    showToastCommon({ message: '复制成功！' })
+    Clipboard.setString(shareOuterBaseURL + id)
+  }
 
   useEffect(() => {
     rollText()
@@ -96,10 +103,7 @@ function PlayDetailHeader({
           <RippleIcon
             iconName="share"
             color={theme.colors.surface}
-            onPress={() => {
-              Keyboard.dismiss()
-              navigation.goBack()
-            }}
+            onPress={() => writeInClipboard(trackInfo.id)}
           />
         </View>
       </View>

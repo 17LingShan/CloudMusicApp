@@ -45,7 +45,7 @@ async function handleFetchUrl(params: APIParams.FetchUrlParam) {
     })
 }
 
-export async function fetchSongInfo({ id, level }: APIParams.FetchUrlParam) {
+export async function fetchTrackInfo({ id, level }: APIParams.FetchUrlParam) {
   const [lyric, url] = await Promise.all([
     handleFetchLyric({ id: id }),
     handleFetchUrl({ id: id, level: level })
@@ -55,11 +55,29 @@ export async function fetchSongInfo({ id, level }: APIParams.FetchUrlParam) {
     : Promise.reject({ lyric: lyric, url: url })
 }
 
-export function showToastErr({ code, message }: ToastCustom.ToastParams) {
+export function showToastErr({ code, message }: ToastCustom.ToastErrParams) {
   ToastAndroid.showWithGravity(
-    `${code}:${message}`,
+    `${code ?? -406}:${message}`,
     ToastAndroid.SHORT,
     ToastAndroid.CENTER
+  )
+}
+
+export function showToastCommon({
+  message,
+  duration,
+  gravity
+}: ToastCustom.ToastCommonParams) {
+  const gravityMap = {
+    top: ToastAndroid.TOP,
+    center: ToastAndroid.CENTER,
+    bottom: ToastAndroid.BOTTOM
+  }
+
+  ToastAndroid.showWithGravity(
+    `${message ?? 'message!'}`,
+    duration === 'long' ? ToastAndroid.LONG : ToastAndroid.SHORT,
+    gravity ? gravityMap[gravity] : ToastAndroid.CENTER
   )
 }
 

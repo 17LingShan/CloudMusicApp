@@ -7,7 +7,7 @@ import AlbumHeader from '@/components/Album/AlbumHeader'
 import AlbumTitle from '@/components/Album/AlbumTitle'
 import MediaItem from '@/components/MediaItem'
 import { AlbumType, SongType } from '@/mobx/types'
-import { handlePressItem, handlePressModalIcon } from '@/util/mobxTool'
+import { handlePressItem, handlePressModalIcon } from '@/util/navigateTool'
 
 function AlbumScreen(): JSX.Element {
   const { params } = useRoute() as { params: AlbumType.AlbumProps }
@@ -55,7 +55,7 @@ function AlbumScreen(): JSX.Element {
           renderItem={({ item, index }) => (
             <MediaItem
               position={index + 1}
-              songInfo={item}
+              trackInfo={item}
               iconColor={theme.colors.shadow}
               onPressItem={async () => await handlePressItem(navigation, item)}
               onPressIcon={() => handlePressModalIcon(navigation, item)}
