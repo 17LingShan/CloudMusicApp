@@ -1,6 +1,6 @@
-import { formatCount } from '@/util/common'
 import { Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { formatCount } from '@/util/common'
 
 function AlbumTitleButton({
   icon,

@@ -11,7 +11,7 @@ import TrackPlayer, {
 } from 'react-native-track-player'
 import { uniqBy } from 'lodash'
 import { toJS } from 'mobx'
-import { fetchTrackInfo, showToastErr } from './common'
+import { fetchTrackInfo, showToastCommon, showToastErr } from './common'
 import { SongType } from '@/mobx/types'
 import playerStore, { initTrackInfo } from '@/mobx/player'
 const subscription: EmitterSubscription[] = []
@@ -108,10 +108,10 @@ async function initTrack() {
         await pause()
       }),
       TrackPlayer.addEventListener(Event.RemoteNext, async () => {
-        skipToDirection(1)
+        await skipToDirection(1)
       }),
       TrackPlayer.addEventListener(Event.RemotePrevious, async () => {
-        skipToDirection(-1)
+        await skipToDirection(-1)
       }),
       TrackPlayer.addEventListener(Event.PlaybackState, event =>
         changeStateEmit(event)
@@ -128,7 +128,7 @@ export async function playTrack(trackInfo: SongType.SongProps) {
   await initTrack()
 
   // 加上尺寸
-  if (!trackInfo.albumPicUrl.uri.includes('?param=200y200')) {
+  if (!trackInfo.albumPicUrl.uri.includes('?param=600y600')) {
     trackInfo.albumPicUrl.uri += '?param=600y600'
   }
 
@@ -154,6 +154,19 @@ export async function pause() {
 
 export async function play() {
   await TrackPlayer.play()
+}
+
+// 添加track到下一首
+export function addTrackToNext(trackInfo: SongType.SongProps) {
+  playerStore.setNextTrack(trackInfo)
+  showToastCommon({ message: '已加入下一首播放', gravity: 'top' })
+}
+
+export function removeTrack(trackInfo: SongType.SongProps) {
+  playerStore.setPlayList(
+    toJS(playerStore.playList.filter(item => item.id !== trackInfo.id))
+  )
+  showToastCommon({ message: '移除成功！', gravity: 'top' })
 }
 
 // 处理指定已经指定的下一首

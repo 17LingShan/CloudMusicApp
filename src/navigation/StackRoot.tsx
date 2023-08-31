@@ -1,11 +1,12 @@
-import AboutScreen from '@/screen/AboutScreen'
-import SettingsScreen from '@/screen/SettingsScreen'
 import { createStackNavigator } from '@react-navigation/stack'
-import TabNavigator from './TabNavigator'
+import PlayDetailScreen from '@/screen/PlayDetailScreen'
+import SettingsScreen from '@/screen/SettingsScreen'
 import SearchScreen from '@/screen/SearchScreen'
 import AlbumScreen from '@/screen/AlbumScreen'
-import PlayDetailScreen from '@/screen/PlayDetailScreen'
+import AboutScreen from '@/screen/AboutScreen'
 import MediaMOdal from '@/screen/MediaModal'
+import WebScreen from '@/screen/WebScreen'
+import TabNavigator from './TabNavigator'
 
 const Stack = createStackNavigator()
 
@@ -43,11 +44,8 @@ function StackRoot(): JSX.Element {
             headerShown: false,
             presentation: 'transparentModal'
           }}>
-          <Stack.Screen
-            name="MediaItemModal"
-            component={MediaMOdal}
-            options={{}}
-          />
+          <Stack.Screen name="MediaItemModal" component={MediaMOdal} />
+          <Stack.Screen name="webView" component={WebScreen} />
         </Stack.Group>
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
           <Stack.Screen

@@ -10,7 +10,7 @@ function PlayDetailLyric({
   lyric
 }: Pick<SongType.SongProps, 'lyric'>): JSX.Element {
   const theme = useTheme()
-  const { position } = useProgress()
+  const { position } = useProgress(500)
   const carouselRef = useRef<ICarouselInstance>(null)
   const [lrcIdx, setLrcIdx] = useState(0)
 
@@ -26,8 +26,8 @@ function PlayDetailLyric({
     if (lrcIdx - 1 < lyric.length) {
       for (let reachIdx = lrcIdx; reachIdx - 1 < lyric.length; reachIdx++) {
         if (
-          lyric[reachIdx]?.time < position &&
-          lyric[reachIdx + 1]?.time > position
+          lyric[reachIdx]?.time <= position &&
+          lyric[reachIdx + 1]?.time >= position
         ) {
           scrollToItem(reachIdx)
           break

@@ -24,6 +24,7 @@ declare namespace SongType {
 declare namespace BannerType {
   interface BannerProps {
     pic: string
+    url?: string | null
   }
   type BannerList = BannerProps[]
 }

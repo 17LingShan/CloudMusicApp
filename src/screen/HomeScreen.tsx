@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react'
 import { RefreshControl, ScrollView, View } from 'react-native'
 import { fetchHotAlbumList, fetchBanner } from '@/api/hotInfo'
-import HomeCarousel from '@/components/Home/BannerCarousel'
+import BannerCarousel from '@/components/Home/BannerCarousel'
 import HotAlbumList from '@/components/Home/HotAlbumList'
 import { AlbumType, BannerType } from '@/mobx/types'
 import { screenWidth } from '@/util/common'
@@ -15,7 +15,9 @@ function HomeSCreen() {
   const handleBanner = async () => {
     await fetchBanner({})
       .then(res => {
-        setBanner([...res.data.banners.map(item => ({ pic: item.pic }))])
+        setBanner([
+          ...res.data.banners.map(item => ({ pic: item.pic, url: item.url }))
+        ])
       })
       .catch(e => console.log('err of Banner'))
   }
@@ -57,7 +59,7 @@ function HomeSCreen() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
         <View style={{ marginTop: 20 }}>
-          <HomeCarousel bannerList={banner} />
+          <BannerCarousel bannerList={banner} />
         </View>
         <View
           style={{
