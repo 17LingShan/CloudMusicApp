@@ -5,9 +5,12 @@ import 'react-native-gesture-handler'
 import React, { useEffect } from 'react'
 import { AppRegistry } from 'react-native'
 import TrackPlayer from 'react-native-track-player'
-import { DefaultTheme, PaperProvider } from 'react-native-paper'
-import { NavigationContainer } from '@react-navigation/native'
+import {
+  NavigationContainer,
+  DefaultTheme as NavigationTheme
+} from '@react-navigation/native'
 import { createDrawerNavigator } from '@react-navigation/drawer'
+import { DefaultTheme, PaperProvider } from 'react-native-paper'
 import type { ThemeProp } from 'react-native-paper/src/types'
 import { name as appName } from './app.json'
 import StackRoot from '@/navigation/StackRoot'
@@ -21,7 +24,7 @@ function Music(): JSX.Element {
       console.log('destroy')
     }
   }, [])
-  const theme: ThemeProp = {
+  const paperTheme: ThemeProp = {
     ...DefaultTheme,
     colors: {
       ...DefaultTheme.colors,
@@ -37,8 +40,15 @@ function Music(): JSX.Element {
 
   return (
     <>
-      <PaperProvider theme={theme}>
-        <NavigationContainer>
+      <PaperProvider theme={paperTheme}>
+        <NavigationContainer
+          theme={{
+            dark: false,
+            colors: {
+              ...NavigationTheme.colors,
+              background: 'transparent'
+            }
+          }}>
           <Drawer.Navigator
             initialRouteName="Root"
             screenOptions={{

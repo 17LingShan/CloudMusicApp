@@ -52,11 +52,7 @@ function PlayDetailHeader({
           paddingTop: StatusBar.currentHeight + 10,
           backgroundColor: theme.colors.background
         }}>
-        <StatusBar
-          translucent={true}
-          backgroundColor="transparent"
-          barStyle="dark-content"
-        />
+        <StatusBar translucent={true} barStyle="light-content" />
         <View
           style={{
             height: 70,

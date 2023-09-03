@@ -1,10 +1,10 @@
 import { useState, useCallback, useEffect } from 'react'
 import { RefreshControl, ScrollView, View } from 'react-native'
+import { handleAccountInfo, screenWidth } from '@/util/common'
 import { fetchHotAlbumList, fetchBanner } from '@/api/hotInfo'
 import BannerCarousel from '@/components/Home/BannerCarousel'
 import HotAlbumList from '@/components/Home/HotAlbumList'
 import { AlbumType, BannerType } from '@/mobx/types'
-import { screenWidth } from '@/util/common'
 
 function HomeSCreen() {
   const width = screenWidth
@@ -43,20 +43,20 @@ function HomeSCreen() {
       .catch(e => console.log('err of HotAlbumList'))
   }
 
-  const onRefresh = useCallback(async () => {
+  const handleRefresh = useCallback(async () => {
     setRefreshing(true)
-    await Promise.all([handleBanner(), handleAlbumList()])
+    await Promise.all([handleBanner(), handleAlbumList(), handleAccountInfo()])
     setRefreshing(false)
   }, [])
   useEffect(() => {
-    onRefresh()
+    handleRefresh()
   }, [])
 
   return (
     <>
       <ScrollView
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
         }>
         <View style={{ marginTop: 20 }}>
           <BannerCarousel bannerList={banner} />

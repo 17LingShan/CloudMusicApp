@@ -7,6 +7,7 @@ import AboutScreen from '@/screen/AboutScreen'
 import MediaMOdal from '@/screen/MediaModal'
 import WebScreen from '@/screen/WebScreen'
 import TabNavigator from './TabNavigator'
+import LoginScreen from '@/screen/LoginScreen'
 
 const Stack = createStackNavigator()
 
@@ -37,6 +38,11 @@ function StackRoot(): JSX.Element {
         <Stack.Screen
           name="album"
           component={AlbumScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="login"
+          component={LoginScreen}
           options={{ headerShown: false }}
         />
         <Stack.Group

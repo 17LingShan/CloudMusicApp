@@ -2,9 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Animated, Easing, TouchableOpacity } from 'react-native'
 import PlayDetailRotation from './PlayDetailRotation'
 import PlayDetailLyric from './PlayDetailLyric'
-import playerStore from '@/mobx/player'
 import coverImg from '@/assets/cover.jpg'
-import { toJS } from 'mobx'
 import { SongType } from '@/mobx/types'
 
 function PlayDetailCenter({
@@ -39,7 +37,7 @@ function PlayDetailCenter({
     <>
       <TouchableOpacity
         activeOpacity={1}
-        style={{ width: '100%', height: '70%' }}
+        style={{ width: '100%', height: '70%', overflow: 'hidden' }}
         onPress={() => {
           AlbumFade.setValue(isAlbumPic ? 1 : 0)
           lyricFade.setValue(isAlbumPic ? 0 : 1)
@@ -55,11 +53,7 @@ function PlayDetailCenter({
             opacity: AlbumFade
           }}>
           <PlayDetailRotation
-            albumPicUrl={
-              toJS(playerStore.currentTrack.id)
-                ? toJS(playerStore.currentTrack.albumPicUrl)
-                : coverImg
-            }
+            albumPicUrl={trackInfo.id ? trackInfo.albumPicUrl : coverImg}
           />
         </Animated.View>
         <Animated.View
@@ -71,7 +65,7 @@ function PlayDetailCenter({
             alignItems: 'center',
             opacity: lyricFade
           }}>
-          <PlayDetailLyric lyric={playerStore.currentTrack.lyric} />
+          <PlayDetailLyric lyric={trackInfo.lyric} />
         </Animated.View>
       </TouchableOpacity>
     </>

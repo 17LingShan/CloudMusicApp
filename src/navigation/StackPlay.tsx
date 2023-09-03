@@ -11,9 +11,7 @@ function StackPlay(): JSX.Element {
         <Stack.Screen
           name="Home"
           children={() => <PlayListScreen />}
-          options={{
-            header: () => <CommonHeader />
-          }}
+          options={{ header: () => <CommonHeader /> }}
         />
       </Stack.Navigator>
     </>

@@ -1,6 +1,5 @@
 import { SongType } from '@/mobx/types'
 import { storage } from '@/storage'
-import { uniqBy } from 'lodash'
 import { makeAutoObservable, toJS } from 'mobx'
 
 export const initTrackInfo: SongType.SongProps = {

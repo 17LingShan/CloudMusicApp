@@ -1,4 +1,5 @@
 import { networkConfig } from '@/config/network'
+import { storage } from '@/storage'
 import axios, { AxiosRequestConfig } from 'axios'
 
 export function request(config: AxiosRequestConfig) {
@@ -14,7 +15,14 @@ export function request(config: AxiosRequestConfig) {
 }
 
 function beforeReq(config: any) {
+  config.params = {
+    ...config.params,
+    timestamp: new Date().getTime(),
+    realIP: '116.25.146.137',
+    cookie: encodeURIComponent(storage.getString('cookie'))
+  }
   console.log('beforeReq')
+
   return config
 }
 
@@ -30,6 +38,5 @@ function beforeRes(res: any) {
 
 function errRes(err: any) {
   console.log('errRes')
-  console.log(err)
   return Promise.reject(err)
 }

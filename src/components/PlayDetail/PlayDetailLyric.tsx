@@ -1,10 +1,10 @@
-import { Animated, Button, Text, View } from 'react-native'
+import { useEffect, useRef, useState } from 'react'
+import { Text, View } from 'react-native'
 import { useTheme } from 'react-native-paper/src/core/theming'
+import { useProgress } from 'react-native-track-player'
 import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel'
 import { SongType } from '@/mobx/types'
 import { screenWidth } from '@/util/common'
-import { useEffect, useRef, useState } from 'react'
-import { useProgress } from 'react-native-track-player'
 
 function PlayDetailLyric({
   lyric
@@ -15,13 +15,12 @@ function PlayDetailLyric({
   const [lrcIdx, setLrcIdx] = useState(0)
 
   const scrollToItem = (index: number): void => {
-    console.log('scrollToItem', index)
     setLrcIdx(index)
     carouselRef.current?.scrollTo({ index: index, animated: true })
   }
 
-  useEffect(() => {
-    if (!lyric.length) return
+  const handleScrollLyric = () => {
+    if (!lyric) return
 
     if (lrcIdx - 1 < lyric.length) {
       for (let reachIdx = lrcIdx; reachIdx - 1 < lyric.length; reachIdx++) {
@@ -39,6 +38,10 @@ function PlayDetailLyric({
     } else {
       scrollToItem(lyric.length - 1)
     }
+  }
+
+  useEffect(() => {
+    handleScrollLyric()
   }, [position])
 
   useEffect(() => {

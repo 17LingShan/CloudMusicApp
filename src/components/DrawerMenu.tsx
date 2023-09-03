@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { StatusBar, Text } from 'react-native'
 import { Drawer } from 'react-native-paper'
 import { useNavigation, CommonActions } from '@react-navigation/core'
@@ -6,6 +5,10 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import type { Props as DrawerItemProps } from 'react-native-paper/src/components/Drawer/DrawerItem'
 
 const DrawerMenuOption: DrawerItemProps[] = [
+  {
+    label: 'login',
+    icon: () => <Icon name="settings" size={24} />
+  },
   {
     label: 'settings',
     icon: () => <Icon name="settings" size={24} />,

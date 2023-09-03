@@ -37,6 +37,40 @@ declare namespace APIParams {
     limit?: number
     offset?: number
   }
+
+  interface PhoneLoginParam {
+    phone: number
+    password?: string
+    countrycode?: number
+    md5_password?: string
+    captcha?: number
+  }
+
+  interface CaptchaParam {
+    phone: string
+    ctcode: number
+  }
+
+  interface VerifyCaptchaParam {
+    phone: string
+    captcha: string
+  }
+
+  interface EmailLoginParam {
+    email: string
+    password: string
+    md5_password?: string
+  }
+
+  interface QRImageParams {
+    key: string
+    qrimg?: boolean
+  }
+
+  interface QRStateParams {
+    key: string
+    noCookie?: boolean
+  }
 }
 
 declare namespace APIResponse {}

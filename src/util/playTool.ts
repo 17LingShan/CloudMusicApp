@@ -28,7 +28,7 @@ function changeStateEmit(event: PlaybackStateEvent) {
   }
 }
 
-// 正常切换到下一首，event中带有track且为0；
+// 正常切换到下一首, event中带有track且为0;
 async function changeEventEmit(event: PlaybackTrackChangedEvent) {
   console.log('change event', event)
 
@@ -47,7 +47,9 @@ async function changeEventEmit(event: PlaybackTrackChangedEvent) {
   } else {
     // 选择某一首播放
     console.log(3)
+    console.log('playStoreTrack.id', playerStore.currentTrack.id)
     const playingTrack = (await TrackPlayer.getTrack(0)) as SongType.SongProps
+    console.log('playingTrack.id', playingTrack.id)
 
     if (
       playingTrack.id === playerStore.currentTrack.id &&
@@ -135,14 +137,14 @@ export async function playTrack(trackInfo: SongType.SongProps) {
   const hasUrlTrackInfo = await fetchTrackInfo({ id: trackInfo.id })
     .then(res => ({
       ...trackInfo,
-      url: res.url,
-      lyric: res.lyric
+      url: res.url
     }))
     .catch(err => {
       console.log('false to fetchTrackInfo', err)
       showToastErr({ message: '网络拥挤, 请稍后再试！' })
       return trackInfo
     })
+  console.log('track url', hasUrlTrackInfo.url)
   await TrackPlayer.reset()
   await TrackPlayer.setRepeatMode(RepeatMode.Queue)
   await TrackPlayer.add(hasUrlTrackInfo as Track)
@@ -182,6 +184,7 @@ async function handleSkipToAssignNextTrack(direction?: number) {
 
 // 跳转指定方向
 export async function skipToDirection(direction: number) {
+  console.log('direction', direction)
   await handleSkipToAssignNextTrack(direction)
     .then()
     .catch(async () => {

@@ -51,6 +51,7 @@ declare namespace UserType {
     userId: number
     nickname: string
     avatarUrl: string
+    backgroundUrl?: string
   }
 }
 

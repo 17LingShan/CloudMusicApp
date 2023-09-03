@@ -1,10 +1,12 @@
 import { SongType } from '@/mobx/types'
 import { fetchLyric, fetchUrlById } from '@/api/search'
 import { Dimensions, ToastAndroid } from 'react-native'
-import { text } from 'stream/consumers'
+import { fetchAccountInfo } from '@/api/user'
 
-export const screenWidth = Dimensions.get('screen').width
-export const screenHeight = Dimensions.get('screen').height
+import UserStore from '@/mobx/user'
+
+export const screenWidth = Dimensions.get('window').width
+export const screenHeight = Dimensions.get('window').height
 
 export function formatCount(originNum: number) {
   return originNum > 10000
@@ -19,7 +21,7 @@ export function formatMinute(second: number): string {
     .toString()
     .padStart(2, '0')}`
 }
-async function handleFetchLyric(params: APIParams.FetchLyricParam) {
+export async function handleFetchLyric(params: APIParams.FetchLyricParam) {
   return await fetchLyric(params)
     .then(res => {
       return res.data.code !== 200
@@ -32,9 +34,10 @@ async function handleFetchLyric(params: APIParams.FetchLyricParam) {
     })
 }
 
-async function handleFetchUrl(params: APIParams.FetchUrlParam) {
+export async function handleFetchUrl(params: APIParams.FetchUrlParam) {
   return await fetchUrlById(params)
     .then(res => {
+      console.log('fetch url Code', res.data.code)
       return res.data.code !== 200
         ? Promise.reject('')
         : Promise.resolve(res.data.data[0].url as string)
@@ -46,18 +49,13 @@ async function handleFetchUrl(params: APIParams.FetchUrlParam) {
 }
 
 export async function fetchTrackInfo({ id, level }: APIParams.FetchUrlParam) {
-  const [lyric, url] = await Promise.all([
-    handleFetchLyric({ id: id }),
-    handleFetchUrl({ id: id, level: level })
-  ])
-  return url
-    ? Promise.resolve({ lyric: lyric, url: url })
-    : Promise.reject({ lyric: lyric, url: url })
+  const [url] = await Promise.all([handleFetchUrl({ id: id, level: level })])
+  return url ? Promise.resolve({ url: url }) : Promise.reject({ url: url })
 }
 
 export function showToastErr({ code, message }: ToastCustom.ToastErrParams) {
   ToastAndroid.showWithGravity(
-    `${code ?? -406}:${message}`,
+    `${code}:${message}`,
     ToastAndroid.SHORT,
     ToastAndroid.CENTER
   )
@@ -103,6 +101,38 @@ export function formatLyric(lyric: string): SongType.LyricItem[] {
       text: item[2].replace(/\[\d+:\d+\.\d+\]/g, '').trim()
     }
   })
-  console.log('formatted Lyric\n', formattedLyric)
   return formattedLyric.filter(item => item.text.length)
+}
+
+export function hexToRGB(hex: string) {
+  // 去除可能包含的 # 号
+  hex = hex.replace('#', '')
+
+  // 如果输入的十六进制颜色值不是 6 位，则返回空数组
+  if (hex.length !== 6) {
+    return []
+  }
+
+  // 将十六进制颜色值拆分成 R、G、B 三个部分
+  const r = parseInt(hex.substring(0, 2), 16)
+  const g = parseInt(hex.substring(2, 4), 16)
+  const b = parseInt(hex.substring(4, 6), 16)
+
+  // 返回 RGB 数组
+  return `${r},${g},${b}`
+}
+
+export async function handleAccountInfo() {
+  await fetchAccountInfo()
+    .then(res => {
+      UserStore.setAccountInfo({
+        userId: res.data.profile.userId,
+        nickname: res.data.profile.nickname,
+        avatarUrl: res.data.profile.avatarUrl,
+        backgroundUrl: res.data.profile.backgroundUrl
+      })
+    })
+    .catch(err => {
+      showToastCommon({ message: `${err.code}获取account信息失败！` })
+    })
 }
