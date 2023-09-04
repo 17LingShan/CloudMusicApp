@@ -9,6 +9,7 @@ import StackHome from './StackHome'
 import StackPlay from './StackPlay'
 import StackUser from './StackUser'
 import UserStore from '@/mobx/user'
+import { observer } from 'mobx-react'
 
 const Tab = createBottomTabNavigator()
 
@@ -23,7 +24,7 @@ function TabNavigator(): JSX.Element {
 
   const CommonRoutes = [
     {
-      name: 'Home',
+      name: 'home',
       icon: handleTabIcon('home'),
       component: StackHome
     },
@@ -80,4 +81,4 @@ function TabNavigator(): JSX.Element {
   )
 }
 
-export default TabNavigator
+export default observer(TabNavigator)

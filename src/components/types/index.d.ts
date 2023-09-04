@@ -25,8 +25,8 @@ declare namespace IconInputType {
   }
 }
 
-declare namespace MediaItemType {
-  interface MediaItemProps {
+declare namespace TrackItemType {
+  interface TrackItemProps {
     position: number
     trackInfo: SongType.SongProps
     iconColor?: string

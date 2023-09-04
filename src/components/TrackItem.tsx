@@ -1,15 +1,15 @@
-import type { MediaItemType } from './types'
+import type { TrackItemType } from './types'
 import { TouchableRipple } from 'react-native-paper'
 import { StyleSheet, Text, View } from 'react-native'
 import RippleIcon from './RippleIcon'
 
-function MediaItem({
+function TrackItem({
   position,
   trackInfo,
   iconColor,
   onPressItem,
   onPressIcon
-}: MediaItemType.MediaItemProps): JSX.Element {
+}: TrackItemType.TrackItemProps): JSX.Element {
   return (
     <>
       <TouchableRipple
@@ -80,4 +80,4 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   }
 })
-export default MediaItem
+export default TrackItem

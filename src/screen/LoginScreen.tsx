@@ -55,7 +55,7 @@ function LoginScreen(): JSX.Element {
             break
           case 803:
             UserStore.setCookie(res.data.cookie)
-            navigation.dispatch(CommonActions.navigate('Home'))
+            navigation.dispatch(CommonActions.navigate('stack_home'))
             break
           default:
             showToastErr({ message: '未知登录状态！' })

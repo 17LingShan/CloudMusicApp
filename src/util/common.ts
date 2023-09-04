@@ -110,7 +110,7 @@ export function hexToRGB(hex: string) {
 
   // 如果输入的十六进制颜色值不是 6 位，则返回空数组
   if (hex.length !== 6) {
-    return []
+    return ``
   }
 
   // 将十六进制颜色值拆分成 R、G、B 三个部分

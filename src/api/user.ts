@@ -7,7 +7,8 @@ const api = {
   generateQRKey: '/login/qr/key',
   generateQRImage: '/login/qr/create',
   QRState: '/login/qr/check',
-  userAccount: '/user/account'
+  userAccount: '/user/account',
+  likeAlbum: '/user/playlist'
 }
 
 // export function phoneLogin(data: APIParams.PhoneLoginParam) {
@@ -64,5 +65,13 @@ export function fetchAccountInfo() {
   return request({
     url: api.userAccount,
     method: 'get'
+  })
+}
+
+export function fetchLikeAlbums(params: APIParams.UidParams) {
+  return request({
+    url: api.likeAlbum,
+    method: 'get',
+    params: params
   })
 }

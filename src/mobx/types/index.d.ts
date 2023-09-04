@@ -38,9 +38,9 @@ declare namespace AlbumType {
     nickname: string
     coverImgUrl: string
     description: string
-    shareCount: number
-    commentCount: number
-    subscribedCount: number
+    shareCount?: number
+    commentCount?: number
+    subscribedCount?: number
   }
 
   type AlbumList = AlbumProps[]

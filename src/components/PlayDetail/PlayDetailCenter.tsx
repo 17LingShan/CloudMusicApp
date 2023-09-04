@@ -37,7 +37,7 @@ function PlayDetailCenter({
     <>
       <TouchableOpacity
         activeOpacity={1}
-        style={{ width: '100%', height: '70%', overflow: 'hidden' }}
+        style={{ position: 'relative', width: '100%', height: '70%' }}
         onPress={() => {
           AlbumFade.setValue(isAlbumPic ? 1 : 0)
           lyricFade.setValue(isAlbumPic ? 0 : 1)
@@ -45,7 +45,6 @@ function PlayDetailCenter({
         }}>
         <Animated.View
           style={{
-            position: 'absolute',
             width: '100%',
             height: '100%',
             justifyContent: 'center',

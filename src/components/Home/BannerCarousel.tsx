@@ -22,12 +22,11 @@ function BannerCarousel({
           autoPlay={true}
           data={bannerList}
           scrollAnimationDuration={5000}
-          renderItem={({ item, index }) => (
+          renderItem={({ item }) => (
             <TouchableOpacity
               activeOpacity={1}
               onPress={() => {
                 if (item.url) {
-                  console.log(item)
                   navigation.dispatch(
                     CommonActions.navigate({ name: 'webView', params: item })
                   )
@@ -35,7 +34,7 @@ function BannerCarousel({
               }}>
               <View style={{ paddingHorizontal: 10 }}>
                 <Image
-                  source={{ uri: item.pic }}
+                  source={{ uri: item.pic + '?param=500y500' }}
                   style={{ aspectRatio: 2.57, borderRadius: 26 }}
                 />
               </View>

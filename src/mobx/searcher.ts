@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx'
-import { SongType } from '@/mobx/types'
+import { AlbumType, SongType } from '@/mobx/types'
 
 class Searcher {
   keywords = ''

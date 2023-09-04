@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { Text, View } from 'react-native'
-import { useTheme } from 'react-native-paper/src/core/theming'
+import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { useTheme } from 'react-native-paper'
 import { useProgress } from 'react-native-track-player'
-import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel'
 import { SongType } from '@/mobx/types'
 import { screenWidth } from '@/util/common'
 
@@ -11,20 +10,27 @@ function PlayDetailLyric({
 }: Pick<SongType.SongProps, 'lyric'>): JSX.Element {
   const theme = useTheme()
   const { position } = useProgress(500)
-  const carouselRef = useRef<ICarouselInstance>(null)
+  const flatListRef = useRef<FlatList<SongType.LyricItem>>(null)
   const [lrcIdx, setLrcIdx] = useState(0)
 
   const scrollToItem = (index: number): void => {
     setLrcIdx(index)
-    carouselRef.current?.scrollTo({ index: index, animated: true })
+    flatListRef.current?.scrollToIndex({
+      index: index,
+      animated: true,
+      viewPosition: 0.5
+    })
   }
 
-  const handleScrollLyric = () => {
+  const handleScrollLyric = (): void => {
     if (!lyric) return
 
-    if (lrcIdx - 1 < lyric.length) {
-      for (let reachIdx = lrcIdx; reachIdx - 1 < lyric.length; reachIdx++) {
-        if (
+    if (lrcIdx < lyric.length) {
+      for (let reachIdx = lrcIdx; reachIdx < lyric.length; reachIdx++) {
+        if (reachIdx + 1 === lyric.length) {
+          scrollToItem(lyric.length - 1)
+          break
+        } else if (
           lyric[reachIdx]?.time <= position &&
           lyric[reachIdx + 1]?.time >= position
         ) {
@@ -35,8 +41,6 @@ function PlayDetailLyric({
           break
         }
       }
-    } else {
-      scrollToItem(lyric.length - 1)
     }
   }
 
@@ -50,44 +54,57 @@ function PlayDetailLyric({
 
   return (
     <>
-      <View style={{ height: '100%', width: '100%' }}>
-        <Carousel
-          ref={carouselRef}
-          loop={false}
-          height={30}
-          style={{
-            height: screenWidth * 1.3,
-            justifyContent: 'center',
-            alignContent: 'center'
-          }}
-          onProgressChange={() => {}}
-          vertical={true}
+      <View style={style.container}>
+        <FlatList
+          ref={flatListRef}
           data={lyric}
+          ListHeaderComponent={() => (
+            <View style={{ height: screenWidth * 0.6 }} />
+          )}
+          ListFooterComponent={() => (
+            <View style={{ height: screenWidth * 0.6 }} />
+          )}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(_, index) => index.toString()}
           renderItem={({ item, index }) => (
-            <View
-              style={{
-                height: 30,
-                justifyContent: 'center'
-              }}>
+            <View style={style.renderItemContainer}>
               <Text
                 style={{
+                  ...style.renderItemText,
                   color:
                     lrcIdx === index
                       ? theme.colors.surface
                       : theme.colors.onSurface,
-                  textAlign: 'center',
-                  alignItems: 'center',
-                  fontSize: lrcIdx === index ? 20 : 12,
-                  maxWidth: screenWidth
+                  fontSize: lrcIdx === index ? 20 : 12
                 }}>
                 {item.text}
               </Text>
             </View>
           )}
+          onScrollToIndexFailed={() => {}}
         />
       </View>
     </>
   )
 }
+
+const style = StyleSheet.create({
+  container: {
+    height: '100%',
+    width: '100%',
+    paddingVertical: 20
+  },
+
+  renderItemContainer: {
+    height: 30,
+    marginVertical: 4
+  },
+  renderItemText: {
+    lineHeight: 30,
+    textAlign: 'center',
+    alignItems: 'center',
+    maxWidth: screenWidth
+  }
+})
 
 export default PlayDetailLyric

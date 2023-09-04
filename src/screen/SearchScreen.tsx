@@ -7,7 +7,7 @@ import { RefreshControl } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/core'
 import { showToastErr } from '@/util/common'
 import SearchHeader from '@/components/SearchHeader'
-import MediaItem from '@/components/MediaItem'
+import TrackItem from '@/components/TrackItem'
 import { search } from '@/api/search'
 import searchStore from '@/mobx/searcher'
 import { SongType } from '@/mobx/types'
@@ -64,7 +64,7 @@ function SearchScreen(): JSX.Element {
       <FlatList
         data={toJS(searchStore.searchList)}
         renderItem={({ item, index }) => (
-          <MediaItem
+          <TrackItem
             position={index + 1}
             trackInfo={item}
             iconColor={theme.colors.shadow}

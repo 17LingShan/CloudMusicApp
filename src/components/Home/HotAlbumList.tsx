@@ -36,7 +36,7 @@ function HotAlbumList({
                   paddingHorizontal: 10
                 }}>
                 <Image
-                  source={{ uri: item.coverImgUrl + '?param=300y300' }}
+                  source={{ uri: item.coverImgUrl + '?param=500y500' }}
                   style={{ height: '100%', borderRadius: 13 }}
                 />
                 <View>

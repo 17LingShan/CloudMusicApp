@@ -4,7 +4,7 @@ import SettingsScreen from '@/screen/SettingsScreen'
 import SearchScreen from '@/screen/SearchScreen'
 import AlbumScreen from '@/screen/AlbumScreen'
 import AboutScreen from '@/screen/AboutScreen'
-import MediaMOdal from '@/screen/MediaModal'
+import TrackModal from '@/screen/TrackModal'
 import WebScreen from '@/screen/WebScreen'
 import TabNavigator from './TabNavigator'
 import LoginScreen from '@/screen/LoginScreen'
@@ -50,7 +50,7 @@ function StackRoot(): JSX.Element {
             headerShown: false,
             presentation: 'transparentModal'
           }}>
-          <Stack.Screen name="MediaItemModal" component={MediaMOdal} />
+          <Stack.Screen name="TrackItemModal" component={TrackModal} />
           <Stack.Screen name="webView" component={WebScreen} />
         </Stack.Group>
         <Stack.Group screenOptions={{ presentation: 'modal' }}>

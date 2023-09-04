@@ -71,6 +71,10 @@ declare namespace APIParams {
     key: string
     noCookie?: boolean
   }
+
+  interface UidParams {
+    uid: number
+  }
 }
 
 declare namespace APIResponse {}

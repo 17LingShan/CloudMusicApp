@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { StatusBar, View } from 'react-native'
+import { View } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react'

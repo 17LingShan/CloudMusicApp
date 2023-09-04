@@ -20,7 +20,7 @@ function AlbumTitle({
           <View style={{ width: '30%' }}>
             <Image
               style={{ height: '100%', borderRadius: 30 }}
-              source={{ uri: albumInfo.coverImgUrl }}
+              source={{ uri: albumInfo.coverImgUrl + '?param=500y500' }}
             />
           </View>
           <View
@@ -47,7 +47,7 @@ function AlbumTitle({
               <View style={{ height: '100%', width: '15%' }}>
                 <Image
                   style={{ height: '100%', width: '100%', borderRadius: 35 }}
-                  source={{ uri: albumInfo.avatarUrl }}
+                  source={{ uri: albumInfo.avatarUrl + '?param=500y500' }}
                 />
               </View>
               <View
@@ -73,9 +73,15 @@ function AlbumTitle({
             flexDirection: 'row',
             justifyContent: 'space-between'
           }}>
-          <AlbumTitleButton icon="share" count={albumInfo.shareCount} />
-          <AlbumTitleButton icon="comment" count={albumInfo.commentCount} />
-          <AlbumTitleButton icon="add-card" count={albumInfo.subscribedCount} />
+          <AlbumTitleButton icon="share" count={albumInfo.shareCount || 0} />
+          <AlbumTitleButton
+            icon="comment"
+            count={albumInfo.commentCount || 0}
+          />
+          <AlbumTitleButton
+            icon="add-card"
+            count={albumInfo.subscribedCount || 0}
+          />
         </View>
       </View>
     </>

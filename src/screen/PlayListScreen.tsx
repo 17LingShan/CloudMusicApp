@@ -2,7 +2,7 @@ import { Button, FlatList } from 'react-native'
 import { Text, View } from 'react-native'
 import { useMMKVStorage } from 'react-native-mmkv-storage'
 import { storage } from '@/storage'
-import MediaItem from '@/components/MediaItem'
+import TrackItem from '@/components/TrackItem'
 import { useTheme } from 'react-native-paper/src/core/theming'
 import { useNavigation } from '@react-navigation/core'
 import { observer } from 'mobx-react'
@@ -29,7 +29,7 @@ function PlayListScreen(): JSX.Element {
       <FlatList
         data={storagePlayList}
         renderItem={({ item, index }) => (
-          <MediaItem
+          <TrackItem
             position={index + 1}
             trackInfo={item}
             iconColor={theme.colors.shadow}

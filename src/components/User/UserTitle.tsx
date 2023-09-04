@@ -11,8 +11,8 @@ function UserTitle(): JSX.Element {
     <>
       <View
         style={{
-          height: 240,
-          padding: 20
+          height: 200,
+          marginBottom: 50
         }}>
         <View style={{ flex: 1, justifyContent: 'flex-end' }}>
           <View
@@ -29,7 +29,7 @@ function UserTitle(): JSX.Element {
               style={{ height: 100, width: 100, borderRadius: 50 }}
               source={
                 UserStore.avatarUrl
-                  ? { uri: toJS(UserStore.avatarUrl) }
+                  ? { uri: toJS(UserStore.avatarUrl) + '?param=500y500' }
                   : CoverImg
               }
               resizeMode="contain"

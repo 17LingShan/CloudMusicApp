@@ -7,7 +7,7 @@ export function handlePressModalIcon(
   trackInfo: SongType.SongProps
 ) {
   navigation.dispatch(
-    CommonActions.navigate({ name: 'MediaItemModal', params: trackInfo })
+    CommonActions.navigate({ name: 'TrackItemModal', params: trackInfo })
   )
 }
 

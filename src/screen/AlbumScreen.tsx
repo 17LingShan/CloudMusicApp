@@ -5,7 +5,7 @@ import { useTheme } from 'react-native-paper'
 import { fetchAlbumAllTrack } from '@/api/search'
 import AlbumHeader from '@/components/Album/AlbumHeader'
 import AlbumTitle from '@/components/Album/AlbumTitle'
-import MediaItem from '@/components/MediaItem'
+import TrackItem from '@/components/TrackItem'
 import { AlbumType, SongType } from '@/mobx/types'
 import { handlePressItem, handlePressModalIcon } from '@/util/navigateTool'
 
@@ -53,7 +53,7 @@ function AlbumScreen(): JSX.Element {
         <FlatList
           data={trackList}
           renderItem={({ item, index }) => (
-            <MediaItem
+            <TrackItem
               position={index + 1}
               trackInfo={item}
               iconColor={theme.colors.shadow}

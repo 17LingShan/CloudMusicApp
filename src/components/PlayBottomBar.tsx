@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react'
-import { CommonActions, useNavigation } from '@react-navigation/core'
 import { Animated, Easing, Image, Pressable, View } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import coverImg from '@/assets/cover.jpg'
-import playerStore from '@/mobx/player'
+import { CommonActions, useNavigation } from '@react-navigation/core'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import playerStore from '@/mobx/player'
 import { pause, play } from '@/util/playTool'
+import coverImg from '@/assets/cover.jpg'
 
 function PlayBottomBar(): JSX.Element {
   const navigation = useNavigation()
@@ -62,7 +62,7 @@ function PlayBottomBar(): JSX.Element {
                   borderRadius: 6
                 }}
                 source={
-                  toJS(playerStore.currentTrack.id)
+                  playerStore.currentTrack.id
                     ? toJS(playerStore.currentTrack.albumPicUrl)
                     : coverImg
                 }

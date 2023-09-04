@@ -8,6 +8,7 @@ export class User {
   nickname = ''
   avatarUrl = ''
   backgroundUrl = ''
+
   constructor() {
     makeAutoObservable(this)
   }

@@ -1,13 +1,12 @@
 import React from 'react'
-import { StyleSheet, View, Animated, Button, Pressable } from 'react-native'
-import { useTheme } from 'react-native-paper/src/core/theming'
+import { StyleSheet, Animated, Pressable } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/core'
 import { useCardAnimation } from '@react-navigation/stack'
 import { screenHeight } from '@/util/common'
 import { SongType } from '@/mobx/types'
 import ModalItem from '@/components/ModalItem'
 
-function MediaModal(): JSX.Element {
+function TrackModal(): JSX.Element {
   const navigation = useNavigation()
   const { params } = useRoute() as { params: SongType.SongProps }
 
@@ -45,4 +44,4 @@ function MediaModal(): JSX.Element {
   )
 }
 
-export default MediaModal
+export default TrackModal

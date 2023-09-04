@@ -130,8 +130,8 @@ export async function playTrack(trackInfo: SongType.SongProps) {
   await initTrack()
 
   // 加上尺寸
-  if (!trackInfo.albumPicUrl.uri.includes('?param=600y600')) {
-    trackInfo.albumPicUrl.uri += '?param=600y600'
+  if (!trackInfo.albumPicUrl.uri.includes('?param=500y500')) {
+    trackInfo.albumPicUrl.uri += '?param=500y500'
   }
 
   const hasUrlTrackInfo = await fetchTrackInfo({ id: trackInfo.id })
