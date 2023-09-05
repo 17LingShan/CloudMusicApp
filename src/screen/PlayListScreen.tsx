@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/core'
 import { observer } from 'mobx-react'
 import { handlePressItem, handlePressModalIcon } from '@/util/navigateTool'
 import { screenHeight } from '@/util/common'
+import ListEmptyFooter from '@/components/PlayDetail/ListEmptyFooter'
 
 function PlayListScreen(): JSX.Element {
   const theme = useTheme()
@@ -39,9 +40,7 @@ function PlayListScreen(): JSX.Element {
           />
         )}
         keyExtractor={(_, index) => index.toString()}
-        ListFooterComponent={() => (
-          <View style={{ height: screenHeight * 0.15 }} />
-        )}
+        ListFooterComponent={() => <ListEmptyFooter />}
       />
     </>
   )

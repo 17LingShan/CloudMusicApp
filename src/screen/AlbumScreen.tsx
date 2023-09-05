@@ -8,6 +8,7 @@ import { handlePressItem, handlePressModalIcon } from '@/util/navigateTool'
 import AlbumHeader from '@/components/Album/AlbumHeader'
 import AlbumTitle from '@/components/Album/AlbumTitle'
 import TrackItem from '@/components/TrackItem'
+import ListEmptyFooter from '@/components/PlayDetail/ListEmptyFooter'
 
 function AlbumScreen(): JSX.Element {
   const { params } = useRoute() as { params: AlbumType.AlbumProps }
@@ -67,11 +68,7 @@ function AlbumScreen(): JSX.Element {
           )}
           keyExtractor={(_, index) => index.toString()}
           refreshControl={<RefreshControl refreshing={refreshing} />}
-          ListFooterComponent={() => (
-            <View>
-              <Text>213213</Text>
-            </View>
-          )}
+          ListFooterComponent={() => <ListEmptyFooter />}
         />
       </View>
     </>

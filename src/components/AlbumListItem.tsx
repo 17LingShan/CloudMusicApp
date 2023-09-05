@@ -1,5 +1,4 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
-import { useTheme } from 'react-native-paper'
 import { AlbumType } from '@/mobx/types'
 import { hexToRGB } from '@/util/common'
 

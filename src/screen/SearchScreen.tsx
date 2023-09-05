@@ -1,17 +1,18 @@
 import { useState } from 'react'
-import { Text, View, FlatList } from 'react-native'
+import { FlatList } from 'react-native'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react'
 import { useTheme } from 'react-native-paper'
 import { RefreshControl } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/core'
 import { showToastErr } from '@/util/common'
-import SearchHeader from '@/components/SearchHeader'
-import TrackItem from '@/components/TrackItem'
-import { search } from '@/api/search'
 import searchStore from '@/mobx/searcher'
 import { SongType } from '@/mobx/types'
+import { search } from '@/api/search'
 import { handlePressItem, handlePressModalIcon } from '@/util/navigateTool'
+import ListEmptyFooter from '@/components/PlayDetail/ListEmptyFooter'
+import SearchHeader from '@/components/SearchHeader'
+import TrackItem from '@/components/TrackItem'
 
 function SearchScreen(): JSX.Element {
   const theme = useTheme()
@@ -73,17 +74,16 @@ function SearchScreen(): JSX.Element {
           />
         )}
         keyExtractor={(_, index) => index.toString()}
+        onEndReached={() => {
+          console.log('on search end')
+        }}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
             onRefresh={() => handleRefreshing()}
           />
         }
-        ListFooterComponent={() => (
-          <View>
-            <Text>213213</Text>
-          </View>
-        )}
+        ListFooterComponent={() => <ListEmptyFooter />}
       />
     </>
   )

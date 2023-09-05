@@ -2,26 +2,45 @@ import { Image, Text, View, Pressable } from 'react-native'
 import Carousel from 'react-native-reanimated-carousel'
 import { useNavigation, CommonActions } from '@react-navigation/core'
 import { AlbumType } from '@/mobx/types'
-import { screenWidth } from '@/util/common'
+import { hexToRGB, screenWidth } from '@/util/common'
+import { useTheme } from 'react-native-paper'
 
 function HotAlbumList({
   albumList
 }: {
   albumList: AlbumType.AlbumList
 }): JSX.Element {
-  const width = screenWidth
-
+  const theme = useTheme()
   const navigation = useNavigation()
 
   return (
     <>
-      <View style={{ height: '100%' }}>
+      <View
+        style={{
+          height: '100%',
+          backgroundColor: `rgba(${hexToRGB(theme.colors.surface)},0.2)`
+        }}>
+        <View
+          style={{
+            height: screenWidth * 0.15,
+            paddingHorizontal: screenWidth * 0.08
+          }}>
+          <Text
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              fontWeight: '900',
+              fontSize: 20,
+              color: theme.colors.background,
+              lineHeight: screenWidth * 0.15
+            }}>
+            热门歌单
+          </Text>
+        </View>
         <Carousel
-          defaultIndex={0}
-          loop={false}
-          height={width / 2.5}
-          width={width / 2.5}
-          style={{ width: width, overflow: 'visible' }}
+          height={screenWidth * 0.4}
+          width={screenWidth * 0.4}
+          style={{ width: screenWidth, overflow: 'visible' }}
           data={albumList}
           overscrollEnabled={false}
           renderItem={({ item }) => (
@@ -44,7 +63,7 @@ function HotAlbumList({
                     style={{
                       position: 'absolute',
                       width: '100%',
-                      bottom: -width * 0.1
+                      bottom: -screenWidth * 0.1
                     }}>
                     <Text numberOfLines={2}>{item.name}</Text>
                   </View>

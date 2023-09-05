@@ -10,11 +10,12 @@ import { CommonActions, useNavigation } from '@react-navigation/core'
 import { useTheme } from 'react-native-paper'
 import { toJS } from 'mobx'
 import UserStore from '@/mobx/user'
-import { handleAccountInfo, screenHeight, showToastErr } from '@/util/common'
 import { AlbumType } from '@/mobx/types'
 import { fetchLikeAlbums } from '@/api/user'
+import { handleAccountInfo, showToastErr } from '@/util/common'
 import UserTitle from '@/components/User/UserTitle'
 import AlbumListItem from '@/components/AlbumListItem'
+import ListEmptyFooter from '@/components/PlayDetail/ListEmptyFooter'
 
 function UserScreen(): JSX.Element {
   const theme = useTheme()
@@ -64,9 +65,7 @@ function UserScreen(): JSX.Element {
           data={likeAlbum}
           showsVerticalScrollIndicator={false}
           ListHeaderComponent={() => <UserTitle />}
-          ListFooterComponent={() => (
-            <View style={{ height: screenHeight * 0.15 }} />
-          )}
+          ListFooterComponent={() => <ListEmptyFooter />}
           keyExtractor={(_, index) => index.toString()}
           renderItem={({ item, index }) => (
             <TouchableOpacity
