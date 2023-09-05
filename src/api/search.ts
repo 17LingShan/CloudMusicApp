@@ -5,6 +5,7 @@ const api = {
   hotKeywords: '/search/hot',
   songUrl: '/song/url/v1',
   albumAllTrack: '/playlist/track/all',
+  albumDetail: '/playlist/detail',
   lyric: '/lyric'
 }
 
@@ -38,6 +39,14 @@ export function fetchLyric(params: APIParams.FetchLyricParam) {
 export function fetchAlbumAllTrack(params: APIParams.FetchAlbumAllTrackParam) {
   return request({
     url: api.albumAllTrack,
+    method: 'get',
+    params: params
+  })
+}
+
+export function fetchAlbumDetail(params: APIParams.FetchAlbumDetailParam) {
+  return request({
+    url: api.albumDetail,
     method: 'get',
     params: params
   })

@@ -45,7 +45,7 @@ function UserTitle(): JSX.Element {
             <View style={{ alignItems: 'center' }}>
               <Text
                 style={{
-                  color: theme.colors.surface,
+                  color: theme.colors.background,
                   fontSize: 24,
                   fontWeight: '900'
                 }}>

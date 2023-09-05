@@ -38,6 +38,11 @@ declare namespace APIParams {
     offset?: number
   }
 
+  interface FetchAlbumDetailParam {
+    id: number
+    s?: number
+  }
+
   interface PhoneLoginParam {
     phone: number
     password?: string

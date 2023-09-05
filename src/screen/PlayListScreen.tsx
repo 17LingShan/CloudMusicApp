@@ -7,6 +7,7 @@ import { useTheme } from 'react-native-paper/src/core/theming'
 import { useNavigation } from '@react-navigation/core'
 import { observer } from 'mobx-react'
 import { handlePressItem, handlePressModalIcon } from '@/util/navigateTool'
+import { screenHeight } from '@/util/common'
 
 function PlayListScreen(): JSX.Element {
   const theme = useTheme()
@@ -39,18 +40,7 @@ function PlayListScreen(): JSX.Element {
         )}
         keyExtractor={(_, index) => index.toString()}
         ListFooterComponent={() => (
-          <View
-            style={{
-              borderRightColor: 'blue',
-              paddingTop: 40,
-              alignItems: 'center'
-            }}>
-            <Text
-              numberOfLines={1}
-              style={{ fontSize: 18, color: theme.colors.onSurface }}>
-              已经到底啦！
-            </Text>
-          </View>
+          <View style={{ height: screenHeight * 0.15 }} />
         )}
       />
     </>

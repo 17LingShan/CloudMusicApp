@@ -36,7 +36,6 @@ function PlayDetailScreen(): JSX.Element {
         <PlayDetailHeader trackInfo={toJS(playerStore.currentTrack)} />
         <View
           style={{
-            position: 'relative',
             flex: 1,
             backgroundColor: theme.colors.background
           }}>

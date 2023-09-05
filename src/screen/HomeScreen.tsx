@@ -34,6 +34,7 @@ function HomeSCreen() {
             avatarUrl: item.creator.avatarUrl,
             coverImgUrl: item.coverImgUrl,
             description: item.description,
+            trackCount: item.trackCount,
             shareCount: item.shareCount,
             commentCount: item.commentCount,
             subscribedCount: item.subscribedCount

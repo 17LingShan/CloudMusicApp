@@ -38,6 +38,7 @@ declare namespace AlbumType {
     nickname: string
     coverImgUrl: string
     description: string
+    trackCount?: number
     shareCount?: number
     commentCount?: number
     subscribedCount?: number

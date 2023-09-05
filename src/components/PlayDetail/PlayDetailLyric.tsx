@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import { useProgress } from 'react-native-track-player'
 import { SongType } from '@/mobx/types'
-import { screenWidth } from '@/util/common'
+import { screenHeight, screenWidth } from '@/util/common'
 
 function PlayDetailLyric({
   lyric
@@ -36,7 +36,7 @@ function PlayDetailLyric({
         ) {
           scrollToItem(reachIdx)
           break
-        } else if (lyric[reachIdx + 1]?.time > position) {
+        } else if (lyric[reachIdx]?.time > position) {
           scrollToItem(0)
           break
         }
@@ -58,11 +58,12 @@ function PlayDetailLyric({
         <FlatList
           ref={flatListRef}
           data={lyric}
+          initialNumToRender={lyric?.length}
           ListHeaderComponent={() => (
-            <View style={{ height: screenWidth * 0.6 }} />
+            <View style={{ height: screenHeight * 0.3 }} />
           )}
           ListFooterComponent={() => (
-            <View style={{ height: screenWidth * 0.6 }} />
+            <View style={{ height: screenHeight * 0.3 }} />
           )}
           showsVerticalScrollIndicator={false}
           keyExtractor={(_, index) => index.toString()}
@@ -92,11 +93,12 @@ const style = StyleSheet.create({
   container: {
     height: '100%',
     width: '100%',
-    paddingVertical: 20
+    paddingVertical: 20,
+    paddingHorizontal: 20
   },
 
   renderItemContainer: {
-    height: 30,
+    minHeight: 30,
     marginVertical: 4
   },
   renderItemText: {

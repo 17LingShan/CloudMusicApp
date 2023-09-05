@@ -1,15 +1,24 @@
-import { fetchLikeAlbums } from '@/api/user'
-import AlbumListItem from '@/components/AlbumListItem'
-import UserAlbumList from '@/components/User/UserAlbumList'
-import UserTitle from '@/components/User/UserTitle'
-import { AlbumType } from '@/mobx/types'
-import UserStore from '@/mobx/user'
-import { handleAccountInfo, showToastErr } from '@/util/common'
-import { toJS } from 'mobx'
 import { useCallback, useEffect, useState } from 'react'
-import { FlatList, RefreshControl, ScrollView, Text, View } from 'react-native'
+import {
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+  View,
+  TouchableOpacity
+} from 'react-native'
+import { CommonActions, useNavigation } from '@react-navigation/core'
+import { useTheme } from 'react-native-paper'
+import { toJS } from 'mobx'
+import UserStore from '@/mobx/user'
+import { handleAccountInfo, screenHeight, showToastErr } from '@/util/common'
+import { AlbumType } from '@/mobx/types'
+import { fetchLikeAlbums } from '@/api/user'
+import UserTitle from '@/components/User/UserTitle'
+import AlbumListItem from '@/components/AlbumListItem'
 
 function UserScreen(): JSX.Element {
+  const theme = useTheme()
+  const navigation = useNavigation()
   const [refreshing, setRefreshing] = useState(false)
   const [likeAlbum, setLikeAlbum] = useState<AlbumType.AlbumList>([])
 
@@ -25,6 +34,7 @@ function UserScreen(): JSX.Element {
             avatarUrl: item.creator.avatarUrl,
             coverImgUrl: item.coverImgUrl,
             description: item.description,
+            trackCount: item.trackCount,
             shareCount: item.shareCount,
             commentCount: item.commentCount,
             subscribedCount: item.subscribedCount
@@ -49,18 +59,46 @@ function UserScreen(): JSX.Element {
 
   return (
     <>
-      <FlatList
-        data={likeAlbum}
-        ListHeaderComponent={() => <UserTitle />}
-        ListFooterComponent={() => <View style={{ height: 120 }} />}
-        keyExtractor={(_, index) => index.toString()}
-        renderItem={({ item }) => <AlbumListItem albumInfo={item} />}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-        }
-      />
+      <View style={style.container}>
+        <FlatList
+          data={likeAlbum}
+          showsVerticalScrollIndicator={false}
+          ListHeaderComponent={() => <UserTitle />}
+          ListFooterComponent={() => (
+            <View style={{ height: screenHeight * 0.15 }} />
+          )}
+          keyExtractor={(_, index) => index.toString()}
+          renderItem={({ item, index }) => (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.dispatch(
+                  CommonActions.navigate({ name: 'album', params: item })
+                )
+              }>
+              <AlbumListItem
+                position={index}
+                albumInfo={item}
+                itemColor={{
+                  containerColor: theme.colors.surface,
+                  nameColor: theme.colors.background,
+                  countColor: theme.colors.backdrop
+                }}
+              />
+            </TouchableOpacity>
+          )}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+          }
+        />
+      </View>
     </>
   )
 }
+
+const style = StyleSheet.create({
+  container: {
+    paddingHorizontal: 20
+  }
+})
 
 export default UserScreen

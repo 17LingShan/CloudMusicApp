@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react'
 import { FlatList, RefreshControl, Text, View } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/core'
 import { useTheme } from 'react-native-paper'
-import { fetchAlbumAllTrack } from '@/api/search'
+import { fetchAlbumDetail } from '@/api/search'
+import { AlbumType, SongType } from '@/mobx/types'
+import { handlePressItem, handlePressModalIcon } from '@/util/navigateTool'
 import AlbumHeader from '@/components/Album/AlbumHeader'
 import AlbumTitle from '@/components/Album/AlbumTitle'
 import TrackItem from '@/components/TrackItem'
-import { AlbumType, SongType } from '@/mobx/types'
-import { handlePressItem, handlePressModalIcon } from '@/util/navigateTool'
 
 function AlbumScreen(): JSX.Element {
   const { params } = useRoute() as { params: AlbumType.AlbumProps }
@@ -19,10 +19,10 @@ function AlbumScreen(): JSX.Element {
 
   const handleFetchAllTrack = async () => {
     setRefreshing(true)
-    await fetchAlbumAllTrack({ id: params.id })
+    await fetchAlbumDetail({ id: params.id })
       .then(res => {
         setTrackList([
-          ...res.data.songs.map(
+          ...res.data.playlist.tracks.map(
             item =>
               ({
                 id: item.id,
@@ -37,11 +37,14 @@ function AlbumScreen(): JSX.Element {
           )
         ])
       })
-      .catch(e => console.log('error of fetchAlbumAllTrack'))
+      .catch(err => {
+        console.log('error of fetchAlbumAllTrack')
+      })
     setRefreshing(false)
   }
 
   useEffect(() => {
+    console.log(params.id)
     handleFetchAllTrack()
   }, [])
 
@@ -52,6 +55,7 @@ function AlbumScreen(): JSX.Element {
         <AlbumTitle albumInfo={params} />
         <FlatList
           data={trackList}
+          initialNumToRender={100}
           renderItem={({ item, index }) => (
             <TrackItem
               position={index + 1}
