@@ -1,6 +1,6 @@
 import type { TrackItemType } from './types'
-import { TouchableRipple } from 'react-native-paper'
 import { StyleSheet, Text, View } from 'react-native'
+import { TouchableRipple } from 'react-native-paper'
 import RippleIcon from './RippleIcon'
 
 function TrackItem({
@@ -12,35 +12,18 @@ function TrackItem({
 }: TrackItemType.TrackItemProps): JSX.Element {
   return (
     <>
-      <TouchableRipple
-        onPress={onPressItem}
-        style={{ width: '100%' }}
-        rippleColor="rgba(0, 0, 0, .32)">
-        <View style={{ width: '100%', height: 60, flexDirection: 'row' }}>
-          <View
-            style={{
-              width: '10%',
-              height: '100%',
-              justifyContent: 'center',
-              alignItems: 'center',
-              opacity: 0.5
-            }}>
+      <TouchableRipple rippleColor="rgba(0,0,0,0.4)" onPress={onPressItem}>
+        <View style={styles.itemContainer}>
+          <View style={styles.positionStyle}>
             <Text>{position}</Text>
           </View>
-          <View style={{ width: '65%', justifyContent: 'space-between' }}>
-            <View style={{ ...styles.textContainer, height: '60%' }}>
+          <View style={styles.infoContainer}>
+            <View style={styles.titleStyle}>
               <Text numberOfLines={1} style={{ fontSize: 20 }}>
                 {trackInfo.title}
               </Text>
             </View>
-            <View
-              style={{
-                ...styles.textContainer,
-                height: '40%',
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center'
-              }}>
+            <View style={styles.descriptionStyle}>
               {trackInfo.fee === 1 ? (
                 <Text style={{ marginRight: 8, color: '#e92645' }}>VIP</Text>
               ) : null}
@@ -49,7 +32,7 @@ function TrackItem({
               </Text>
             </View>
           </View>
-          <View style={{ width: '25%', flexDirection: 'row' }}>
+          <View style={styles.iconWrap}>
             <View style={styles.iconContainer}>
               <RippleIcon iconName="movie-filter" color={iconColor} />
             </View>
@@ -67,11 +50,37 @@ function TrackItem({
   )
 }
 const styles = StyleSheet.create({
-  textContainer: {
-    width: '100%',
+  itemContainer: {
+    height: 60,
+    flexDirection: 'row'
+  },
+  positionStyle: {
+    width: '10%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    opacity: 0.7
+  },
+  infoContainer: {
+    width: '65%',
+    justifyContent: 'space-between'
+  },
+
+  titleStyle: {
+    height: '60%',
     justifyContent: 'center',
     paddingHorizontal: 8,
     overflow: 'hidden'
+  },
+  descriptionStyle: {
+    height: '40%',
+    paddingHorizontal: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    overflow: 'hidden'
+  },
+  iconWrap: {
+    width: '25%',
+    flexDirection: 'row'
   },
   iconContainer: {
     height: '100%',

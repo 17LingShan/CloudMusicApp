@@ -46,7 +46,7 @@ function HomeSCreen() {
 
   const handleRefresh = useCallback(async () => {
     setRefreshing(true)
-    await Promise.all([handleBanner(), handleAlbumList(), handleAccountInfo()])
+    await Promise.all([handleAccountInfo(), handleBanner(), handleAlbumList()])
     setRefreshing(false)
   }, [])
   useEffect(() => {

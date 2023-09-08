@@ -1,9 +1,9 @@
 import { Image, Text, View, Pressable } from 'react-native'
-import Carousel from 'react-native-reanimated-carousel'
 import { useNavigation, CommonActions } from '@react-navigation/core'
-import { AlbumType } from '@/mobx/types'
-import { hexToRGB, screenWidth } from '@/util/common'
 import { useTheme } from 'react-native-paper'
+import Carousel from 'react-native-reanimated-carousel'
+import { hexToRGB, screenWidth } from '@/util/common'
+import { AlbumType } from '@/mobx/types'
 
 function HotAlbumList({
   albumList

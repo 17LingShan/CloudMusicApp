@@ -9,12 +9,17 @@ function AlbumHeader(): JSX.Element {
 
   return (
     <>
-      <View style={{ paddingTop: StatusBar.currentHeight + 10 }}>
+      <View
+        style={{
+          paddingTop: StatusBar.currentHeight + 10,
+          backgroundColor: 'transparent'
+        }}>
         <View
           style={{
             height: 60,
             flexDirection: 'row',
             alignItems: 'center',
+            backgroundColor: 'transparent',
             justifyContent: 'space-between'
           }}>
           <View>

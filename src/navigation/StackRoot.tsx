@@ -3,11 +3,11 @@ import PlayDetailScreen from '@/screen/PlayDetailScreen'
 import SettingsScreen from '@/screen/SettingsScreen'
 import SearchScreen from '@/screen/SearchScreen'
 import AlbumScreen from '@/screen/AlbumScreen'
+import LoginScreen from '@/screen/LoginScreen'
 import AboutScreen from '@/screen/AboutScreen'
 import TrackModal from '@/screen/TrackModal'
 import WebScreen from '@/screen/WebScreen'
 import TabNavigator from './TabNavigator'
-import LoginScreen from '@/screen/LoginScreen'
 
 const Stack = createStackNavigator()
 
@@ -45,6 +45,7 @@ function StackRoot(): JSX.Element {
           component={LoginScreen}
           options={{ headerShown: false }}
         />
+
         <Stack.Group
           screenOptions={{
             headerShown: false,
@@ -53,6 +54,7 @@ function StackRoot(): JSX.Element {
           <Stack.Screen name="TrackItemModal" component={TrackModal} />
           <Stack.Screen name="webView" component={WebScreen} />
         </Stack.Group>
+
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
           <Stack.Screen
             name="playDetail"

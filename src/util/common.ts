@@ -37,7 +37,6 @@ export async function handleFetchLyric(params: APIParams.FetchLyricParam) {
 export async function handleFetchUrl(params: APIParams.FetchUrlParam) {
   return await fetchUrlById(params)
     .then(res => {
-      console.log('fetch url Code', res.data.code)
       return res.data.code !== 200
         ? Promise.reject('')
         : Promise.resolve(res.data.data[0].url as string)
@@ -108,9 +107,9 @@ export function hexToRGB(hex: string) {
   // 去除可能包含的 # 号
   hex = hex.replace('#', '')
 
-  // 如果输入的十六进制颜色值不是 6 位，则返回空数组
+  // 如果输入的十六进制颜色值不是 6 位, 则返回黑色
   if (hex.length !== 6) {
-    return ``
+    return `0,0,0`
   }
 
   // 将十六进制颜色值拆分成 R、G、B 三个部分

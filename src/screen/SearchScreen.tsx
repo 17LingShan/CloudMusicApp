@@ -13,6 +13,8 @@ import { handlePressItem, handlePressModalIcon } from '@/util/navigateTool'
 import ListEmptyFooter from '@/components/PlayDetail/ListEmptyFooter'
 import SearchHeader from '@/components/SearchHeader'
 import TrackItem from '@/components/TrackItem'
+import React from 'react'
+import CustomBackGround from '@/layout/CustomBackGround'
 
 function SearchScreen(): JSX.Element {
   const theme = useTheme()
@@ -58,33 +60,39 @@ function SearchScreen(): JSX.Element {
 
   return (
     <>
-      <SearchHeader
-        handleSearch={handleSearch}
-        onIconPress={() => searchStore.setKeywords('')}
-      />
-      <FlatList
-        data={toJS(searchStore.searchList)}
-        renderItem={({ item, index }) => (
-          <TrackItem
-            position={index + 1}
-            trackInfo={item}
-            iconColor={theme.colors.shadow}
-            onPressItem={async () => await handlePressItem(navigation, item)}
-            onPressIcon={() => handlePressModalIcon(navigation, item)}
+      <CustomBackGround>
+        <React.Fragment>
+          <SearchHeader
+            handleSearch={handleSearch}
+            onIconPress={() => searchStore.setKeywords('')}
           />
-        )}
-        keyExtractor={(_, index) => index.toString()}
-        onEndReached={() => {
-          console.log('on search end')
-        }}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() => handleRefreshing()}
+          <FlatList
+            data={toJS(searchStore.searchList)}
+            renderItem={({ item, index }) => (
+              <TrackItem
+                position={index + 1}
+                trackInfo={item}
+                iconColor={theme.colors.shadow}
+                onPressItem={async () =>
+                  await handlePressItem(navigation, item)
+                }
+                onPressIcon={() => handlePressModalIcon(navigation, item)}
+              />
+            )}
+            keyExtractor={(_, index) => index.toString()}
+            onEndReached={() => {
+              console.log('on search end')
+            }}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={() => handleRefreshing()}
+              />
+            }
+            ListFooterComponent={() => <ListEmptyFooter />}
           />
-        }
-        ListFooterComponent={() => <ListEmptyFooter />}
-      />
+        </React.Fragment>
+      </CustomBackGround>
     </>
   )
 }

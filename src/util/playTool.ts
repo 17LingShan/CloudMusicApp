@@ -47,10 +47,7 @@ async function changeEventEmit(event: PlaybackTrackChangedEvent) {
   } else {
     // 选择某一首播放
     console.log(3)
-    console.log('playStoreTrack.id', playerStore.currentTrack.id)
     const playingTrack = (await TrackPlayer.getTrack(0)) as SongType.SongProps
-    console.log('playingTrack.id', playingTrack.id)
-
     if (
       playingTrack.id === playerStore.currentTrack.id &&
       playerStore.isPlaying
