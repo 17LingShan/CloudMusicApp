@@ -1,7 +1,3 @@
-/**
- * @format
- */
-import 'react-native-gesture-handler'
 import React, { useEffect } from 'react'
 import { AppRegistry } from 'react-native'
 import TrackPlayer from 'react-native-track-player'
@@ -12,6 +8,7 @@ import {
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { DefaultTheme, PaperProvider } from 'react-native-paper'
 import type { ThemeProp } from 'react-native-paper/src/types'
+import 'react-native-gesture-handler'
 import { name as appName } from './app.json'
 import StackRoot from '@/navigation/StackRoot'
 import DrawerMenu from '@/components/DrawerMenu'

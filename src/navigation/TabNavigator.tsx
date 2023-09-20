@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image } from 'react-native'
+import { Image, View } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { toJS } from 'mobx'
@@ -58,7 +58,7 @@ function TabNavigator(): JSX.Element {
                   <>
                     <Image
                       style={{ height: '100%', width: '100%' }}
-                      blurRadius={10}
+                      blurRadius={6}
                       source={
                         UserStore.backgroundUrl
                           ? {

@@ -2,8 +2,8 @@ import { Image, Text, View } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import { toJS } from 'mobx'
 import UserStore from '@/mobx/user'
-import CoverImg from '@/assets/cover.jpg'
 import { hexToRGB } from '@/util/common'
+import { CoverImg } from '@/assets/base64Img'
 
 function UserTitle(): JSX.Element {
   const theme = useTheme()
@@ -30,7 +30,7 @@ function UserTitle(): JSX.Element {
               source={
                 UserStore.avatarUrl
                   ? { uri: toJS(UserStore.avatarUrl) + '?param=500y500' }
-                  : CoverImg
+                  : { uri: CoverImg }
               }
               resizeMode="contain"
             />

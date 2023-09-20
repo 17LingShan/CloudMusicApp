@@ -29,8 +29,6 @@ function TrackModal(): JSX.Element {
       <Animated.View
         style={[
           {
-            width: '100%',
-            height: screenHeight,
             transform: [
               {
                 translateY: viewInterpolation

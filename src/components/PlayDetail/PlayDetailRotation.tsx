@@ -1,15 +1,15 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { Animated, Easing, StyleSheet, View } from 'react-native'
-import coverImg from '@/assets/cover.jpg'
-import { SongType } from '@/mobx/types'
-import playerStore from '@/mobx/player'
-import { screenWidth } from '@/util/common'
+import { Animated, Easing, StyleSheet } from 'react-native'
 import {
   GestureEvent,
   PanGestureHandler,
   State
 } from 'react-native-gesture-handler'
 import { skipToDirection } from '@/util/playTool'
+import { screenWidth } from '@/util/common'
+import coverImg from '@/assets/cover.jpg'
+import { SongType } from '@/mobx/types'
+import playerStore from '@/mobx/player'
 
 function PlayDetailRotation({
   albumPicUrl
@@ -31,33 +31,37 @@ function PlayDetailRotation({
     if (event.nativeEvent.state === State.ACTIVE) {
       const TranX = event.nativeEvent.translationX as number
       if (Math.abs(TranX) > screenWidth * 0.4) {
-        console.log(123)
+        console.log('Rotation TranX', TranX)
         setSkipping(true)
-        await skipToDirection(Math.sign(TranX) * 1)
+        await skipToDirection(-1 * Math.sign(TranX))
       }
     }
   }
 
-  const rotateAni = () => {
-    Animated.timing(rotate, {
-      toValue: 1,
-      useNativeDriver: true,
-      duration: 24000,
-      easing: Easing.linear
-    }).start(({ finished }) => {
+  const rotateAni = Animated.timing(rotate, {
+    toValue: 1,
+    useNativeDriver: true,
+    duration: 24000,
+    easing: Easing.linear
+  })
+
+  const startRotateAni = () =>
+    rotateAni.start(({ finished }) => {
       if (finished) {
+        console.log('rotation finished')
         rotate.setValue(0)
-        rotateAni()
+        startRotateAni()
+      } else {
       }
     })
-  }
 
   useEffect(() => {
     if (playerStore.isPlaying) {
-      rotateAni()
       setSkipping(false)
+      startRotateAni()
     } else {
       rotate.stopAnimation()
+      rotateAni.stop()
     }
   }, [playerStore.isPlaying])
 

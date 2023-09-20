@@ -58,7 +58,7 @@ function PlayDetailLyric({
         <FlatList
           ref={flatListRef}
           data={lyric}
-          initialNumToRender={lyric?.length}
+          // initialNumToRender={lyric?.length}
           ListHeaderComponent={() => (
             <View style={{ height: screenHeight * 0.3 }} />
           )}

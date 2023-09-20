@@ -2,6 +2,7 @@ import { request } from '@/util/request'
 
 const api = {
   search: '/cloudsearch',
+  suggest: '/search/suggest',
   hotKeywords: '/search/hot',
   songUrl: '/song/url/v1',
   albumAllTrack: '/playlist/track/all',
@@ -12,6 +13,14 @@ const api = {
 export function search(params: APIParams.SearchParams) {
   return request({
     url: api.search,
+    method: 'get',
+    params: params
+  })
+}
+
+export function fetchSuggest(params) {
+  return request({
+    url: api.suggest,
     method: 'get',
     params: params
   })

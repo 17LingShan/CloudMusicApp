@@ -2,8 +2,8 @@ import { SongType } from '@/mobx/types'
 import { fetchLyric, fetchUrlById } from '@/api/search'
 import { Dimensions, ToastAndroid } from 'react-native'
 import { fetchAccountInfo } from '@/api/user'
-
 import UserStore from '@/mobx/user'
+import { CoverImg } from '@/assets/base64Img'
 
 export const screenWidth = Dimensions.get('window').width
 export const screenHeight = Dimensions.get('window').height

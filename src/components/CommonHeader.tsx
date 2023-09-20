@@ -1,12 +1,13 @@
-import { View, StatusBar } from 'react-native'
+import { View, StatusBar, StyleSheet } from 'react-native'
 import {
   useNavigation,
   DrawerActions,
   CommonActions
 } from '@react-navigation/core'
+import { useTheme } from 'react-native-paper'
 import RippleIcon from './RippleIcon'
 import { RippleIconType } from './types'
-import { useTheme } from 'react-native-paper/src/core/theming'
+import { screenHeight } from '@/util/common'
 
 function CommonHeader(): JSX.Element {
   const theme = useTheme()
@@ -31,18 +32,16 @@ function CommonHeader(): JSX.Element {
 
   return (
     <>
-      <View style={{ paddingTop: StatusBar.currentHeight + 10 }}>
+      <View
+        style={{
+          paddingTop: StatusBar.currentHeight + 10
+        }}>
         <StatusBar
           translucent={true}
           backgroundColor="transparent"
           barStyle="dark-content"
         />
-        <View
-          style={{
-            height: 48,
-            flexDirection: 'row',
-            justifyContent: 'space-between'
-          }}>
+        <View style={style.headerContainer}>
           {HeadOption.map((item, index) => {
             return (
               <RippleIcon
@@ -58,5 +57,13 @@ function CommonHeader(): JSX.Element {
     </>
   )
 }
+
+const style = StyleSheet.create({
+  headerContainer: {
+    height: screenHeight * 0.08,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  }
+})
 
 export default CommonHeader

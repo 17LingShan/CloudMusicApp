@@ -1,9 +1,11 @@
 import { makeAutoObservable } from 'mobx'
-import { AlbumType, SongType } from '@/mobx/types'
+import { SongType } from '@/mobx/types'
 
 class Searcher {
   keywords = ''
+  searchType: APIParams.SearchType = 1
   searchList: SongType.SongList = []
+  isInputFocus = false
 
   constructor() {
     makeAutoObservable(this)
@@ -13,10 +15,19 @@ class Searcher {
     this.keywords = keywords
   }
 
+  setSearchType(type: APIParams.SearchType) {
+    this.searchType = type
+  }
+
   setSearchList(searchList: SongType.SongList) {
     this.searchList = searchList
   }
+
+  setIsInputFocus(focus: boolean) {
+    console.log('focus')
+    this.isInputFocus = focus
+  }
 }
 
-const searchStore = new Searcher()
-export default searchStore
+const SearchStore = new Searcher()
+export default SearchStore

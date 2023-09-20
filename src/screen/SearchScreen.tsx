@@ -1,20 +1,19 @@
-import { useState } from 'react'
-import { FlatList } from 'react-native'
+import React, { useState } from 'react'
+import { FlatList, Keyboard } from 'react-native'
+import { RefreshControl } from 'react-native-gesture-handler'
+import { useNavigation } from '@react-navigation/core'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react'
 import { useTheme } from 'react-native-paper'
-import { RefreshControl } from 'react-native-gesture-handler'
-import { useNavigation } from '@react-navigation/core'
-import { showToastErr } from '@/util/common'
-import searchStore from '@/mobx/searcher'
+import SearchStore from '@/mobx/searcher'
 import { SongType } from '@/mobx/types'
 import { search } from '@/api/search'
 import { handlePressItem, handlePressModalIcon } from '@/util/navigateTool'
-import ListEmptyFooter from '@/components/PlayDetail/ListEmptyFooter'
-import SearchHeader from '@/components/SearchHeader'
-import TrackItem from '@/components/TrackItem'
-import React from 'react'
+import { showToastErr } from '@/util/common'
 import CustomBackGround from '@/layout/CustomBackGround'
+import ListEmptyFooter from '@/components/PlayDetail/ListEmptyFooter'
+import SearchHeader from '@/components/Search/SearchHeader'
+import TrackItem from '@/components/TrackItem'
 
 function SearchScreen(): JSX.Element {
   const theme = useTheme()
@@ -22,15 +21,20 @@ function SearchScreen(): JSX.Element {
   const [refreshing, setRefreshing] = useState(false)
 
   const handleSearch = async () => {
-    if (!searchStore.keywords) return setRefreshing(false)
+    if (!SearchStore.keywords) return setRefreshing(false)
+    Keyboard.dismiss()
     setRefreshing(true)
-    await search({ keywords: toJS(searchStore.keywords), type: 1 })
+
+    await search({
+      keywords: toJS(SearchStore.keywords),
+      type: toJS(SearchStore.searchType)
+    })
       .then(res => {
         if (res.data.code !== 200) {
           showToastErr({ code: res.data.code, message: res.data.message })
           return
         }
-        searchStore.setSearchList([
+        SearchStore.setSearchList([
           ...res.data.result.songs.map(
             item =>
               ({
@@ -52,6 +56,10 @@ function SearchScreen(): JSX.Element {
     setRefreshing(false)
   }
 
+  const handleTyping = async () => {
+    if (!SearchStore.keywords) return
+  }
+
   const handleRefreshing = async () => {
     setRefreshing(true)
     await handleSearch()
@@ -64,10 +72,10 @@ function SearchScreen(): JSX.Element {
         <React.Fragment>
           <SearchHeader
             handleSearch={handleSearch}
-            onIconPress={() => searchStore.setKeywords('')}
+            onIconPress={() => SearchStore.setKeywords('')}
           />
           <FlatList
-            data={toJS(searchStore.searchList)}
+            data={toJS(SearchStore.searchList)}
             renderItem={({ item, index }) => (
               <TrackItem
                 position={index + 1}

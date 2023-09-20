@@ -17,7 +17,7 @@ function ModalItem({
     <>
       <View
         style={{
-          height: screenHeight * 0.3,
+          height: screenHeight * 0.35,
           padding: 20,
           backgroundColor: theme.colors.background,
           borderRadius: 36

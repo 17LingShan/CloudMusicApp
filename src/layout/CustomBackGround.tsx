@@ -3,7 +3,8 @@ import { ImageBackground } from 'react-native'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react'
 import UserStore from '@/mobx/user'
-import CoverImg from '@/assets/cover.jpg'
+import { CoverImg } from '@/assets/base64Img'
+// import CoverImg from '@/assets/cover.jpg'
 
 function CustomBackGround({
   children
@@ -18,7 +19,7 @@ function CustomBackGround({
         source={
           UserStore.backgroundUrl
             ? { uri: toJS(UserStore.backgroundUrl) }
-            : CoverImg
+            : { uri: CoverImg }
         }>
         {React.Children.only(children)}
       </ImageBackground>

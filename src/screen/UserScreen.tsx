@@ -16,6 +16,7 @@ import { handleAccountInfo, showToastErr } from '@/util/common'
 import UserTitle from '@/components/User/UserTitle'
 import AlbumListItem from '@/components/AlbumListItem'
 import ListEmptyFooter from '@/components/PlayDetail/ListEmptyFooter'
+import { Blob } from 'buffer'
 
 function UserScreen(): JSX.Element {
   const theme = useTheme()
