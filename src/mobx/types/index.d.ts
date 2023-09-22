@@ -69,3 +69,7 @@ declare namespace PlayerType {
     type: 'init'
   }
 }
+
+declare namespace ThemeType {
+  type ThemeProps = 'light' | 'dark'
+}

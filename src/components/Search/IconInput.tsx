@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { ColorValue, TextInput, View } from 'react-native'
-import { useTheme } from 'react-native-paper'
+import { toJS } from 'mobx'
 import { observer } from 'mobx-react'
-import SearchStore from '@/mobx/searcher'
+import ThemeStore from '@/mobx/theme'
 import RippleIcon from '../RippleIcon'
-import type { IconInputType } from '../types'
 import { hexToRGB } from '@/util/common'
+import SearchStore from '@/mobx/searcher'
+import type { IconInputType } from '../types'
 
 function IconInput({
   iconName,
@@ -13,12 +14,11 @@ function IconInput({
   placeholder,
   onIconPress
 }: IconInputType.IconInputProps): JSX.Element {
-  const theme = useTheme()
   const [backColor, setBackColor] = useState<ColorValue>('transparent')
 
   const handleFocus = () => {
     SearchStore.setIsInputFocus(true)
-    setBackColor(`rgba(${hexToRGB('#c6c6d0')},0.5)`)
+    setBackColor(`rgba(${hexToRGB(ThemeStore.focus)},0.5)`)
   }
 
   const handleTyping = (text: string) => {
@@ -32,7 +32,7 @@ function IconInput({
   const handleBlur = () => {
     SearchStore.setIsInputFocus(false)
     SearchStore.keywords.length > 0
-      ? setBackColor(`rgba(${hexToRGB('#c6c6d0')},0.5)`)
+      ? setBackColor(`rgba(${hexToRGB(ThemeStore.focus)},0.5)`)
       : setBackColor('transparent')
   }
 
@@ -67,7 +67,7 @@ function IconInput({
         />
         <RippleIcon
           iconName={iconName}
-          color={theme.colors.shadow}
+          color={ThemeStore.shadow}
           shown={SearchStore.keywords.length > 0}
           onPress={onIconPress}
         />

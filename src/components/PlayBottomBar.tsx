@@ -11,14 +11,13 @@ import { CommonActions, useNavigation } from '@react-navigation/core'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import ThemeStore from '@/mobx/theme'
 import playerStore from '@/mobx/player'
-import { pause, play } from '@/util/playTool'
 import coverImg from '@/assets/cover.jpg'
-import { useTheme } from 'react-native-paper'
+import { pause, play } from '@/util/playTool'
 import { hexToRGB, screenHeight } from '@/util/common'
 
 function PlayBottomBar(): JSX.Element {
-  const theme = useTheme()
   const navigation = useNavigation()
 
   const bottom = useRef(
@@ -56,7 +55,7 @@ function PlayBottomBar(): JSX.Element {
         <View
           style={{
             ...style.barContainer,
-            backgroundColor: `rgba(${hexToRGB(theme.colors.surface)},0.6)`
+            backgroundColor: `rgba(${hexToRGB(ThemeStore.surface)},0.6)`
           }}>
           <Pressable
             onPress={() => {

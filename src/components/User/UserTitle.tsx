@@ -1,12 +1,11 @@
 import { Image, Text, View } from 'react-native'
-import { useTheme } from 'react-native-paper'
 import { toJS } from 'mobx'
 import UserStore from '@/mobx/user'
+import ThemeStore from '@/mobx/theme'
 import { hexToRGB } from '@/util/common'
 import { CoverImg } from '@/assets/base64Img'
 
 function UserTitle(): JSX.Element {
-  const theme = useTheme()
   return (
     <>
       <View
@@ -39,13 +38,13 @@ function UserTitle(): JSX.Element {
             style={{
               height: 150,
               borderRadius: 20,
-              backgroundColor: `rgba(${hexToRGB(theme.colors.surface)},0.2)`,
+              backgroundColor: `rgba(${hexToRGB(ThemeStore.surface)},0.2)`,
               justifyContent: 'center'
             }}>
             <View style={{ alignItems: 'center' }}>
               <Text
                 style={{
-                  color: theme.colors.background,
+                  color: ThemeStore.surface,
                   fontSize: 24,
                   fontWeight: '900'
                 }}>

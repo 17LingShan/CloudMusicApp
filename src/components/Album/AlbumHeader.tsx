@@ -1,10 +1,10 @@
 import { View, StatusBar, Text, Keyboard } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
+import { toJS } from 'mobx'
+import ThemeStore from '@/mobx/theme'
 import RippleIcon from '../RippleIcon'
-import { useTheme } from 'react-native-paper/src/core/theming'
 
 function AlbumHeader(): JSX.Element {
-  const theme = useTheme()
   const navigation = useNavigation()
 
   return (
@@ -25,7 +25,7 @@ function AlbumHeader(): JSX.Element {
           <View>
             <RippleIcon
               iconName="chevron-left"
-              color={theme.colors.shadow}
+              color={ThemeStore.shadow}
               onPress={() => {
                 Keyboard.dismiss()
                 navigation.goBack()
@@ -38,9 +38,7 @@ function AlbumHeader(): JSX.Element {
               marginHorizontal: 12,
               alignItems: 'center'
             }}>
-            <Text style={{ fontSize: 16, color: theme.colors.shadow }}>
-              搜索
-            </Text>
+            <Text style={{ fontSize: 16, color: ThemeStore.shadow }}>搜索</Text>
           </View>
         </View>
       </View>

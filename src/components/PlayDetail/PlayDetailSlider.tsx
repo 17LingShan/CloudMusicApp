@@ -1,17 +1,17 @@
-import { formatMinute } from '@/util/common'
-import Slider from '@react-native-community/slider'
 import { Text, View } from 'react-native'
-import { useTheme } from 'react-native-paper'
+import { toJS } from 'mobx'
+import Slider from '@react-native-community/slider'
 import TrackPlayer, { useProgress } from 'react-native-track-player'
+import ThemeStore from '@/mobx/theme'
+import { formatMinute } from '@/util/common'
 
 function PlayDetailSlider(): JSX.Element {
-  const theme = useTheme()
   const { position, duration } = useProgress()
 
   return (
     <>
       <View>
-        <Text style={{ color: theme.colors.onSurface }}>
+        <Text style={{ color: ThemeStore.onSurface }}>
           {formatMinute(position)}
         </Text>
       </View>
@@ -23,12 +23,12 @@ function PlayDetailSlider(): JSX.Element {
           await TrackPlayer.seekTo(value * duration)
         }
         value={position / duration}
-        minimumTrackTintColor={theme.colors.onPrimary}
-        maximumTrackTintColor={theme.colors.shadow}
-        thumbTintColor={theme.colors.primary}
+        minimumTrackTintColor={ThemeStore.onPrimary}
+        maximumTrackTintColor={ThemeStore.shadow}
+        thumbTintColor={ThemeStore.primary}
       />
       <View>
-        <Text style={{ color: theme.colors.onSurface }}>
+        <Text style={{ color: ThemeStore.onSurface }}>
           {formatMinute(duration)}
         </Text>
       </View>

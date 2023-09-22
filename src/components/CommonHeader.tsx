@@ -4,26 +4,26 @@ import {
   DrawerActions,
   CommonActions
 } from '@react-navigation/core'
-import { useTheme } from 'react-native-paper'
+import { toJS } from 'mobx'
+import { screenHeight } from '@/util/common'
+import ThemeStore from '@/mobx/theme'
 import RippleIcon from './RippleIcon'
 import { RippleIconType } from './types'
-import { screenHeight } from '@/util/common'
 
 function CommonHeader(): JSX.Element {
-  const theme = useTheme()
   const navigation = useNavigation()
 
   const HeadOption: RippleIconType.RippleIconProps[] = [
     {
       iconName: 'menu',
-      color: theme.colors.shadow,
+      color: ThemeStore.surface,
       onPress: () => {
         navigation.dispatch(DrawerActions.openDrawer())
       }
     },
     {
       iconName: 'search',
-      color: theme.colors.shadow,
+      color: ThemeStore.surface,
       onPress: () => {
         navigation.dispatch(CommonActions.navigate('search'))
       }

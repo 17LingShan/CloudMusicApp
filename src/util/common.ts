@@ -4,6 +4,7 @@ import { Dimensions, ToastAndroid } from 'react-native'
 import { fetchAccountInfo } from '@/api/user'
 import UserStore from '@/mobx/user'
 import { CoverImg } from '@/assets/base64Img'
+import ThemeStore from '@/mobx/theme'
 
 export const screenWidth = Dimensions.get('window').width
 export const screenHeight = Dimensions.get('window').height
@@ -134,4 +135,8 @@ export async function handleAccountInfo() {
     .catch(err => {
       showToastCommon({ message: `${err.code}获取account信息失败！` })
     })
+}
+
+export function changeTheme() {
+  ThemeStore.changeTheme()
 }

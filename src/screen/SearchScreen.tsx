@@ -1,22 +1,20 @@
 import React, { useState } from 'react'
 import { FlatList, Keyboard } from 'react-native'
-import { RefreshControl } from 'react-native-gesture-handler'
-import { useNavigation } from '@react-navigation/core'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react'
-import { useTheme } from 'react-native-paper'
-import SearchStore from '@/mobx/searcher'
-import { SongType } from '@/mobx/types'
+import { useNavigation } from '@react-navigation/core'
+import { RefreshControl } from 'react-native-gesture-handler'
 import { search } from '@/api/search'
-import { handlePressItem, handlePressModalIcon } from '@/util/navigateTool'
+import { SongType } from '@/mobx/types'
+import SearchStore from '@/mobx/searcher'
 import { showToastErr } from '@/util/common'
+import { handlePressItem, handlePressModalIcon } from '@/util/navigateTool'
 import CustomBackGround from '@/layout/CustomBackGround'
-import ListEmptyFooter from '@/components/PlayDetail/ListEmptyFooter'
+import ListEmptyFooter from '@/components/ListEmptyFooter'
 import SearchHeader from '@/components/Search/SearchHeader'
 import TrackItem from '@/components/TrackItem'
 
 function SearchScreen(): JSX.Element {
-  const theme = useTheme()
   const navigation = useNavigation()
   const [refreshing, setRefreshing] = useState(false)
 
@@ -80,7 +78,6 @@ function SearchScreen(): JSX.Element {
               <TrackItem
                 position={index + 1}
                 trackInfo={item}
-                iconColor={theme.colors.shadow}
                 onPressItem={async () =>
                   await handlePressItem(navigation, item)
                 }

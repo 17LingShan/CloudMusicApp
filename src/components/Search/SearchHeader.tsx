@@ -1,15 +1,15 @@
 import { useEffect } from 'react'
 import { View, StatusBar, Text, Keyboard } from 'react-native'
-import { useNavigation } from '@react-navigation/core'
-import { useTheme } from 'react-native-paper'
+import { toJS } from 'mobx'
 import { observer } from 'mobx-react'
+import { useNavigation } from '@react-navigation/core'
+import ThemeStore from '@/mobx/theme'
 import SearchStore from '@/mobx/searcher'
 import { screenHeight, screenWidth } from '@/util/common'
-import RippleIcon from '../RippleIcon'
 import IconInput from './IconInput'
+import RippleIcon from '../RippleIcon'
 
 function SearchHeader({ handleSearch, onIconPress }): JSX.Element {
-  const theme = useTheme()
   const navigation = useNavigation()
 
   useEffect(() => {
@@ -39,7 +39,7 @@ function SearchHeader({ handleSearch, onIconPress }): JSX.Element {
           ) : null}
           <RippleIcon
             iconName="chevron-left"
-            color={theme.colors.shadow}
+            color={ThemeStore.shadow}
             onPress={() => {
               Keyboard.dismiss()
               navigation.goBack()
@@ -57,7 +57,7 @@ function SearchHeader({ handleSearch, onIconPress }): JSX.Element {
               alignItems: 'center'
             }}>
             <Text
-              style={{ fontSize: 16, color: theme.colors.shadow }}
+              style={{ fontSize: 16, color: ThemeStore.shadow }}
               onPress={() => handleSearch()}>
               搜索
             </Text>

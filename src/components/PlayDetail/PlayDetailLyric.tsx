@@ -1,14 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
-import { useTheme } from 'react-native-paper'
 import { useProgress } from 'react-native-track-player'
+import ThemeStore from '@/mobx/theme'
 import { SongType } from '@/mobx/types'
 import { screenHeight, screenWidth } from '@/util/common'
 
 function PlayDetailLyric({
   lyric
 }: Pick<SongType.SongProps, 'lyric'>): JSX.Element {
-  const theme = useTheme()
   const { position } = useProgress(500)
   const flatListRef = useRef<FlatList<SongType.LyricItem>>(null)
   const [lrcIdx, setLrcIdx] = useState(0)
@@ -74,9 +73,9 @@ function PlayDetailLyric({
                   ...style.renderItemText,
                   color:
                     lrcIdx === index
-                      ? theme.colors.surface
-                      : theme.colors.onSurface,
-                  fontSize: lrcIdx === index ? 20 : 12
+                      ? ThemeStore.surface
+                      : ThemeStore.onSurface,
+                  fontSize: lrcIdx === index ? 20 : 14
                 }}>
                 {item.text}
               </Text>
@@ -98,11 +97,11 @@ const style = StyleSheet.create({
   },
 
   renderItemContainer: {
-    minHeight: 30,
+    minHeight: 36,
     marginVertical: 4
   },
   renderItemText: {
-    lineHeight: 30,
+    lineHeight: 36,
     textAlign: 'center',
     alignItems: 'center',
     maxWidth: screenWidth

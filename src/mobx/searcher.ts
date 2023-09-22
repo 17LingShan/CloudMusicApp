@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import { SongType } from '@/mobx/types'
 
-class Searcher {
+export class Searcher {
   keywords = ''
   searchType: APIParams.SearchType = 1
   searchList: SongType.SongList = []

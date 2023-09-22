@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { Animated, Easing, Keyboard, StatusBar, Text, View } from 'react-native'
-import Clipboard from '@react-native-clipboard/clipboard'
-import { useTheme } from 'react-native-paper'
-import Icon from 'react-native-vector-icons/MaterialIcons'
 import { useNavigation } from '@react-navigation/core'
+import Clipboard from '@react-native-clipboard/clipboard'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import { toJS } from 'mobx'
+import ThemeStore from '@/mobx/theme'
 import { SongType } from '@/mobx/types'
 import RippleIcon from '@/components/RippleIcon'
-import { screenWidth, showToastCommon } from '@/util/common'
 import { shareOuterBaseURL } from '@/config/share'
+import { screenWidth, showToastCommon } from '@/util/common'
 
 function PlayDetailHeader({
   trackInfo
@@ -15,7 +16,6 @@ function PlayDetailHeader({
   trackInfo: SongType.SongProps
 }): JSX.Element {
   const mWidth = screenWidth * 0.6
-  const theme = useTheme()
   const navigation = useNavigation()
   const translateX = useRef(new Animated.Value(0)).current
 
@@ -50,7 +50,7 @@ function PlayDetailHeader({
       <View
         style={{
           paddingTop: StatusBar.currentHeight + 10,
-          backgroundColor: theme.colors.background
+          backgroundColor: ThemeStore.detailBackground
         }}>
         <StatusBar translucent={true} barStyle="light-content" />
         <View
@@ -61,7 +61,7 @@ function PlayDetailHeader({
           }}>
           <RippleIcon
             iconName="keyboard-arrow-down"
-            color={theme.colors.surface}
+            color={ThemeStore.detailSurface}
             onPress={() => {
               Keyboard.dismiss()
               navigation.goBack()
@@ -74,7 +74,7 @@ function PlayDetailHeader({
                 style={{
                   lineHeight: 40,
                   fontSize: 22,
-                  color: theme.colors.surface,
+                  color: ThemeStore.detailSurface,
                   transform: [{ translateX: translateX }]
                 }}>
                 {trackInfo.title}
@@ -87,18 +87,18 @@ function PlayDetailHeader({
                 alignItems: 'center',
                 opacity: 0.6
               }}>
-              <Text style={{ color: theme.colors.surface }}>
+              <Text style={{ color: ThemeStore.detailSurface }}>
                 {trackInfo.artist}
               </Text>
               <Icon
-                style={{ marginLeft: 8, color: theme.colors.surface }}
+                style={{ marginLeft: 8, color: ThemeStore.detailSurface }}
                 name="arrow-forward-ios"
               />
             </View>
           </View>
           <RippleIcon
             iconName="share"
-            color={theme.colors.surface}
+            color={ThemeStore.detailSurface}
             onPress={() => writeInClipboard(trackInfo.id)}
           />
         </View>

@@ -65,7 +65,8 @@ const style = StyleSheet.create({
   },
   imgContainer: {
     width: '100%',
-    height: '100%'
+    height: '100%',
+    borderRadius: 6
   },
   infoWrap: {
     flex: 1,
@@ -74,10 +75,13 @@ const style = StyleSheet.create({
     paddingHorizontal: '5%'
   },
   nameStyle: {
-    fontSize: 18
+    fontSize: 16,
+    lineHeight: 30
   },
   countStyle: {
-    fontSize: 16
+    fontSize: 16,
+    opacity: 0.7,
+    lineHeight: 30
   }
 })
 

@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { View } from 'react-native'
-import { useTheme } from 'react-native-paper'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react'
+import ThemeStore from '@/mobx/theme'
 import playerStore from '@/mobx/player'
 import { handleFetchLyric, showToastErr } from '@/util/common'
 import PlayDetailHeader from '@/components/PlayDetail/PlayDetailHeader'
@@ -11,7 +11,6 @@ import PlayDetailCenter from '@/components/PlayDetail/PlayDetailCenter'
 import PlayDetailSlider from '@/components/PlayDetail/PlayDetailSlider'
 
 function PlayDetailScreen(): JSX.Element {
-  const theme = useTheme()
   const handleLyric = async (id: number) => {
     if (!id) return
     await handleFetchLyric({ id: id })
@@ -37,7 +36,7 @@ function PlayDetailScreen(): JSX.Element {
         <View
           style={{
             flex: 1,
-            backgroundColor: theme.colors.background
+            backgroundColor: ThemeStore.detailBackground
           }}>
           <PlayDetailCenter trackInfo={toJS(playerStore.currentTrack)} />
           <View style={{ flex: 1 }}>

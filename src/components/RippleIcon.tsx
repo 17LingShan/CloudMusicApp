@@ -1,6 +1,7 @@
 import { View } from 'react-native'
-import { TouchableRipple, useTheme } from 'react-native-paper'
+import { TouchableRipple } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import ThemeStore from '@/mobx/theme'
 import type { RippleIconType } from './types'
 
 function RippleIcon({
@@ -9,7 +10,6 @@ function RippleIcon({
   shown = true,
   onPress
 }: RippleIconType.RippleIconProps): JSX.Element {
-  const theme = useTheme()
   return (
     <>
       <View
@@ -32,7 +32,7 @@ function RippleIcon({
           rippleColor="rgba(0, 0, 0, .32)">
           <Icon
             name={iconName}
-            color={color || theme.colors.surface}
+            color={color || ThemeStore.surface}
             size={24}></Icon>
         </TouchableRipple>
       </View>

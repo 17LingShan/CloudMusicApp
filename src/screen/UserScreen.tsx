@@ -6,20 +6,18 @@ import {
   View,
   TouchableOpacity
 } from 'react-native'
-import { CommonActions, useNavigation } from '@react-navigation/core'
-import { useTheme } from 'react-native-paper'
 import { toJS } from 'mobx'
+import { CommonActions, useNavigation } from '@react-navigation/core'
 import UserStore from '@/mobx/user'
+import ThemeStore from '@/mobx/theme'
 import { AlbumType } from '@/mobx/types'
 import { fetchLikeAlbums } from '@/api/user'
 import { handleAccountInfo, showToastErr } from '@/util/common'
 import UserTitle from '@/components/User/UserTitle'
 import AlbumListItem from '@/components/AlbumListItem'
-import ListEmptyFooter from '@/components/PlayDetail/ListEmptyFooter'
-import { Blob } from 'buffer'
+import ListEmptyFooter from '@/components/ListEmptyFooter'
 
 function UserScreen(): JSX.Element {
-  const theme = useTheme()
   const navigation = useNavigation()
   const [refreshing, setRefreshing] = useState(false)
   const [likeAlbum, setLikeAlbum] = useState<AlbumType.AlbumList>([])
@@ -79,9 +77,9 @@ function UserScreen(): JSX.Element {
                 position={index}
                 albumInfo={item}
                 itemColor={{
-                  containerColor: theme.colors.surface,
-                  nameColor: theme.colors.background,
-                  countColor: theme.colors.backdrop
+                  containerColor: ThemeStore.surface,
+                  nameColor: ThemeStore.surface,
+                  countColor: ThemeStore.surface
                 }}
               />
             </TouchableOpacity>
@@ -97,7 +95,7 @@ function UserScreen(): JSX.Element {
 
 const style = StyleSheet.create({
   container: {
-    paddingHorizontal: 20
+    paddingHorizontal: 16
   }
 })
 

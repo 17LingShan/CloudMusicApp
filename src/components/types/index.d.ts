@@ -29,7 +29,6 @@ declare namespace TrackItemType {
   interface TrackItemProps {
     position: number
     trackInfo: SongType.SongProps
-    iconColor?: string
     onPressItem?: (event?: GestureResponderEvent) => void
     onPressIcon?: (event?: GestureResponderEvent) => void
   }
