@@ -1,9 +1,9 @@
 import { Text, TouchableOpacity, View } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
-import { addTrackToNext, removeTrack } from '@/util/playTool'
+import ThemeStore from '@/mobx/theme'
 import { SongType } from '@/mobx/types'
 import { screenHeight } from '@/util/common'
-import ThemeStore from '@/mobx/theme'
+import { addTrackToNext, removeTrack } from '@/util/playTool'
 
 function ModalItem({
   trackInfo
@@ -18,7 +18,7 @@ function ModalItem({
         style={{
           height: screenHeight * 0.35,
           padding: 20,
-          backgroundColor: ThemeStore.background,
+          backgroundColor: ThemeStore.detailSurface,
           borderRadius: 36
         }}>
         <View
@@ -26,7 +26,7 @@ function ModalItem({
             height: '100%',
             paddingHorizontal: 20,
             borderRadius: 24,
-            backgroundColor: ThemeStore.surface
+            backgroundColor: ThemeStore.detailBackground
           }}>
           <View
             style={{
@@ -42,7 +42,7 @@ function ModalItem({
                   height: '100%',
                   textAlignVertical: 'center',
                   fontSize: 18,
-                  color: ThemeStore.surface
+                  color: ThemeStore.detailSurface
                 }}>
                 下一首播放
               </Text>
@@ -62,7 +62,7 @@ function ModalItem({
                   height: '100%',
                   textAlignVertical: 'center',
                   fontSize: 18,
-                  color: ThemeStore.surface
+                  color: ThemeStore.detailSurface
                 }}>
                 移除
               </Text>

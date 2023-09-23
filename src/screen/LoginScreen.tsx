@@ -86,8 +86,7 @@ function LoginScreen(): JSX.Element {
         style={{
           flex: 1,
           justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'red'
+          alignItems: 'center'
         }}>
         <Button
           title="获取二维码"

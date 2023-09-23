@@ -30,10 +30,7 @@ function RippleIcon({
             alignItems: 'center'
           }}
           rippleColor="rgba(0, 0, 0, .32)">
-          <Icon
-            name={iconName}
-            color={color || ThemeStore.surface}
-            size={24}></Icon>
+          <Icon name={iconName} color={color || ThemeStore.surface} size={24} />
         </TouchableRipple>
       </View>
     </>

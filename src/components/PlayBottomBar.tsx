@@ -7,10 +7,10 @@ import {
   View,
   StyleSheet
 } from 'react-native'
-import { CommonActions, useNavigation } from '@react-navigation/core'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { CommonActions, useNavigation } from '@react-navigation/core'
 import ThemeStore from '@/mobx/theme'
 import playerStore from '@/mobx/player'
 import coverImg from '@/assets/cover.jpg'
@@ -59,7 +59,7 @@ function PlayBottomBar(): JSX.Element {
           }}>
           <Pressable
             onPress={() => {
-              navigation.dispatch(CommonActions.navigate('playDetail'))
+              navigation.dispatch(CommonActions.navigate('PlayDetail'))
             }}>
             <Image
               style={style.imgStyle}
@@ -72,7 +72,7 @@ function PlayBottomBar(): JSX.Element {
           </Pressable>
           <Icon
             size={48}
-            style={style.iconStyle}
+            style={{ ...style.iconStyle, color: ThemeStore.surface }}
             name={playerStore.isPlaying ? 'pause' : 'play-arrow'}
             onPress={() => (playerStore.isPlaying ? pause() : play())}
           />

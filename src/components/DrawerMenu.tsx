@@ -1,27 +1,43 @@
+import { useMemo } from 'react'
 import { StatusBar, Text } from 'react-native'
+import { observer } from 'mobx-react'
 import { Drawer } from 'react-native-paper'
-import { useNavigation, CommonActions } from '@react-navigation/core'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { useNavigation, CommonActions } from '@react-navigation/core'
 import type { Props as DrawerItemProps } from 'react-native-paper/src/components/Drawer/DrawerItem'
-
-const DrawerMenuOption: DrawerItemProps[] = [
-  {
-    label: 'login',
-    icon: () => <Icon name="settings" size={24} />
-  },
-  {
-    label: 'settings',
-    icon: () => <Icon name="settings" size={24} />,
-    right: () => <Text>213</Text>
-  },
-  {
-    label: 'about',
-    icon: () => <Icon name="medical-information" size={24} />
-  }
-]
+import ThemeStore from '@/mobx/theme'
+import { hexToRGB } from '@/util/common'
 
 function DrawerMenu(): JSX.Element {
   const navigation = useNavigation()
+
+  const DrawerMenuOption: DrawerItemProps[] = useMemo(
+    () => [
+      {
+        label: 'Login',
+        icon: () => (
+          <Icon name="settings" size={24} color={ThemeStore.onSurface} />
+        )
+      },
+      {
+        label: 'Settings',
+        icon: () => (
+          <Icon name="settings" size={24} color={ThemeStore.onSurface} />
+        )
+      },
+      {
+        label: 'About',
+        icon: () => (
+          <Icon
+            name="medical-information"
+            size={24}
+            color={ThemeStore.onSurface}
+          />
+        )
+      }
+    ],
+    [ThemeStore.theme]
+  )
 
   const handlePress = (label: string) => {
     navigation.dispatch(
@@ -30,11 +46,16 @@ function DrawerMenu(): JSX.Element {
       })
     )
   }
+
   return (
     <>
       <Drawer.Section
         title="CloudMusic"
-        style={{ paddingTop: StatusBar.currentHeight + 10 }}>
+        style={{
+          flex: 1,
+          paddingTop: StatusBar.currentHeight + 10,
+          backgroundColor: `rgba(${hexToRGB(ThemeStore.surface)},0.3)`
+        }}>
         {DrawerMenuOption.map((item, index) => {
           return (
             <Drawer.Item
@@ -43,7 +64,7 @@ function DrawerMenu(): JSX.Element {
               icon={item.icon}
               right={item.right}
               onPress={() => handlePress(item.label)}>
-              {item.label}
+              <Text style={{ color: ThemeStore.surface }}>{item.label}</Text>
             </Drawer.Item>
           )
         })}
@@ -52,4 +73,4 @@ function DrawerMenu(): JSX.Element {
   )
 }
 
-export default DrawerMenu
+export default observer(DrawerMenu)

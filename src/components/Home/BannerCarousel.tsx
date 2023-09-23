@@ -9,7 +9,6 @@ function BannerCarousel({
 }: {
   bannerList: BannerType.BannerList
 }): JSX.Element {
-  const width = screenWidth
   const navigation = useNavigation()
 
   return (
@@ -17,8 +16,8 @@ function BannerCarousel({
       <View>
         <Carousel
           loop={true}
-          width={width}
-          height={width / 2.57}
+          width={screenWidth}
+          height={screenWidth / 2.57}
           autoPlay={true}
           data={bannerList}
           scrollAnimationDuration={5000}

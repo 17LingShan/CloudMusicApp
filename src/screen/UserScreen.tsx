@@ -10,13 +10,12 @@ import { toJS } from 'mobx'
 import { observer } from 'mobx-react'
 import { CommonActions, useNavigation } from '@react-navigation/core'
 import UserStore from '@/mobx/user'
-import ThemeStore from '@/mobx/theme'
 import { AlbumType } from '@/mobx/types'
 import { fetchLikeAlbums } from '@/api/user'
-import { handleAccountInfo, showToastErr } from '@/util/common'
 import UserTitle from '@/components/User/UserTitle'
 import AlbumListItem from '@/components/AlbumListItem'
 import ListEmptyFooter from '@/components/ListEmptyFooter'
+import { handleAccountInfo, showToastErr } from '@/util/common'
 
 function UserScreen(): JSX.Element {
   const navigation = useNavigation()

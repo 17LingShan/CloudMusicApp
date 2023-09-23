@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { StyleSheet, Animated, Pressable } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/core'
 import { useCardAnimation } from '@react-navigation/stack'
@@ -11,11 +11,15 @@ function TrackModal(): JSX.Element {
   const { params } = useRoute() as { params: SongType.SongProps }
 
   const current = useCardAnimation().current
-  const viewInterpolation = current.progress.interpolate({
-    inputRange: [0, 1],
-    outputRange: [screenHeight, screenHeight * 0.7],
-    extrapolate: 'clamp'
-  })
+  const viewInterpolation = useMemo(
+    () =>
+      current.progress.interpolate({
+        inputRange: [0, 1],
+        outputRange: [screenHeight, screenHeight * 0.7],
+        extrapolate: 'clamp'
+      }),
+    []
+  )
 
   return (
     <>

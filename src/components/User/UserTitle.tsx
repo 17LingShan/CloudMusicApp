@@ -39,7 +39,7 @@ function UserTitle(): JSX.Element {
             style={{
               height: 150,
               borderRadius: 20,
-              backgroundColor: `rgba(${hexToRGB(ThemeStore.surface)},0.2)`,
+              backgroundColor: `rgba(${hexToRGB(ThemeStore.onSurface)},0.2)`,
               justifyContent: 'center'
             }}>
             <View style={{ alignItems: 'center' }}>

@@ -20,29 +20,30 @@ function StackRoot(): JSX.Element {
           component={TabNavigator}
           options={{ headerShown: false }}
         />
+
         <Stack.Screen
-          name="search"
-          component={SearchScreen}
+          name="Login"
+          component={LoginScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="settings"
+          name="Settings"
           component={SettingsScreen}
           options={{ title: 'setting' }}
         />
         <Stack.Screen
-          name="about"
+          name="About"
           component={AboutScreen}
           options={{ title: 'about' }}
         />
         <Stack.Screen
-          name="album"
+          name="Album"
           component={AlbumScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="login"
-          component={LoginScreen}
+          name="Search"
+          component={SearchScreen}
           options={{ headerShown: false }}
         />
 
@@ -52,12 +53,12 @@ function StackRoot(): JSX.Element {
             presentation: 'transparentModal'
           }}>
           <Stack.Screen name="TrackItemModal" component={TrackModal} />
-          <Stack.Screen name="webView" component={WebScreen} />
+          <Stack.Screen name="WebView" component={WebScreen} />
         </Stack.Group>
 
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
           <Stack.Screen
-            name="playDetail"
+            name="PlayDetail"
             component={PlayDetailScreen}
             options={{ headerShown: false }}
           />

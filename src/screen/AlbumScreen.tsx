@@ -3,10 +3,10 @@ import { FlatList, RefreshControl, View } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/core'
 import { fetchAlbumDetail } from '@/api/search'
 import { AlbumType, SongType } from '@/mobx/types'
-import ListEmptyFooter from '@/components/ListEmptyFooter'
-import AlbumHeader from '@/components/Album/AlbumHeader'
-import AlbumTitle from '@/components/Album/AlbumTitle'
 import TrackItem from '@/components/TrackItem'
+import AlbumTitle from '@/components/Album/AlbumTitle'
+import AlbumHeader from '@/components/Album/AlbumHeader'
+import ListEmptyFooter from '@/components/ListEmptyFooter'
 import { handlePressItem, handlePressModalIcon } from '@/util/navigateTool'
 
 function AlbumScreen(): JSX.Element {

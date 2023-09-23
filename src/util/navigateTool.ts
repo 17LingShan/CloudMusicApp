@@ -15,6 +15,6 @@ export async function handlePressItem(
   navigation: NavigationProp<ReactNavigation.RootParamList>,
   trackInfo: SongType.SongProps
 ) {
-  navigation.dispatch(CommonActions.navigate('playDetail'))
+  navigation.dispatch(CommonActions.navigate('PlayDetail'))
   await playTrack(trackInfo)
 }

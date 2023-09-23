@@ -9,10 +9,10 @@ import { SongType } from '@/mobx/types'
 import SearchStore from '@/mobx/searcher'
 import { showToastErr } from '@/util/common'
 import { handlePressItem, handlePressModalIcon } from '@/util/navigateTool'
+import TrackItem from '@/components/TrackItem'
 import CustomBackGround from '@/layout/CustomBackGround'
 import ListEmptyFooter from '@/components/ListEmptyFooter'
 import SearchHeader from '@/components/Search/SearchHeader'
-import TrackItem from '@/components/TrackItem'
 
 function SearchScreen(): JSX.Element {
   const navigation = useNavigation()

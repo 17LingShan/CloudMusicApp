@@ -2,6 +2,7 @@ import { AlbumType } from '@/mobx/types'
 import { Image, Text, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import AlbumTitleButton from './AlbumTItleButton'
+import ThemeStore from '@/mobx/theme'
 
 function AlbumTitle({
   albumInfo
@@ -19,7 +20,7 @@ function AlbumTitle({
           }}>
           <View style={{ width: '30%' }}>
             <Image
-              style={{ height: '100%', borderRadius: 30 }}
+              style={{ height: '100%', borderRadius: 24 }}
               source={{ uri: albumInfo.coverImgUrl + '?param=500y500' }}
             />
           </View>
@@ -32,7 +33,12 @@ function AlbumTitle({
             <View>
               <Text
                 numberOfLines={2}
-                style={{ width: '100%', fontSize: 22, overflow: 'hidden' }}>
+                style={{
+                  width: '100%',
+                  fontSize: 22,
+                  overflow: 'hidden',
+                  color: ThemeStore.surface
+                }}>
                 {albumInfo.name}
               </Text>
             </View>
@@ -56,12 +62,18 @@ function AlbumTitle({
                   marginLeft: 10,
                   justifyContent: 'center'
                 }}>
-                <Text style={{ width: '100%' }} numberOfLines={1}>
+                <Text
+                  style={{ width: '100%', color: ThemeStore.surface }}
+                  numberOfLines={1}>
                   {albumInfo.nickname}
                 </Text>
               </View>
               <View style={{ marginLeft: 2 }}>
-                <Icon name="arrow-forward-ios" size={14} />
+                <Icon
+                  name="arrow-forward-ios"
+                  size={14}
+                  color={ThemeStore.surface}
+                />
               </View>
             </View>
           </View>

@@ -7,9 +7,9 @@ const Stack = createStackNavigator()
 function StackPlay(): JSX.Element {
   return (
     <>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="PlayList">
         <Stack.Screen
-          name="Home"
+          name="PlayList"
           children={() => <PlayListScreen />}
           options={{ header: () => <CommonHeader /> }}
         />

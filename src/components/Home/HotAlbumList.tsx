@@ -19,7 +19,7 @@ function HotAlbumList({
       <View
         style={{
           height: '100%',
-          backgroundColor: `rgba(${hexToRGB(ThemeStore.surface)},0.2)`
+          backgroundColor: `rgba(${hexToRGB(ThemeStore.onSurface)},0.2)`
         }}>
         <View
           style={{
@@ -32,7 +32,7 @@ function HotAlbumList({
               alignItems: 'center',
               fontWeight: '900',
               fontSize: 20,
-              color: ThemeStore.background,
+              color: ThemeStore.surface,
               lineHeight: screenWidth * 0.15
             }}>
             热门歌单
@@ -67,7 +67,11 @@ function HotAlbumList({
                       width: '100%',
                       bottom: -screenWidth * 0.1
                     }}>
-                    <Text numberOfLines={2}>{item.name}</Text>
+                    <Text
+                      numberOfLines={2}
+                      style={{ color: ThemeStore.surface }}>
+                      {item.name}
+                    </Text>
                   </View>
                 </View>
               </View>

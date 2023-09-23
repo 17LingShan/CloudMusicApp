@@ -18,7 +18,7 @@ function AlbumListItem({
           ...style.wrap,
           borderTopLeftRadius: position ? 0 : 20,
           borderTopRightRadius: position ? 0 : 20,
-          backgroundColor: `rgba(${hexToRGB(ThemeStore.surface)},0.2)`
+          backgroundColor: `rgba(${hexToRGB(ThemeStore.onSurface)},0.2)`
         }}>
         <View style={style.container}>
           <View style={style.imgWrap}>

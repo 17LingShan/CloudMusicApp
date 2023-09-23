@@ -1,5 +1,5 @@
-import { screenHeight } from '@/util/common'
 import { View } from 'react-native'
+import { screenHeight } from '@/util/common'
 
 function ListEmptyFooter(): JSX.Element {
   return (

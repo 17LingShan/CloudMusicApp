@@ -1,13 +1,15 @@
 import { useState, useCallback, useEffect } from 'react'
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native'
+import { useIsFocused } from '@react-navigation/core'
+import { AlbumType, BannerType } from '@/mobx/types'
 import { handleAccountInfo, screenWidth } from '@/util/common'
 import { fetchHotAlbumList, fetchBanner } from '@/api/hotInfo'
-import BannerCarousel from '@/components/Home/BannerCarousel'
 import HotAlbumList from '@/components/Home/HotAlbumList'
-import { AlbumType, BannerType } from '@/mobx/types'
+import BannerCarousel from '@/components/Home/BannerCarousel'
 import RecommendTrackList from '@/components/Home/RecommendTrackList'
 
 function HomeSCreen() {
+  const isFocused = useIsFocused()
   const [banner, setBanner] = useState<BannerType.BannerList>()
   const [albumList, setAlbumList] = useState<AlbumType.AlbumList>()
   const [refreshing, setRefreshing] = useState(false)
@@ -49,9 +51,10 @@ function HomeSCreen() {
     await Promise.all([handleAccountInfo(), handleBanner(), handleAlbumList()])
     setRefreshing(false)
   }, [])
+
   useEffect(() => {
-    handleRefresh()
-  }, [])
+    if (isFocused) handleRefresh()
+  }, [isFocused])
 
   return (
     <>

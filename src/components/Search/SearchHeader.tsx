@@ -39,7 +39,7 @@ function SearchHeader({ handleSearch, onIconPress }): JSX.Element {
           ) : null}
           <RippleIcon
             iconName="chevron-left"
-            color={ThemeStore.shadow}
+            color={ThemeStore.surface}
             onPress={() => {
               Keyboard.dismiss()
               navigation.goBack()
@@ -57,7 +57,7 @@ function SearchHeader({ handleSearch, onIconPress }): JSX.Element {
               alignItems: 'center'
             }}>
             <Text
-              style={{ fontSize: 16, color: ThemeStore.shadow }}
+              style={{ fontSize: 16, color: ThemeStore.surface }}
               onPress={() => handleSearch()}>
               搜索
             </Text>

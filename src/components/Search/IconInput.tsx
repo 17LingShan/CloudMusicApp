@@ -52,13 +52,16 @@ function IconInput({
         <TextInput
           value={SearchStore.keywords}
           placeholder={placeholder ?? 'search'}
-          style={{ width: '70%', overflow: 'hidden' }}
+          placeholderTextColor={ThemeStore.surface}
+          style={{
+            width: '70%',
+            overflow: 'hidden',
+            color: ThemeStore.surface
+          }}
           onChangeText={handleTyping}
           onSubmitEditing={onSubmit}
           onFocus={() => handleFocus()}
-          onBlur={() => {
-            handleBlur()
-          }}
+          onBlur={() => handleBlur()}
           onEndEditing={event => {
             console.log('ending event', event.nativeEvent)
             handleOnSearch(event.nativeEvent.text)
@@ -66,7 +69,7 @@ function IconInput({
         />
         <RippleIcon
           iconName={iconName}
-          color={ThemeStore.shadow}
+          color={ThemeStore.surface}
           shown={SearchStore.keywords.length > 0}
           onPress={onIconPress}
         />

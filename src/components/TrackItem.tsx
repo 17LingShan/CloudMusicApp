@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
 import { TouchableRipple } from 'react-native-paper'
-import { toJS } from 'mobx'
 import { observer } from 'mobx-react'
 import ThemeStore from '@/mobx/theme'
 import RippleIcon from './RippleIcon'

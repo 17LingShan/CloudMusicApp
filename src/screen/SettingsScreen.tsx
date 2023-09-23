@@ -32,6 +32,7 @@ function SettingsScreen(): JSX.Element {
             深色主题
           </Text>
           <Checkbox
+            color={ThemeStore.primary}
             status={ThemeStore.theme === 'dark' ? 'checked' : 'unchecked'}
             onPress={() => {
               changeTheme()

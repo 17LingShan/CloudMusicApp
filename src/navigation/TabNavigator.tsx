@@ -53,7 +53,11 @@ function TabNavigator(): JSX.Element {
               return (
                 <>
                   <Image
-                    style={{ height: '100%', width: '100%' }}
+                    style={{
+                      height: '100%',
+                      width: '100%',
+                      opacity: ThemeStore.theme === 'light' ? 0.7 : 0.1
+                    }}
                     blurRadius={6}
                     source={
                       UserStore.backgroundUrl

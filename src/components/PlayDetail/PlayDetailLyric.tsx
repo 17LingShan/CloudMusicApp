@@ -73,8 +73,8 @@ function PlayDetailLyric({
                   ...style.renderItemText,
                   color:
                     lrcIdx === index
-                      ? ThemeStore.surface
-                      : ThemeStore.onSurface,
+                      ? ThemeStore.detailSurface
+                      : ThemeStore.detailOnSurface,
                   fontSize: lrcIdx === index ? 20 : 14
                 }}>
                 {item.text}

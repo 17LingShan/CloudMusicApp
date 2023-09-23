@@ -1,33 +1,38 @@
+import { useMemo } from 'react'
 import { View, StatusBar, StyleSheet } from 'react-native'
 import {
   useNavigation,
   DrawerActions,
   CommonActions
 } from '@react-navigation/core'
-import { screenHeight } from '@/util/common'
+import { observer } from 'mobx-react'
 import ThemeStore from '@/mobx/theme'
 import RippleIcon from './RippleIcon'
 import { RippleIconType } from './types'
+import { screenHeight } from '@/util/common'
 
 function CommonHeader(): JSX.Element {
   const navigation = useNavigation()
 
-  const HeadOption: RippleIconType.RippleIconProps[] = [
-    {
-      iconName: 'menu',
-      color: ThemeStore.surface,
-      onPress: () => {
-        navigation.dispatch(DrawerActions.openDrawer())
+  const HeadOption: RippleIconType.RippleIconProps[] = useMemo(
+    () => [
+      {
+        iconName: 'menu',
+        color: ThemeStore.surface,
+        onPress: () => {
+          navigation.dispatch(DrawerActions.openDrawer())
+        }
+      },
+      {
+        iconName: 'search',
+        color: ThemeStore.surface,
+        onPress: () => {
+          navigation.dispatch(CommonActions.navigate('Search'))
+        }
       }
-    },
-    {
-      iconName: 'search',
-      color: ThemeStore.surface,
-      onPress: () => {
-        navigation.dispatch(CommonActions.navigate('search'))
-      }
-    }
-  ]
+    ],
+    [ThemeStore.theme]
+  )
 
   return (
     <>
@@ -38,7 +43,9 @@ function CommonHeader(): JSX.Element {
         <StatusBar
           translucent={true}
           backgroundColor="transparent"
-          barStyle="dark-content"
+          barStyle={`${
+            ThemeStore.theme === 'light' ? 'dark-content' : 'light-content'
+          }`}
         />
         <View style={style.headerContainer}>
           {HeadOption.map((item, index) => {
@@ -65,4 +72,4 @@ const style = StyleSheet.create({
   }
 })
 
-export default CommonHeader
+export default observer(CommonHeader)

@@ -15,7 +15,7 @@ function PlayDetailHeader({
 }: {
   trackInfo: SongType.SongProps
 }): JSX.Element {
-  const mWidth = screenWidth * 0.6
+  const mWidth = useMemo(() => screenWidth * 0.6, [])
   const navigation = useNavigation()
   const translateX = useRef(new Animated.Value(0)).current
 

@@ -51,7 +51,6 @@ function PlayDetailRotation({
         console.log('rotation finished')
         rotate.setValue(0)
         startRotateAni()
-      } else {
       }
     })
 

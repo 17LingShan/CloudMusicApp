@@ -25,7 +25,7 @@ function AlbumHeader(): JSX.Element {
           <View>
             <RippleIcon
               iconName="chevron-left"
-              color={ThemeStore.shadow}
+              color={ThemeStore.surface}
               onPress={() => {
                 Keyboard.dismiss()
                 navigation.goBack()
@@ -38,7 +38,9 @@ function AlbumHeader(): JSX.Element {
               marginHorizontal: 12,
               alignItems: 'center'
             }}>
-            <Text style={{ fontSize: 16, color: ThemeStore.shadow }}>搜索</Text>
+            <Text style={{ fontSize: 16, color: ThemeStore.surface }}>
+              搜索
+            </Text>
           </View>
         </View>
       </View>
