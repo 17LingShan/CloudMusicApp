@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react'
 import ThemeStore from '@/mobx/theme'
@@ -31,26 +31,19 @@ function PlayDetailScreen(): JSX.Element {
 
   return (
     <>
-      <View style={{ flex: 1 }}>
+      <View style={style.detailWrap}>
         <PlayDetailHeader trackInfo={toJS(playerStore.currentTrack)} />
         <View
           style={{
-            flex: 1,
+            ...style.centerWrap,
             backgroundColor: ThemeStore.detailBackground
           }}>
           <PlayDetailCenter trackInfo={toJS(playerStore.currentTrack)} />
-          <View style={{ flex: 1 }}>
-            <View
-              style={{
-                height: '40%',
-                paddingHorizontal: '5%',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              }}>
+          <View style={style.sliderWrap}>
+            <View style={style.sliderContainer}>
               <PlayDetailSlider />
             </View>
-            <View style={{ height: '60%' }}>
+            <View style={style.bottomWrap}>
               <PlayDetailBottom isPlaying={toJS(playerStore.isPlaying)} />
             </View>
           </View>
@@ -59,5 +52,19 @@ function PlayDetailScreen(): JSX.Element {
     </>
   )
 }
+
+const style = StyleSheet.create({
+  detailWrap: { flex: 1 },
+  centerWrap: { flex: 1 },
+  sliderWrap: { flex: 1 },
+  sliderContainer: {
+    height: '40%',
+    paddingHorizontal: '5%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  bottomWrap: { height: '60%' }
+})
 
 export default observer(PlayDetailScreen)

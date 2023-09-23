@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { StatusBar, Text } from 'react-native'
+import { StatusBar, StyleSheet, Text } from 'react-native'
 import { observer } from 'mobx-react'
 import { Drawer } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -52,8 +52,7 @@ function DrawerMenu(): JSX.Element {
       <Drawer.Section
         title="CloudMusic"
         style={{
-          flex: 1,
-          paddingTop: StatusBar.currentHeight + 10,
+          ...style.drawerWrap,
           backgroundColor: `rgba(${hexToRGB(ThemeStore.surface)},0.3)`
         }}>
         {DrawerMenuOption.map((item, index) => {
@@ -72,5 +71,9 @@ function DrawerMenu(): JSX.Element {
     </>
   )
 }
+
+const style = StyleSheet.create({
+  drawerWrap: { flex: 1, paddingTop: StatusBar.currentHeight + 10 }
+})
 
 export default observer(DrawerMenu)

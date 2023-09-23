@@ -1,4 +1,5 @@
-import { Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { observer } from 'mobx-react'
 import { useNavigation } from '@react-navigation/core'
 import ThemeStore from '@/mobx/theme'
 import { SongType } from '@/mobx/types'
@@ -12,66 +13,61 @@ function ModalItem({
 }): JSX.Element {
   const navigation = useNavigation()
 
+  const ModalItemOption = [
+    {
+      text: '下一首播放',
+      onPress: () => {
+        addTrackToNext(trackInfo)
+        navigation.goBack()
+      }
+    },
+    {
+      text: '移除',
+      onPress: () => {
+        removeTrack(trackInfo)
+        navigation.goBack()
+      }
+    }
+  ]
+
   return (
     <>
       <View
         style={{
-          height: screenHeight * 0.35,
-          padding: 20,
-          backgroundColor: ThemeStore.detailSurface,
-          borderRadius: 36
+          ...style.modalWrap,
+          backgroundColor: ThemeStore.detailSurface
         }}>
         <View
           style={{
-            height: '100%',
-            paddingHorizontal: 20,
-            borderRadius: 24,
+            ...style.modalContainer,
             backgroundColor: ThemeStore.detailBackground
           }}>
-          <View
-            style={{
-              height: '25%'
-            }}>
-            <TouchableOpacity
-              onPress={() => {
-                addTrackToNext(trackInfo)
-                navigation.goBack()
-              }}>
-              <Text
-                style={{
-                  height: '100%',
-                  textAlignVertical: 'center',
-                  fontSize: 18,
-                  color: ThemeStore.detailSurface
-                }}>
-                下一首播放
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              height: '25%'
-            }}>
-            <TouchableOpacity
-              onPress={() => {
-                removeTrack(trackInfo)
-                navigation.goBack()
-              }}>
-              <Text
-                style={{
-                  height: '100%',
-                  textAlignVertical: 'center',
-                  fontSize: 18,
-                  color: ThemeStore.detailSurface
-                }}>
-                移除
-              </Text>
-            </TouchableOpacity>
-          </View>
+          {ModalItemOption.map((item, index) => {
+            return (
+              <View key={index} style={style.itemWrap}>
+                <TouchableOpacity onPress={item.onPress}>
+                  <Text
+                    style={{
+                      ...style.itemText,
+                      color: ThemeStore.detailSurface
+                    }}>
+                    {item.text}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )
+          })}
         </View>
       </View>
     </>
   )
 }
 
-export default ModalItem
+const style = StyleSheet.create({
+  modalWrap: { height: screenHeight * 0.35, padding: 20, borderRadius: 36 },
+  modalContainer: { height: '100%', paddingHorizontal: 20, borderRadius: 24 },
+  itemWrap: { height: '25%' },
+  itemText: { height: '100%', textAlignVertical: 'center', fontSize: 18 }
+})
+
+export default observer(ModalItem)

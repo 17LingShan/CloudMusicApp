@@ -1,5 +1,13 @@
 import { useEffect, useMemo, useRef } from 'react'
-import { Animated, Easing, Keyboard, StatusBar, Text, View } from 'react-native'
+import {
+  Animated,
+  Easing,
+  Keyboard,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View
+} from 'react-native'
 import { observer } from 'mobx-react'
 import { useNavigation } from '@react-navigation/core'
 import Clipboard from '@react-native-clipboard/clipboard'
@@ -36,9 +44,14 @@ function PlayDetailHeader({
     []
   )
 
+  const handleGoBack = () => {
+    Keyboard.dismiss()
+    navigation.goBack()
+  }
+
   const writeInClipboard = (id: number) => {
-    showToastCommon({ message: '复制成功！' })
     Clipboard.setString(shareOuterBaseURL + id)
+    showToastCommon({ message: '复制成功！' })
   }
 
   useEffect(() => {
@@ -49,49 +62,33 @@ function PlayDetailHeader({
     <>
       <View
         style={{
-          paddingTop: StatusBar.currentHeight + 10,
+          ...style.headerWrap,
           backgroundColor: ThemeStore.detailBackground
         }}>
         <StatusBar translucent={true} barStyle="light-content" />
-        <View
-          style={{
-            height: 70,
-            flexDirection: 'row',
-            justifyContent: 'space-between'
-          }}>
+        <View style={style.headerContainer}>
           <RippleIcon
             iconName="keyboard-arrow-down"
             color={ThemeStore.detailSurface}
-            onPress={() => {
-              Keyboard.dismiss()
-              navigation.goBack()
-            }}
+            onPress={() => handleGoBack()}
           />
-          <View
-            style={{ width: mWidth, alignItems: 'center', overflow: 'hidden' }}>
-            <View style={{ height: 40 }}>
+          <View style={style.rollTextWrap}>
+            <View style={style.titleContainer}>
               <Animated.Text
                 style={{
-                  lineHeight: 40,
-                  fontSize: 22,
+                  ...style.titleText,
                   color: ThemeStore.detailSurface,
                   transform: [{ translateX: translateX }]
                 }}>
                 {trackInfo.title}
               </Animated.Text>
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                opacity: 0.6
-              }}>
+            <View style={style.artistWrap}>
               <Text style={{ color: ThemeStore.detailSurface }}>
                 {trackInfo.artist}
               </Text>
               <Icon
-                style={{ marginLeft: 8, color: ThemeStore.detailSurface }}
+                style={{ ...style.artistIcon, color: ThemeStore.detailSurface }}
                 name="arrow-forward-ios"
               />
             </View>
@@ -106,5 +103,28 @@ function PlayDetailHeader({
     </>
   )
 }
+
+const style = StyleSheet.create({
+  headerWrap: { paddingTop: StatusBar.currentHeight + 10 },
+  headerContainer: {
+    height: 70,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  rollTextWrap: {
+    width: screenWidth * 0.6,
+    alignItems: 'center',
+    overflow: 'hidden'
+  },
+  titleContainer: { height: 40 },
+  titleText: { lineHeight: 40, fontSize: 22 },
+  artistWrap: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    opacity: 0.6
+  },
+  artistIcon: { marginLeft: 8 }
+})
 
 export default observer(PlayDetailHeader)

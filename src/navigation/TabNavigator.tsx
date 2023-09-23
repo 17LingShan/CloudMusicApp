@@ -1,16 +1,16 @@
 import React from 'react'
-import { Image } from 'react-native'
+import { Image, StyleSheet } from 'react-native'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import StackHome from './StackHome'
-import StackPlay from './StackPlay'
-import StackUser from './StackUser'
 import UserStore from '@/mobx/user'
 import ThemeStore from '@/mobx/theme'
 import { hexToRGB } from '@/util/common'
 import CoverImg from '@/assets/cover.jpg'
+import StackHome from './StackHome'
+import StackPlay from './StackPlay'
+import StackUser from './StackUser'
 import PlayBottomBar from '@/components/PlayBottomBar'
 
 const Tab = createBottomTabNavigator()
@@ -54,8 +54,7 @@ function TabNavigator(): JSX.Element {
                 <>
                   <Image
                     style={{
-                      height: '100%',
-                      width: '100%',
+                      ...style.backImgContainer,
                       opacity: ThemeStore.theme === 'light' ? 0.7 : 0.1
                     }}
                     blurRadius={6}
@@ -96,5 +95,9 @@ function TabNavigator(): JSX.Element {
     </>
   )
 }
+
+const style = StyleSheet.create({
+  backImgContainer: { height: '100%', width: '100%' }
+})
 
 export default observer(TabNavigator)

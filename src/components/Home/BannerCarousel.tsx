@@ -1,4 +1,4 @@
-import { Image, View, TouchableOpacity } from 'react-native'
+import { Image, View, TouchableOpacity, StyleSheet } from 'react-native'
 import { useNavigation, CommonActions } from '@react-navigation/core'
 import Carousel from 'react-native-reanimated-carousel'
 import { BannerType } from '@/mobx/types'
@@ -27,14 +27,14 @@ function BannerCarousel({
               onPress={() => {
                 if (item.url) {
                   navigation.dispatch(
-                    CommonActions.navigate({ name: 'webView', params: item })
+                    CommonActions.navigate({ name: 'WebView', params: item })
                   )
                 }
               }}>
-              <View style={{ paddingHorizontal: 10 }}>
+              <View style={style.bannerWrap}>
                 <Image
+                  style={style.bannerImg}
                   source={{ uri: item.pic + '?param=500y500' }}
-                  style={{ aspectRatio: 2.57, borderRadius: 26 }}
                 />
               </View>
             </TouchableOpacity>
@@ -44,5 +44,10 @@ function BannerCarousel({
     </>
   )
 }
+
+const style = StyleSheet.create({
+  bannerWrap: { paddingHorizontal: 10 },
+  bannerImg: { aspectRatio: 2.57, borderRadius: 26 }
+})
 
 export default BannerCarousel

@@ -1,13 +1,12 @@
 import { useEffect } from 'react'
 import { View, StatusBar, Text, Keyboard } from 'react-native'
-import { toJS } from 'mobx'
 import { observer } from 'mobx-react'
 import { useNavigation } from '@react-navigation/core'
 import ThemeStore from '@/mobx/theme'
 import SearchStore from '@/mobx/searcher'
-import { screenHeight, screenWidth } from '@/util/common'
 import IconInput from './IconInput'
 import RippleIcon from '../RippleIcon'
+import { screenHeight, screenWidth } from '@/util/common'
 
 function SearchHeader({ handleSearch, onIconPress }): JSX.Element {
   const navigation = useNavigation()

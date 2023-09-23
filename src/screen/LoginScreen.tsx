@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Button, Image, View } from 'react-native'
+import { Button, Image, StyleSheet, View } from 'react-native'
 import { CommonActions, useNavigation } from '@react-navigation/core'
 import { observer } from 'mobx-react'
 import UserStore from '@/mobx/user'
@@ -82,37 +82,31 @@ function LoginScreen(): JSX.Element {
 
   return (
     <>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}>
+      <View style={style.loginWrap}>
         <Button
           title="获取二维码"
-          onPress={async () => await handleQRLogin()}></Button>
-        {QRImage ? (
+          onPress={async () => await handleQRLogin()}
+        />
+        {
           <Image
-            style={{
-              height: 200,
-              width: 200
-            }}
-            source={{
-              uri: QRImage
-            }}
+            style={style.imgContainer}
+            source={
+              QRImage
+                ? {
+                    uri: QRImage
+                  }
+                : CoverImg
+            }
           />
-        ) : (
-          <Image
-            style={{
-              height: 200,
-              width: 200
-            }}
-            source={CoverImg}
-          />
-        )}
+        }
       </View>
     </>
   )
 }
+
+const style = StyleSheet.create({
+  loginWrap: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  imgContainer: { height: 200, width: 200 }
+})
 
 export default observer(LoginScreen)

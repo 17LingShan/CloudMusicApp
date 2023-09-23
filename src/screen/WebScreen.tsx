@@ -1,5 +1,6 @@
 import { BannerType } from '@/mobx/types'
 import { useRoute } from '@react-navigation/core'
+import { StyleSheet } from 'react-native'
 import WebView from 'react-native-webview'
 
 function WebScreen(): JSX.Element {
@@ -8,9 +9,13 @@ function WebScreen(): JSX.Element {
   }
   return (
     <>
-      <WebView source={{ uri: params.url }} style={{ flex: 1 }} />
+      <WebView style={style.webViewWrap} source={{ uri: params.url }} />
     </>
   )
 }
+
+const style = StyleSheet.create({
+  webViewWrap: { flex: 1 }
+})
 
 export default WebScreen

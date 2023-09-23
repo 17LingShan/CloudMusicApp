@@ -1,4 +1,4 @@
-import { View, StatusBar, Text, Keyboard } from 'react-native'
+import { View, StatusBar, Text, Keyboard, StyleSheet } from 'react-native'
 import { observer } from 'mobx-react'
 import { useNavigation } from '@react-navigation/core'
 import ThemeStore from '@/mobx/theme'
@@ -9,19 +9,8 @@ function AlbumHeader(): JSX.Element {
 
   return (
     <>
-      <View
-        style={{
-          paddingTop: StatusBar.currentHeight + 10,
-          backgroundColor: 'transparent'
-        }}>
-        <View
-          style={{
-            height: 60,
-            flexDirection: 'row',
-            alignItems: 'center',
-            backgroundColor: 'transparent',
-            justifyContent: 'space-between'
-          }}>
+      <View style={style.headerWrap}>
+        <View style={style.headerContainer}>
           <View>
             <RippleIcon
               iconName="chevron-left"
@@ -32,13 +21,8 @@ function AlbumHeader(): JSX.Element {
               }}
             />
           </View>
-          <View
-            style={{
-              width: 48,
-              marginHorizontal: 12,
-              alignItems: 'center'
-            }}>
-            <Text style={{ fontSize: 16, color: ThemeStore.surface }}>
+          <View style={style.searchContainer}>
+            <Text style={{ ...style.searchText, color: ThemeStore.surface }}>
               搜索
             </Text>
           </View>
@@ -47,5 +31,27 @@ function AlbumHeader(): JSX.Element {
     </>
   )
 }
+
+const style = StyleSheet.create({
+  headerWrap: {
+    paddingTop: StatusBar.currentHeight + 10,
+    backgroundColor: 'transparent'
+  },
+  headerContainer: {
+    height: 60,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+    justifyContent: 'space-between'
+  },
+  searchContainer: {
+    width: 48,
+    marginHorizontal: 12,
+    alignItems: 'center'
+  },
+  searchText: {
+    fontSize: 16
+  }
+})
 
 export default observer(AlbumHeader)

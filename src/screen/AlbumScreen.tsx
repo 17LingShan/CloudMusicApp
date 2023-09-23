@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { FlatList, RefreshControl, View } from 'react-native'
+import { FlatList, RefreshControl, StyleSheet, View } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/core'
 import { fetchAlbumDetail } from '@/api/search'
 import { AlbumType, SongType } from '@/mobx/types'
@@ -48,7 +48,7 @@ function AlbumScreen(): JSX.Element {
 
   return (
     <>
-      <View style={{ flex: 1 }}>
+      <View style={style.albumWrap}>
         <AlbumHeader />
         <AlbumTitle albumInfo={params} />
         <FlatList
@@ -70,5 +70,9 @@ function AlbumScreen(): JSX.Element {
     </>
   )
 }
+
+const style = StyleSheet.create({
+  albumWrap: { flex: 1 }
+})
 
 export default AlbumScreen

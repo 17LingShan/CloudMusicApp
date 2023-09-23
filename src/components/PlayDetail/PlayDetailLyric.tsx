@@ -3,7 +3,8 @@ import { FlatList, StyleSheet, Text, View } from 'react-native'
 import { useProgress } from 'react-native-track-player'
 import ThemeStore from '@/mobx/theme'
 import { SongType } from '@/mobx/types'
-import { screenHeight, screenWidth } from '@/util/common'
+import { screenWidth } from '@/util/common'
+import ListEmptyFooter from '../ListEmptyFooter'
 
 function PlayDetailLyric({
   lyric
@@ -58,12 +59,8 @@ function PlayDetailLyric({
           ref={flatListRef}
           data={lyric}
           // initialNumToRender={lyric?.length}
-          ListHeaderComponent={() => (
-            <View style={{ height: screenHeight * 0.3 }} />
-          )}
-          ListFooterComponent={() => (
-            <View style={{ height: screenHeight * 0.3 }} />
-          )}
+          ListHeaderComponent={() => <ListEmptyFooter />}
+          ListFooterComponent={() => <ListEmptyFooter />}
           showsVerticalScrollIndicator={false}
           keyExtractor={(_, index) => index.toString()}
           renderItem={({ item, index }) => (

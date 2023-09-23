@@ -6,7 +6,6 @@ import { handleAccountInfo, screenWidth } from '@/util/common'
 import { fetchHotAlbumList, fetchBanner } from '@/api/hotInfo'
 import HotAlbumList from '@/components/Home/HotAlbumList'
 import BannerCarousel from '@/components/Home/BannerCarousel'
-import RecommendTrackList from '@/components/Home/RecommendTrackList'
 
 function HomeSCreen() {
   const isFocused = useIsFocused()
@@ -67,9 +66,6 @@ function HomeSCreen() {
         </View>
         <View style={style.hotListWrap}>
           <HotAlbumList albumList={albumList} />
-        </View>
-        <View style={{}}>
-          <RecommendTrackList />
         </View>
       </ScrollView>
     </>

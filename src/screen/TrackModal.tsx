@@ -9,8 +9,8 @@ import ModalItem from '@/components/ModalItem'
 function TrackModal(): JSX.Element {
   const navigation = useNavigation()
   const { params } = useRoute() as { params: SongType.SongProps }
-
   const current = useCardAnimation().current
+
   const viewInterpolation = useMemo(
     () =>
       current.progress.interpolate({
@@ -24,26 +24,19 @@ function TrackModal(): JSX.Element {
   return (
     <>
       <Pressable
-        style={[
-          StyleSheet.absoluteFill,
-          { opacity: 0.5, backgroundColor: '#000' }
-        ]}
+        style={[StyleSheet.absoluteFill, style.modalWrap]}
         onPress={() => navigation.goBack()}
       />
       <Animated.View
-        style={[
-          {
-            transform: [
-              {
-                translateY: viewInterpolation
-              }
-            ]
-          }
-        ]}>
+        style={[{ transform: [{ translateY: viewInterpolation }] }]}>
         <ModalItem trackInfo={params} />
       </Animated.View>
     </>
   )
 }
+
+const style = StyleSheet.create({
+  modalWrap: { opacity: 0.5, backgroundColor: '#000' }
+})
 
 export default TrackModal

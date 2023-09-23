@@ -70,7 +70,7 @@ function UserScreen(): JSX.Element {
             <TouchableOpacity
               onPress={() =>
                 navigation.dispatch(
-                  CommonActions.navigate({ name: 'album', params: item })
+                  CommonActions.navigate({ name: 'Album', params: item })
                 )
               }>
               <AlbumListItem position={index} albumInfo={item} />

@@ -55,7 +55,7 @@ function PlayBottomBar(): JSX.Element {
         <View
           style={{
             ...style.barContainer,
-            backgroundColor: `rgba(${hexToRGB(ThemeStore.surface)},0.6)`
+            backgroundColor: `rgba(${hexToRGB(ThemeStore.onSurface)},0.6)`
           }}>
           <Pressable
             onPress={() => {

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ColorValue, TextInput, View } from 'react-native'
+import { ColorValue, StyleSheet, TextInput, View } from 'react-native'
 import { observer } from 'mobx-react'
 import ThemeStore from '@/mobx/theme'
 import RippleIcon from '../RippleIcon'
@@ -37,27 +37,12 @@ function IconInput({
 
   return (
     <>
-      <View
-        style={{
-          width: '60%',
-          height: '80%',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          borderRadius: 24,
-          paddingLeft: 24,
-          backgroundColor: backColor,
-          overflow: 'hidden'
-        }}>
+      <View style={{ ...style.inputWrap, backgroundColor: backColor }}>
         <TextInput
           value={SearchStore.keywords}
           placeholder={placeholder ?? 'search'}
           placeholderTextColor={ThemeStore.surface}
-          style={{
-            width: '70%',
-            overflow: 'hidden',
-            color: ThemeStore.surface
-          }}
+          style={{ ...style.input, color: ThemeStore.surface }}
           onChangeText={handleTyping}
           onSubmitEditing={onSubmit}
           onFocus={() => handleFocus()}
@@ -77,5 +62,19 @@ function IconInput({
     </>
   )
 }
+
+const style = StyleSheet.create({
+  inputWrap: {
+    width: '60%',
+    height: '80%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderRadius: 24,
+    paddingLeft: 24,
+    overflow: 'hidden'
+  },
+  input: { width: '70%', overflow: 'hidden' }
+})
 
 export default observer(IconInput)

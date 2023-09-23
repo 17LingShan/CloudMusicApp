@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { toJS } from 'mobx'
 import Slider from '@react-native-community/slider'
 import TrackPlayer, { useProgress } from 'react-native-track-player'
@@ -16,7 +16,7 @@ function PlayDetailSlider(): JSX.Element {
         </Text>
       </View>
       <Slider
-        style={{ width: '80%', height: 40 }}
+        style={style.slider}
         minimumValue={0}
         maximumValue={1}
         onValueChange={async value =>
@@ -35,5 +35,9 @@ function PlayDetailSlider(): JSX.Element {
     </>
   )
 }
+
+const style = StyleSheet.create({
+  slider: { width: '80%', height: 40 }
+})
 
 export default PlayDetailSlider

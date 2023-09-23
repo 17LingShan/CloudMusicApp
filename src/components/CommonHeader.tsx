@@ -36,10 +36,7 @@ function CommonHeader(): JSX.Element {
 
   return (
     <>
-      <View
-        style={{
-          paddingTop: StatusBar.currentHeight + 10
-        }}>
+      <View style={style.headerWrap}>
         <StatusBar
           translucent={true}
           backgroundColor="transparent"
@@ -65,6 +62,7 @@ function CommonHeader(): JSX.Element {
 }
 
 const style = StyleSheet.create({
+  headerWrap: { paddingTop: StatusBar.currentHeight + 10 },
   headerContainer: {
     height: screenHeight * 0.08,
     flexDirection: 'row',

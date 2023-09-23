@@ -4,7 +4,7 @@ import { screenHeight } from '@/util/common'
 function ListEmptyFooter(): JSX.Element {
   return (
     <>
-      <View style={{ height: screenHeight * 0.15 }} />
+      <View style={{ height: screenHeight * 0.3 }} />
     </>
   )
 }

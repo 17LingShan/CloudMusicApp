@@ -1,6 +1,6 @@
-import CommonHeader from '@/components/CommonHeader'
-import UserScreen from '@/screen/UserScreen'
 import { createStackNavigator } from '@react-navigation/stack'
+import UserScreen from '@/screen/UserScreen'
+import CommonHeader from '@/components/CommonHeader'
 
 const Stack = createStackNavigator()
 

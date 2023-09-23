@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { pause, play, skipToDirection } from '@/util/playTool'
 import ThemeStore from '@/mobx/theme'
@@ -10,14 +10,7 @@ function PlayDetailBottom({ isPlaying }: { isPlaying: boolean }): JSX.Element {
 
   return (
     <>
-      <View
-        style={{
-          height: '80%',
-          flexDirection: 'row',
-          paddingHorizontal: 36,
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}>
+      <View style={style.bottomWrap}>
         <Icon
           name={playMode[ModeSelect]}
           color={ThemeStore.detailSurface}
@@ -47,5 +40,15 @@ function PlayDetailBottom({ isPlaying }: { isPlaying: boolean }): JSX.Element {
     </>
   )
 }
+
+const style = StyleSheet.create({
+  bottomWrap: {
+    height: '80%',
+    flexDirection: 'row',
+    paddingHorizontal: 36,
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  }
+})
 
 export default PlayDetailBottom

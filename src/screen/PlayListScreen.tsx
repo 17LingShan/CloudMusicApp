@@ -1,4 +1,4 @@
-import { FlatList, Text, View } from 'react-native'
+import { FlatList, StyleSheet, Text, View } from 'react-native'
 import { observer } from 'mobx-react'
 import { useNavigation } from '@react-navigation/core'
 import { useMMKVStorage } from 'react-native-mmkv-storage'
@@ -21,18 +21,10 @@ function PlayListScreen(): JSX.Element {
     <>
       <View
         style={{
-          height: screenHeight * 0.05,
-          backgroundColor: `rgba(${hexToRGB(ThemeStore.onPrimary)},0.4)`
+          ...style.listWrap,
+          backgroundColor: `rgba(${hexToRGB(ThemeStore.onSurface)},0.4)`
         }}>
-        <Text
-          style={{
-            flex: 1,
-            fontSize: 18,
-            fontWeight: '700',
-            color: ThemeStore.surface,
-            verticalAlign: 'middle',
-            textAlign: 'center'
-          }}>
+        <Text style={{ ...style.resetText, color: ThemeStore.surface }}>
           重置播放列表
         </Text>
       </View>
@@ -52,5 +44,15 @@ function PlayListScreen(): JSX.Element {
     </>
   )
 }
+
+const style = StyleSheet.create({
+  listWrap: { height: screenHeight * 0.05 },
+  resetText: {
+    flex: 1,
+    fontSize: 18,
+    verticalAlign: 'middle',
+    textAlign: 'center'
+  }
+})
 
 export default observer(PlayListScreen)
