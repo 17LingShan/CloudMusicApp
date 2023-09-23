@@ -4,7 +4,6 @@ import { toJS } from 'mobx'
 import { observer } from 'mobx-react'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import PlayBottomBar from '@/components/PlayBottomBar'
 import StackHome from './StackHome'
 import StackPlay from './StackPlay'
 import StackUser from './StackUser'
@@ -12,6 +11,7 @@ import UserStore from '@/mobx/user'
 import ThemeStore from '@/mobx/theme'
 import { hexToRGB } from '@/util/common'
 import CoverImg from '@/assets/cover.jpg'
+import PlayBottomBar from '@/components/PlayBottomBar'
 
 const Tab = createBottomTabNavigator()
 

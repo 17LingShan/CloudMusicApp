@@ -7,6 +7,7 @@ import {
   TouchableOpacity
 } from 'react-native'
 import { toJS } from 'mobx'
+import { observer } from 'mobx-react'
 import { CommonActions, useNavigation } from '@react-navigation/core'
 import UserStore from '@/mobx/user'
 import ThemeStore from '@/mobx/theme'
@@ -73,15 +74,7 @@ function UserScreen(): JSX.Element {
                   CommonActions.navigate({ name: 'album', params: item })
                 )
               }>
-              <AlbumListItem
-                position={index}
-                albumInfo={item}
-                itemColor={{
-                  containerColor: ThemeStore.surface,
-                  nameColor: ThemeStore.surface,
-                  countColor: ThemeStore.surface
-                }}
-              />
+              <AlbumListItem position={index} albumInfo={item} />
             </TouchableOpacity>
           )}
           refreshControl={
@@ -99,4 +92,4 @@ const style = StyleSheet.create({
   }
 })
 
-export default UserScreen
+export default observer(UserScreen)

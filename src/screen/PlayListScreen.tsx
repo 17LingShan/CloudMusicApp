@@ -1,14 +1,13 @@
 import { FlatList, Text, View } from 'react-native'
-import { useMMKVStorage } from 'react-native-mmkv-storage'
-import { useNavigation } from '@react-navigation/core'
-import { toJS } from 'mobx'
-import { storage } from '@/storage'
 import { observer } from 'mobx-react'
+import { useNavigation } from '@react-navigation/core'
+import { useMMKVStorage } from 'react-native-mmkv-storage'
+import { storage } from '@/storage'
 import ThemeStore from '@/mobx/theme'
-import { handlePressItem, handlePressModalIcon } from '@/util/navigateTool'
 import { hexToRGB, screenHeight } from '@/util/common'
-import ListEmptyFooter from '@/components/ListEmptyFooter'
+import { handlePressItem, handlePressModalIcon } from '@/util/navigateTool'
 import TrackItem from '@/components/TrackItem'
+import ListEmptyFooter from '@/components/ListEmptyFooter'
 
 function PlayListScreen(): JSX.Element {
   const navigation = useNavigation()

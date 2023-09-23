@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { Animated, Easing, Keyboard, StatusBar, Text, View } from 'react-native'
+import { observer } from 'mobx-react'
 import { useNavigation } from '@react-navigation/core'
 import Clipboard from '@react-native-clipboard/clipboard'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { toJS } from 'mobx'
 import ThemeStore from '@/mobx/theme'
 import { SongType } from '@/mobx/types'
 import RippleIcon from '@/components/RippleIcon'
@@ -107,4 +107,4 @@ function PlayDetailHeader({
   )
 }
 
-export default PlayDetailHeader
+export default observer(PlayDetailHeader)

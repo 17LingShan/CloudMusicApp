@@ -5,6 +5,7 @@ import { hexToRGB, screenWidth } from '@/util/common'
 import { AlbumType } from '@/mobx/types'
 import { toJS } from 'mobx'
 import ThemeStore from '@/mobx/theme'
+import { observer } from 'mobx-react'
 
 function HotAlbumList({
   albumList
@@ -78,4 +79,4 @@ function HotAlbumList({
   )
 }
 
-export default HotAlbumList
+export default observer(HotAlbumList)

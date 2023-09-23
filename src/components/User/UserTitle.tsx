@@ -1,5 +1,6 @@
 import { Image, Text, View } from 'react-native'
 import { toJS } from 'mobx'
+import { observer } from 'mobx-react'
 import UserStore from '@/mobx/user'
 import ThemeStore from '@/mobx/theme'
 import { hexToRGB } from '@/util/common'
@@ -58,4 +59,4 @@ function UserTitle(): JSX.Element {
   )
 }
 
-export default UserTitle
+export default observer(UserTitle)

@@ -1,5 +1,4 @@
 import { makeAutoObservable } from 'mobx'
-import { ThemeType } from './types'
 import { storage } from '@/storage'
 
 export class Theme {

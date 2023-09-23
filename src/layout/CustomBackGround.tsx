@@ -3,8 +3,8 @@ import { ImageBackground, StyleSheet, View } from 'react-native'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react'
 import UserStore from '@/mobx/user'
-import CoverImg from '@/assets/cover.jpg'
 import ThemeStore from '@/mobx/theme'
+import CoverImg from '@/assets/cover.jpg'
 
 function CustomBackGround({
   children

@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { ColorValue, TextInput, View } from 'react-native'
-import { toJS } from 'mobx'
 import { observer } from 'mobx-react'
 import ThemeStore from '@/mobx/theme'
 import RippleIcon from '../RippleIcon'

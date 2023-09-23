@@ -1,6 +1,6 @@
+import { makeAutoObservable, toJS } from 'mobx'
 import { SongType } from '@/mobx/types'
 import { storage } from '@/storage'
-import { makeAutoObservable, toJS } from 'mobx'
 
 export const initTrackInfo: SongType.SongProps = {
   id: 0,

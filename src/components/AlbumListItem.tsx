@@ -1,19 +1,15 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
+import { observer } from 'mobx-react'
+import ThemeStore from '@/mobx/theme'
 import { AlbumType } from '@/mobx/types'
 import { hexToRGB } from '@/util/common'
 
 function AlbumListItem({
   position,
-  albumInfo,
-  itemColor
+  albumInfo
 }: {
   position: number
   albumInfo: AlbumType.AlbumProps
-  itemColor: {
-    containerColor: string
-    nameColor: string
-    countColor: string
-  }
 }): JSX.Element {
   return (
     <>
@@ -22,7 +18,7 @@ function AlbumListItem({
           ...style.wrap,
           borderTopLeftRadius: position ? 0 : 20,
           borderTopRightRadius: position ? 0 : 20,
-          backgroundColor: `rgba(${hexToRGB(itemColor.containerColor)},0.2)`
+          backgroundColor: `rgba(${hexToRGB(ThemeStore.surface)},0.2)`
         }}>
         <View style={style.container}>
           <View style={style.imgWrap}>
@@ -34,10 +30,10 @@ function AlbumListItem({
           <View style={style.infoWrap}>
             <Text
               numberOfLines={1}
-              style={{ ...style.nameStyle, color: itemColor.nameColor }}>
+              style={{ ...style.nameStyle, color: ThemeStore.surface }}>
               {albumInfo.name}
             </Text>
-            <Text style={{ ...style.countStyle, color: itemColor.countColor }}>
+            <Text style={{ ...style.countStyle, color: ThemeStore.surface }}>
               {`${albumInfo.trackCount}首`}
             </Text>
           </View>
@@ -85,4 +81,4 @@ const style = StyleSheet.create({
   }
 })
 
-export default AlbumListItem
+export default observer(AlbumListItem)

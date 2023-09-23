@@ -1,6 +1,6 @@
 import { View, StatusBar, Text, Keyboard } from 'react-native'
+import { observer } from 'mobx-react'
 import { useNavigation } from '@react-navigation/core'
-import { toJS } from 'mobx'
 import ThemeStore from '@/mobx/theme'
 import RippleIcon from '../RippleIcon'
 
@@ -46,4 +46,4 @@ function AlbumHeader(): JSX.Element {
   )
 }
 
-export default AlbumHeader
+export default observer(AlbumHeader)

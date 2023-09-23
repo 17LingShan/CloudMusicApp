@@ -4,7 +4,6 @@ import {
   DrawerActions,
   CommonActions
 } from '@react-navigation/core'
-import { toJS } from 'mobx'
 import { screenHeight } from '@/util/common'
 import ThemeStore from '@/mobx/theme'
 import RippleIcon from './RippleIcon'
