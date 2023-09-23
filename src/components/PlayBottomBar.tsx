@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   Animated,
   Easing,
@@ -11,18 +11,24 @@ import { toJS } from 'mobx'
 import { observer } from 'mobx-react'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { CommonActions, useNavigation } from '@react-navigation/core'
+import {
+  GestureEvent,
+  PanGestureHandler,
+  State
+} from 'react-native-gesture-handler'
 import ThemeStore from '@/mobx/theme'
-import playerStore from '@/mobx/player'
+import PlayerStore from '@/mobx/player'
 import coverImg from '@/assets/cover.jpg'
-import { pause, play } from '@/util/playTool'
-import { hexToRGB, screenHeight } from '@/util/common'
+import { pause, play, skipToDirection } from '@/util/playTool'
+import { hexToRGB, screenHeight, screenWidth } from '@/util/common'
 
 function PlayBottomBar(): JSX.Element {
   const navigation = useNavigation()
+  const [skipping, setSkipping] = useState(false)
 
   const bottom = useRef(
     new Animated.Value(
-      playerStore.currentTrack.id ?? 0
+      PlayerStore.currentTrack.id ?? 0
         ? screenHeight * 0.1
         : -screenHeight * 0.1
     )
@@ -30,7 +36,7 @@ function PlayBottomBar(): JSX.Element {
 
   const bottomAni = Animated.timing(bottom, {
     toValue:
-      playerStore.currentTrack.id ?? 0
+      PlayerStore.currentTrack.id ?? 0
         ? screenHeight * 0.1
         : -screenHeight * 0.1,
     duration: 400,
@@ -39,45 +45,65 @@ function PlayBottomBar(): JSX.Element {
   })
   bottomAni.start()
 
+  const handleBarHorEvent = async (event: GestureEvent) => {
+    if (skipping) return
+    if (event.nativeEvent.state === State.ACTIVE) {
+      const TranX = event.nativeEvent.translationX as number
+      if (Math.abs(TranX) > screenWidth * 0.3) {
+        console.log('Rotation TranX', TranX)
+        setSkipping(true)
+        await skipToDirection(-1 * Math.sign(TranX))
+      }
+    }
+  }
+
   useEffect(() => {
     return () => {
       bottomAni.reset()
     }
   }, [])
 
+  useEffect(() => {
+    if (PlayerStore.isPlaying) {
+      setSkipping(false)
+    }
+  }, [PlayerStore.isPlaying])
+
   return (
     <>
-      <Animated.View
-        style={{
-          ...style.barWrap,
-          bottom: bottom
-        }}>
-        <View
+      <PanGestureHandler onGestureEvent={handleBarHorEvent}>
+        <Animated.View
           style={{
-            ...style.barContainer,
-            backgroundColor: `rgba(${hexToRGB(ThemeStore.onSurface)},0.6)`
+            ...style.barWrap,
+            bottom: bottom
           }}>
-          <Pressable
-            onPress={() => {
-              navigation.dispatch(CommonActions.navigate('PlayDetail'))
+          <View
+            style={{
+              ...style.barContainer,
+              backgroundColor: `rgba(${hexToRGB(ThemeStore.onSurface)},0.6)`
             }}>
-            <Image
-              style={style.imgStyle}
-              source={
-                playerStore.currentTrack.id
-                  ? toJS(playerStore.currentTrack.albumPicUrl)
-                  : coverImg
-              }
+            <Pressable
+              onPress={() => {
+                navigation.dispatch(CommonActions.navigate('PlayDetail'))
+              }}>
+              <Image
+                style={style.imgStyle}
+                source={
+                  PlayerStore.currentTrack.id
+                    ? toJS(PlayerStore.currentTrack.albumPicUrl)
+                    : coverImg
+                }
+              />
+            </Pressable>
+            <Icon
+              size={48}
+              style={{ ...style.iconStyle, color: ThemeStore.surface }}
+              name={PlayerStore.isPlaying ? 'pause' : 'play-arrow'}
+              onPress={() => (PlayerStore.isPlaying ? pause() : play())}
             />
-          </Pressable>
-          <Icon
-            size={48}
-            style={{ ...style.iconStyle, color: ThemeStore.surface }}
-            name={playerStore.isPlaying ? 'pause' : 'play-arrow'}
-            onPress={() => (playerStore.isPlaying ? pause() : play())}
-          />
-        </View>
-      </Animated.View>
+          </View>
+        </Animated.View>
+      </PanGestureHandler>
     </>
   )
 }

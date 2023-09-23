@@ -9,7 +9,7 @@ import { skipToDirection } from '@/util/playTool'
 import { screenWidth } from '@/util/common'
 import coverImg from '@/assets/cover.jpg'
 import { SongType } from '@/mobx/types'
-import playerStore from '@/mobx/player'
+import PlayerStore from '@/mobx/player'
 
 function PlayDetailRotation({
   albumPicUrl
@@ -26,11 +26,11 @@ function PlayDetailRotation({
     []
   )
 
-  const handleHorizontalEvent = async (event: GestureEvent) => {
+  const handleAlbumHorEvent = async (event: GestureEvent) => {
     if (skipping) return
     if (event.nativeEvent.state === State.ACTIVE) {
       const TranX = event.nativeEvent.translationX as number
-      if (Math.abs(TranX) > screenWidth * 0.4) {
+      if (Math.abs(TranX) > screenWidth * 0.3) {
         console.log('Rotation TranX', TranX)
         setSkipping(true)
         await skipToDirection(-1 * Math.sign(TranX))
@@ -55,18 +55,18 @@ function PlayDetailRotation({
     })
 
   useEffect(() => {
-    if (playerStore.isPlaying) {
+    if (PlayerStore.isPlaying) {
       setSkipping(false)
       startRotateAni()
     } else {
       rotate.stopAnimation()
       rotateAni.stop()
     }
-  }, [playerStore.isPlaying])
+  }, [PlayerStore.isPlaying])
 
   return (
     <>
-      <PanGestureHandler onGestureEvent={handleHorizontalEvent}>
+      <PanGestureHandler onGestureEvent={handleAlbumHorEvent}>
         <Animated.Image
           style={{
             ...style.imgStyle,

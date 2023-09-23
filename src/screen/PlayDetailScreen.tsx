@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react'
 import ThemeStore from '@/mobx/theme'
-import playerStore from '@/mobx/player'
+import PlayerStore from '@/mobx/player'
 import { handleFetchLyric, showToastErr } from '@/util/common'
 import PlayDetailHeader from '@/components/PlayDetail/PlayDetailHeader'
 import PlayDetailBottom from '@/components/PlayDetail/PlayDetailBottom'
@@ -15,8 +15,8 @@ function PlayDetailScreen(): JSX.Element {
     if (!id) return
     await handleFetchLyric({ id: id })
       .then(res => {
-        playerStore.setCurrentTrack({
-          ...playerStore.currentTrack,
+        PlayerStore.setCurrentTrack({
+          ...PlayerStore.currentTrack,
           lyric: res
         })
       })
@@ -26,25 +26,25 @@ function PlayDetailScreen(): JSX.Element {
   }
 
   useEffect(() => {
-    handleLyric(playerStore.currentTrack.id)
-  }, [playerStore.currentTrack.id])
+    handleLyric(PlayerStore.currentTrack.id)
+  }, [PlayerStore.currentTrack.id])
 
   return (
     <>
       <View style={style.detailWrap}>
-        <PlayDetailHeader trackInfo={toJS(playerStore.currentTrack)} />
+        <PlayDetailHeader trackInfo={toJS(PlayerStore.currentTrack)} />
         <View
           style={{
             ...style.centerWrap,
             backgroundColor: ThemeStore.detailBackground
           }}>
-          <PlayDetailCenter trackInfo={toJS(playerStore.currentTrack)} />
+          <PlayDetailCenter trackInfo={toJS(PlayerStore.currentTrack)} />
           <View style={style.sliderWrap}>
             <View style={style.sliderContainer}>
               <PlayDetailSlider />
             </View>
             <View style={style.bottomWrap}>
-              <PlayDetailBottom isPlaying={toJS(playerStore.isPlaying)} />
+              <PlayDetailBottom isPlaying={toJS(PlayerStore.isPlaying)} />
             </View>
           </View>
         </View>

@@ -50,5 +50,5 @@ export class Player {
   }
 }
 
-const playerStore = new Player()
-export default playerStore
+const PlayerStore = new Player()
+export default PlayerStore

@@ -13,17 +13,17 @@ import { uniqBy } from 'lodash'
 import { toJS } from 'mobx'
 import { fetchTrackInfo, showToastCommon, showToastErr } from './common'
 import { SongType } from '@/mobx/types'
-import playerStore, { initTrackInfo } from '@/mobx/player'
+import PlayerStore, { initTrackInfo } from '@/mobx/player'
 const subscription: EmitterSubscription[] = []
 
 function changeStateEmit(event: PlaybackStateEvent) {
   console.log('play back state event', event)
   switch (event.state) {
     case State.Playing:
-      playerStore.setIsPlaying(true)
+      PlayerStore.setIsPlaying(true)
       break
     default:
-      playerStore.setIsPlaying(false)
+      PlayerStore.setIsPlaying(false)
       break
   }
 }
@@ -36,25 +36,25 @@ async function changeEventEmit(event: PlaybackTrackChangedEvent) {
   // 正常下一首播放
   if (event.track === 0) {
     console.log(1)
-    const currentIndex = playerStore.playList.findIndex(
-      item => item.id === playerStore.currentTrack.id
+    const currentIndex = PlayerStore.playList.findIndex(
+      item => item.id === PlayerStore.currentTrack.id
     )
     const nextPlayTrack = toJS(
-      playerStore.playList[(currentIndex + 1) % playerStore.playList.length]
+      PlayerStore.playList[(currentIndex + 1) % PlayerStore.playList.length]
     )
-    playerStore.setPlayList(changePlayListOrder(nextPlayTrack))
+    PlayerStore.setPlayList(changePlayListOrder(nextPlayTrack))
     await playTrack(nextPlayTrack)
   } else {
     // 选择某一首播放
     console.log(3)
     const playingTrack = (await TrackPlayer.getTrack(0)) as SongType.SongProps
     if (
-      playingTrack.id === playerStore.currentTrack.id &&
-      playerStore.isPlaying
+      playingTrack.id === PlayerStore.currentTrack.id &&
+      PlayerStore.isPlaying
     )
       return
-    playerStore.setCurrentTrack(playingTrack)
-    playerStore.setPlayList(changePlayListOrder(playingTrack))
+    PlayerStore.setCurrentTrack(playingTrack)
+    PlayerStore.setPlayList(changePlayListOrder(playingTrack))
   }
   await play()
 }
@@ -62,18 +62,18 @@ async function changeEventEmit(event: PlaybackTrackChangedEvent) {
 function changePlayListOrder(
   currentTrack: SongType.SongProps
 ): SongType.SongList {
-  const position = playerStore.playList.findIndex(
+  const position = PlayerStore.playList.findIndex(
     item => item.id === currentTrack.id
   )
 
   if (position === -1) {
-    return uniqBy([currentTrack, ...toJS(playerStore.playList)], 'id')
+    return uniqBy([currentTrack, ...toJS(PlayerStore.playList)], 'id')
   } else {
     return uniqBy(
       [
         ...toJS([
-          ...playerStore.playList.slice(position),
-          ...toJS(playerStore.playList.slice(0, position))
+          ...PlayerStore.playList.slice(position),
+          ...toJS(PlayerStore.playList.slice(0, position))
         ])
       ],
       'id'
@@ -82,8 +82,8 @@ function changePlayListOrder(
 }
 
 async function initTrack() {
-  if (playerStore.inited) return
-  playerStore.setInited(true)
+  if (PlayerStore.inited) return
+  PlayerStore.setInited(true)
   await TrackPlayer.setupPlayer()
   await TrackPlayer.updateOptions({
     capabilities: [
@@ -157,24 +157,24 @@ export async function play() {
 
 // 添加track到下一首
 export function addTrackToNext(trackInfo: SongType.SongProps) {
-  playerStore.setNextTrack(trackInfo)
+  PlayerStore.setNextTrack(trackInfo)
   showToastCommon({ message: '已加入下一首播放', gravity: 'top' })
 }
 
 export function removeTrack(trackInfo: SongType.SongProps) {
-  playerStore.setPlayList(
-    toJS(playerStore.playList.filter(item => item.id !== trackInfo.id))
+  PlayerStore.setPlayList(
+    toJS(PlayerStore.playList.filter(item => item.id !== trackInfo.id))
   )
   showToastCommon({ message: '移除成功！', gravity: 'top' })
 }
 
 // 处理指定已经指定的下一首
 async function handleSkipToAssignNextTrack(direction?: number) {
-  if (!playerStore.nextTrack.id || direction <= 0) return Promise.reject()
-  playerStore.setPlayList(changePlayListOrder(toJS(playerStore.nextTrack)))
-  await playTrack(toJS(playerStore.nextTrack))
+  if (!PlayerStore.nextTrack.id || direction <= 0) return Promise.reject()
+  PlayerStore.setPlayList(changePlayListOrder(toJS(PlayerStore.nextTrack)))
+  await playTrack(toJS(PlayerStore.nextTrack))
   await play()
-  playerStore.setNextTrack(initTrackInfo)
+  PlayerStore.setNextTrack(initTrackInfo)
 
   return Promise.resolve()
 }
@@ -185,13 +185,13 @@ export async function skipToDirection(direction: number) {
   await handleSkipToAssignNextTrack(direction)
     .then()
     .catch(async () => {
-      const currentIndex = playerStore.playList.findIndex(
-        item => item.id === playerStore.currentTrack.id
+      const currentIndex = PlayerStore.playList.findIndex(
+        item => item.id === PlayerStore.currentTrack.id
       )
       const nextIndex =
-        (currentIndex + direction + playerStore.playList.length) %
-        playerStore.playList.length
-      const nextPlayTrack = toJS(playerStore.playList[nextIndex])
+        (currentIndex + direction + PlayerStore.playList.length) %
+        PlayerStore.playList.length
+      const nextPlayTrack = toJS(PlayerStore.playList[nextIndex])
 
       await playTrack(nextPlayTrack)
     })

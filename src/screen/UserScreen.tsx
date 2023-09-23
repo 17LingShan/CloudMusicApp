@@ -8,7 +8,11 @@ import {
 } from 'react-native'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react'
-import { CommonActions, useNavigation } from '@react-navigation/core'
+import {
+  CommonActions,
+  useIsFocused,
+  useNavigation
+} from '@react-navigation/core'
 import UserStore from '@/mobx/user'
 import { AlbumType } from '@/mobx/types'
 import { fetchLikeAlbums } from '@/api/user'
@@ -18,6 +22,7 @@ import ListEmptyFooter from '@/components/ListEmptyFooter'
 import { handleAccountInfo, showToastErr } from '@/util/common'
 
 function UserScreen(): JSX.Element {
+  const isFocused = useIsFocused()
   const navigation = useNavigation()
   const [refreshing, setRefreshing] = useState(false)
   const [likeAlbum, setLikeAlbum] = useState<AlbumType.AlbumList>([])
@@ -54,8 +59,8 @@ function UserScreen(): JSX.Element {
   }, [])
 
   useEffect(() => {
-    handleRefresh()
-  }, [])
+    if (isFocused) handleRefresh()
+  }, [isFocused])
 
   return (
     <>
