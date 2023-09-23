@@ -1,4 +1,10 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native'
 import { observer } from 'mobx-react'
 import { useNavigation } from '@react-navigation/core'
 import { useMMKVStorage } from 'react-native-mmkv-storage'
@@ -19,15 +25,17 @@ function PlayListScreen(): JSX.Element {
 
   return (
     <>
-      <View
-        style={{
-          ...style.listWrap,
-          backgroundColor: `rgba(${hexToRGB(ThemeStore.onSurface)},0.4)`
-        }}>
-        <Text style={{ ...style.resetText, color: ThemeStore.surface }}>
-          重置播放列表
-        </Text>
-      </View>
+      <TouchableOpacity onPress={() => setStoragePlayList([])}>
+        <View
+          style={{
+            ...style.listWrap,
+            backgroundColor: `rgba(${hexToRGB(ThemeStore.onSurface)},0.4)`
+          }}>
+          <Text style={{ ...style.resetText, color: ThemeStore.surface }}>
+            重置播放列表
+          </Text>
+        </View>
+      </TouchableOpacity>
       <FlatList
         data={storagePlayList}
         renderItem={({ item, index }) => (

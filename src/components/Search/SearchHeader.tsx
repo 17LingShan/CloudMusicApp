@@ -26,16 +26,6 @@ function SearchHeader({ handleSearch, onIconPress }): JSX.Element {
             alignItems: 'center',
             justifyContent: 'space-between'
           }}>
-          {SearchStore.isInputFocus && SearchStore.keywords.length ? (
-            <View
-              style={{
-                position: 'absolute',
-                top: 60,
-                width: screenWidth,
-                height: screenWidth * 0.6,
-                backgroundColor: 'red'
-              }}></View>
-          ) : null}
           <RippleIcon
             iconName="chevron-left"
             color={ThemeStore.surface}
