@@ -1,8 +1,34 @@
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
+# Preview
+
+## GIF
+<img src="./doc/BottomBarComponent.gif" width=50% alt="BottomBarComponent" /><img src="./doc/PlayDetailPage.gif" width=50% alt="PlayDetailPage" />
+
+<img src="./doc//SearchPage.gif" width=50% alt="SearchPage" /><img src="./doc/UserPage.gif" width=50% alt="UserPage"/>
+## Home(light|dark)
+
+<img src=https://s2.loli.net/2023/09/24/rk5AOyWjJ8PqlG6.jpg width=50% /><img src=https://s2.loli.net/2023/09/24/UdfawYcrNJSBQM4.jpg width=50% />
+
+## PlayList(light|dark)
+
+<img src=https://s2.loli.net/2023/09/24/TY8IhgpvHZ4KjGe.jpg width=50% /><img src=https://s2.loli.net/2023/09/24/yX5IcY9TCUBbqet.jpg width=50% />
+
+## User(light|dark)
+
+<img src=https://s2.loli.net/2023/09/24/X2UKJPfG9vuI8Hm.jpg width=50% /><img src=https://s2.loli.net/2023/09/24/tT4ofMXhVebZISu.jpg width=50% />
+
+## setting(light|dark)
+
+<img src=https://s2.loli.net/2023/09/24/CUBDy4YoJVXpbTa.jpg width=50% /><img src=https://s2.loli.net/2023/09/24/u1rwgcF74mNYbkP.jpg width=50% />
+
+## login
+
+<img src=https://s2.loli.net/2023/09/24/yuCYO7NlqoIZtKE.jpg width=50% />
+
 # Getting Started
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+> **Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
 ## Step 1: Start the Metro Server
 
