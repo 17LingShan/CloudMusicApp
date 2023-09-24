@@ -3,28 +3,28 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 # Preview
 
 ## GIF
-<img src="./doc/BottomBarComponent.gif" width=50% alt="BottomBarComponent" /><img src="./doc/PlayDetailPage.gif" width=50% alt="PlayDetailPage" />
+<img src="./doc/BottomBarComponent.gif" width=30% alt="BottomBarComponent" /><img src="./doc/PlayDetailPage.gif" width=30% alt="PlayDetailPage" />
 
-<img src="./doc//SearchPage.gif" width=50% alt="SearchPage" /><img src="./doc/UserPage.gif" width=50% alt="UserPage"/>
+<img src="./doc//SearchPage.gif" width=30% alt="SearchPage" /><img src="./doc/UserPage.gif" width=30% alt="UserPage"/>
 ## Home(light|dark)
 
-<img src=https://s2.loli.net/2023/09/24/rk5AOyWjJ8PqlG6.jpg width=50% /><img src=https://s2.loli.net/2023/09/24/UdfawYcrNJSBQM4.jpg width=50% />
+<img src=https://s2.loli.net/2023/09/24/rk5AOyWjJ8PqlG6.jpg width=30% /><img src=https://s2.loli.net/2023/09/24/UdfawYcrNJSBQM4.jpg width=30% />
 
 ## PlayList(light|dark)
 
-<img src=https://s2.loli.net/2023/09/24/TY8IhgpvHZ4KjGe.jpg width=50% /><img src=https://s2.loli.net/2023/09/24/yX5IcY9TCUBbqet.jpg width=50% />
+<img src=https://s2.loli.net/2023/09/24/TY8IhgpvHZ4KjGe.jpg width=30% /><img src=https://s2.loli.net/2023/09/24/yX5IcY9TCUBbqet.jpg width=30% />
 
 ## User(light|dark)
 
-<img src=https://s2.loli.net/2023/09/24/X2UKJPfG9vuI8Hm.jpg width=50% /><img src=https://s2.loli.net/2023/09/24/tT4ofMXhVebZISu.jpg width=50% />
+<img src=https://s2.loli.net/2023/09/24/X2UKJPfG9vuI8Hm.jpg width=30% /><img src=https://s2.loli.net/2023/09/24/tT4ofMXhVebZISu.jpg width=30% />
 
 ## setting(light|dark)
 
-<img src=https://s2.loli.net/2023/09/24/CUBDy4YoJVXpbTa.jpg width=50% /><img src=https://s2.loli.net/2023/09/24/u1rwgcF74mNYbkP.jpg width=50% />
+<img src=https://s2.loli.net/2023/09/24/CUBDy4YoJVXpbTa.jpg width=30% /><img src=https://s2.loli.net/2023/09/24/u1rwgcF74mNYbkP.jpg width=30% />
 
 ## login
 
-<img src=https://s2.loli.net/2023/09/24/yuCYO7NlqoIZtKE.jpg width=50% />
+<img src=https://s2.loli.net/2023/09/24/yuCYO7NlqoIZtKE.jpg width=30% />
 
 # Getting Started
 
